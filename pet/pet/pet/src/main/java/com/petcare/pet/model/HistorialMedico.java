@@ -1,5 +1,5 @@
 package com.petcare.pet.model;
 
-public class historialMedico {
+public class HistorialMedico {
 
 }
