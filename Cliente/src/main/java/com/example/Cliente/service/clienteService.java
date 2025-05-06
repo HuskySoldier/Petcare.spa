@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.Cliente.model.Cliente;
-import com.example.Cliente.repository.clienteRepository;
+import com.example.Cliente.repository.ClienteRepository;
 @Service
-public class clienteService {
+public class ClienteService {
     @Autowired
-    private clienteRepository clienterespository;
+    private ClienteRepository clienterespository;
 
     public List<Cliente> listarCliente(){
         return clienterespository.findAll();
