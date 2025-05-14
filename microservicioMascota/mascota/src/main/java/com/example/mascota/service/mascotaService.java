@@ -29,5 +29,4 @@ public class mascotaService {
         mascotarepository.deleteById(id);
     }
 
-
 }

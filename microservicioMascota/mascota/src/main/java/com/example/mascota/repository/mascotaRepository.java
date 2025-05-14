@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import com.example.mascota.model.Mascota;
 
-
-
 @Repository
 public interface mascotaRepository extends JpaRepository<Mascota,Long>{
     //@Query(SELECT m FROM Mascota WHERE m.nombre= : nombre) -- busca a todas las mascotas con el mismo nombre

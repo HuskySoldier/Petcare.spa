@@ -1,3 +1,4 @@
+
 package com.example.mascota.controller;
 
 import java.util.List;
@@ -29,10 +30,8 @@ public class mascotaController {
 
         if (mascota.isEmpty()) {
             return ResponseEntity.noContent().build();
-
         }
         return ResponseEntity.ok(mascota);
-
     }
 
     @PostMapping
@@ -81,6 +80,7 @@ public class mascotaController {
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
+        
     }
 
 }
