@@ -20,10 +20,13 @@ import lombok.NoArgsConstructor;
 public class Inventario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    private Integer inventario_id;
+    private Long id_inventario;
 
     @Column(nullable = false)
-    private int medicamento_id;
+    private int id_producto;
+
+    @Column(nullable = false)
+    private int id_clinica;
 
     @Column(nullable = false)
     private int stock_actual;
