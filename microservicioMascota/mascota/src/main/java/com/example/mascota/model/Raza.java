@@ -29,8 +29,8 @@ public class Raza {
     @Column(length = 100, nullable= false)
     private String nombreRaza;
 
-    @OneToMany(mappedBy = "razaMascota",cascade= CascadeType.ALL)
+    @OneToMany(mappedBy = "raza",cascade= CascadeType.ALL)
     @JsonIgnore
-    List<Mascota> mascotas;
+    List<Mascota> mascota;
 
 }

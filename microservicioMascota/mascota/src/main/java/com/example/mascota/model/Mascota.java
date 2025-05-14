@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @Table(name = "mascota")
 @AllArgsConstructor
@@ -29,9 +28,6 @@ public class Mascota {
     @Column(length = 100, nullable= false)
     private String nombre;
 
-    @Column(length = 100, nullable = false)
-    private String especie;
-
     @Column(length = 4, nullable= false)
     private int edad;
 
@@ -42,6 +38,11 @@ public class Mascota {
     @JoinColumn(name = "idRaza")
     @JsonIgnoreProperties("mascota")
     private Raza raza;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idEspecie")
+    @JsonIgnoreProperties("mascota")
+    private Especie especie;
 
 
 
