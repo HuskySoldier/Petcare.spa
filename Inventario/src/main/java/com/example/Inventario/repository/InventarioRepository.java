@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.example.Inventario.model.Inventario;
 @Repository
 public interface InventarioRepository extends JpaRepository<Inventario, Long>{
-    List<Inventario> findByInventario(int id_inventario);
+   List<Inventario> findByIdInventario(int idInventario);
 
 }
