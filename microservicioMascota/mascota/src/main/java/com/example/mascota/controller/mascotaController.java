@@ -24,7 +24,7 @@ public class mascotaController {
     @Autowired
     private mascotaService mascotaservice;
 
-    @GetMapping
+    @GetMapping("/total")
     public ResponseEntity<List<Mascota>> listarMascotas() {
         List<Mascota> mascota = mascotaservice.listarMacotas();
 
@@ -58,7 +58,8 @@ public class mascotaController {
             mascotaservice.eliminarMascota(id);
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); //
+            
         }
     }
 
@@ -82,5 +83,7 @@ public class mascotaController {
         }
         
     }
+
+    //validaciones- mascota no encontrada
 
 }
