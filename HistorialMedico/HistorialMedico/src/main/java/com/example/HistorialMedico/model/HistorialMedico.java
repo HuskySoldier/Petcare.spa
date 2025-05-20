@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class HistorialMedico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long historial_id;
+    private Long historialId;
 
     @Column(nullable = false)
     private Date fechaRegistro;

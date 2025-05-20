@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestClient.ResponseSpec;
 
 import com.example.HistorialMedico.model.HistorialMedico;
 import com.example.HistorialMedico.service.historialMedicoService;
@@ -69,7 +68,7 @@ public class historialMedicoController {
     HistorialMedico historialMedico2){
         try {
             HistorialMedico hismed=historialmedicoservice.buscarHistorialMedicoPorId(id);
-            hismed.setHistorial_id(id);
+            hismed.setHistorialId(id);
             hismed.setFechaRegistro(historialMedico2.getFechaRegistro());
 
             historialmedicoservice.agregarHistorialMedico(hismed);
