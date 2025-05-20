@@ -7,7 +7,4 @@ import lombok.ToString;
 @ToString
 public class ClientesDTO {
 
-    private Long id;
-
-    private String nombre;
 }

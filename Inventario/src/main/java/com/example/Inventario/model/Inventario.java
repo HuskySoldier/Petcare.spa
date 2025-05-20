@@ -20,20 +20,23 @@ import lombok.NoArgsConstructor;
 public class Inventario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    private Long id_inventario;
+    private Long idInventario;
 
     @Column(nullable = false)
-    private int id_producto;
+    private int idProducto;
 
     @Column(nullable = false)
-    private int id_clinica;
+    private int idClinica;
 
     @Column(nullable = false)
-    private int stock_actual;
+    private String nombreInv;
 
     @Column(nullable = false)
-    private int stock_minimo;
+    private int stockActual;
 
     @Column(nullable = false)
-    private Date fecha_ultima_actualizacion;
+    private int stockMinimo;
+
+    @Column(nullable = false)
+    private Date fechaUltimaActualizacion;
 }
