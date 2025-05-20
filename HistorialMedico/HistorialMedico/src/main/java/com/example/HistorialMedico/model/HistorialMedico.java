@@ -24,8 +24,15 @@ public class HistorialMedico {
 
     @Column(nullable = false)
     private Date fechaRegistro;
-    
 
+    @Column(nullable = false)
+    private String antecedente;
+
+    @Column(nullable = false)
+    private String comentario;
+
+    @Column(nullable = false)
+    private String diagnostico;
 
 
 }
