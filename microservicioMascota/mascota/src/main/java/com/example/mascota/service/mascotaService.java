@@ -19,6 +19,7 @@ public class mascotaService {
 
     public Mascota buscarMascotaPorId(Long id){
         return mascotarepository.findById(id).get();
+        
     }
 
     public Mascota agregarMascota(Mascota mascota){
@@ -28,5 +29,7 @@ public class mascotaService {
     public void eliminarMascota (Long id){
         mascotarepository.deleteById(id);
     }
+    
+
 
 }

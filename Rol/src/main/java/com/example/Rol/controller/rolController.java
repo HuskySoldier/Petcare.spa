@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Rol.model.Rol;
-import com.example.Rol.service.RolService;
+import com.example.Rol.service.rolService;
 
 @RestController
 @RequestMapping("/api/v1/rol")
-public class RolController {
+public class rolController {
 
     @Autowired
-    private RolService rolservice;
+    private rolService rolservice;
 
     @GetMapping
     public ResponseEntity<List<Rol>> listarRol(){

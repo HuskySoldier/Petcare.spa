@@ -5,12 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.Rol.model.Rol;
-import com.example.Rol.repository.RolRepository;
+import com.example.Rol.repository.rolRepository;
 
 @Service
-public class RolService {
+public class rolService {
     @Autowired
-    private RolRepository rolrespository;
+    private rolRepository rolrespository;
 
     public List<Rol> listarRol(){
         return rolrespository.findAll();

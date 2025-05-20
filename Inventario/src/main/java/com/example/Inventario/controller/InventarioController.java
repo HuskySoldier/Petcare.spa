@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Inventario.model.Inventario;
 import com.example.Inventario.service.InventarioService;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequestMapping("/api/v1/inventario")
@@ -23,8 +25,8 @@ public class InventarioController {
 
     //
     @GetMapping
-    public ResponseEntity<List<Inventario>> getInventario(int id_inventario){
-        List<Inventario> inventario = inventarioService.getInventario(id_inventario);
+    public ResponseEntity<List<Inventario>> getInventario(){
+        List<Inventario> inventario = inventarioService.allInventario();
         if(inventario.isEmpty()){
             return ResponseEntity.notFound().build();
         }
@@ -43,11 +45,21 @@ public class InventarioController {
 
     }
 
-    //Eliminamos el inventario que deseemos
-    @DeleteMapping("{id}")
-    public ResponseEntity<?> eliminarInventario(@PathVariable Long id_inventario) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarInventario(@PathVariable("id") Long idInventario, @RequestBody Inventario inventarioActualizado) {
         try{
-            inventarioService.deleteInventario(id_inventario);
+            inventarioService.actualizarInventario(idInventario, inventarioActualizado);
+            return ResponseEntity.ok("Inventario ha sido actualizado correctamente");
+        } catch (RuntimeException e){
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    //Eliminamos el inventario que deseemos
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarInventario(@PathVariable("id") Long idInventario) {
+        try{
+            inventarioService.deleteInventario(idInventario);
             return ResponseEntity.ok("Inventario eliminado correctamente");
         } catch (RuntimeException e){
             return ResponseEntity.status(404).body(e.getMessage());

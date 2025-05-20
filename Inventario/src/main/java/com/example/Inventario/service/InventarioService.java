@@ -13,27 +13,31 @@ import com.example.Inventario.repository.InventarioRepository;
 public class InventarioService {
     @Autowired
     private InventarioRepository inventarioRepository;
-
+       
     // Crear nuevo inventario
     public Inventario crearInventario(Inventario inventario) {
         return inventarioRepository.save(inventario);
     }
 
+
     // Obtener toda la cantidad de productos en un inventario
-    public List<Inventario> getInventario(int stock_actual) {
-        return (List<Inventario>) inventarioRepository.findByInventario(stock_actual);
+    public List<Inventario> getInventario(int stockActual) {
+        return (List<Inventario>) inventarioRepository.findByIdInventario(stockActual);
     }
     
+    public List<Inventario> allInventario(){
+        return inventarioRepository.findAll();
+    }
 
     // Obtener un inventario por su ID
-    public Optional<Inventario> obtenerInventarioPorId(Long id_producto) {
-        return inventarioRepository.findById(id_producto);
+    public Optional<Inventario> obtenerInventarioPorId(Long idProducto) {
+        return inventarioRepository.findById(idProducto);
     }
 
     // Actualizar el inventario
-    public Inventario actualizarInventario(Long id_producto, Inventario inventarioActualizada) {
-        if (inventarioRepository.existsById(id_producto)) {
-            inventarioActualizada.setId_inventario(id_producto);
+    public Inventario actualizarInventario(Long idInventario, Inventario inventarioActualizada) {
+        if (inventarioRepository.existsById(idInventario)) {
+            inventarioActualizada.setIdInventario(idInventario);
             return inventarioRepository.save(inventarioActualizada);
         } else {
             throw new RuntimeException("inventario no encontrado");
@@ -41,12 +45,12 @@ public class InventarioService {
     }
 
     // Borrar un inventario
-    public Boolean deleteInventario(Long id_producto) { 
-    if (!inventarioRepository.existsById(id_producto)) {
+    public Boolean deleteInventario(Long idProducto) { 
+    if (!inventarioRepository.existsById(idProducto)) {
         throw new RuntimeException("Inventario no encontrado");
     }
-    inventarioRepository.deleteById(id_producto);
+    inventarioRepository.deleteById(idProducto);
     return true;
     }
-    
+
 }
