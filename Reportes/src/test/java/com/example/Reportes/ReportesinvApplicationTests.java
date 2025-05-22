@@ -1,0 +1,13 @@
+package com.example.Reportes;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class ReportesinvApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}

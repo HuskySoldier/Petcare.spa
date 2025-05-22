@@ -1,11 +1,16 @@
 package com.example.Inventario.service;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Inventario.client.ReporteClient;
+import com.example.Inventario.dto.ReporteDto;
 import com.example.Inventario.model.Inventario;
 import com.example.Inventario.repository.InventarioRepository;
 
@@ -13,11 +18,18 @@ import com.example.Inventario.repository.InventarioRepository;
 public class InventarioService {
     @Autowired
     private InventarioRepository inventarioRepository;
+
+    @Autowired
+    private ReporteClient reporteClient;
        
     // Crear nuevo inventario
     public Inventario crearInventario(Inventario inventario) {
-        return inventarioRepository.save(inventario);
-    }
+    Inventario inventarioGuardado = inventarioRepository.save(inventario);
+
+    // Aquí llamas para verificar si se debe crear un reporte
+    verificarYReportarStock(inventarioGuardado);
+    return inventarioGuardado;
+    }   
 
 
     // Obtener toda la cantidad de productos en un inventario
@@ -53,4 +65,26 @@ public class InventarioService {
     return true;
     }
 
+    public List<Inventario> obtenerInventarioStockBajo() {
+    List<Inventario> inventarios = inventarioRepository.findAll();
+    List<Inventario> inventarioStockBajo = new ArrayList<>();
+    for (Inventario inv : inventarios) {
+        if (inv.getStockActual() <= inv.getStockMinimo()) {
+            inventarioStockBajo.add(inv);
+        }
+    }
+    return inventarioStockBajo;
+    }
+
+    public void verificarYReportarStock(Inventario inventario) {
+    if (inventario.getStockActual() <= inventario.getStockMinimo()) {
+        ReporteDto reporteDto = new ReporteDto(
+            inventario.getIdProducto(),
+            "Stock bajo para el producto: " + inventario.getNombreInv(),
+            new Date(System.currentTimeMillis())
+        );
+
+        reporteClient.crearReporte(reporteDto);
+    } 
+}  
 }

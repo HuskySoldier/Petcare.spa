@@ -1,4 +1,4 @@
-package com.example.Inventario.model;
+package com.example.Reportes.model;
 
 import java.sql.Date;
 
@@ -13,27 +13,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity 
-@Table(name="inventario") 
+@Table(name="reporte") 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Inventario {
+public class Reporte {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    private Long idInventario;
+    private Long idReporte;
+
+    @Column(length = 250, nullable = false)
+    private String comentario;
 
     @Column(nullable = false)
-    private int idProducto;
+    private Date fechaCreacion;
 
-    @Column(nullable = false)
-    private String nombreInv;
-
-    @Column(nullable = false)
-    private int stockActual;
-
-    @Column(nullable = false)
-    private int stockMinimo = 5;
-
-    @Column(nullable = false)
-    private Date fechaUltimaActualizacion;
 }
