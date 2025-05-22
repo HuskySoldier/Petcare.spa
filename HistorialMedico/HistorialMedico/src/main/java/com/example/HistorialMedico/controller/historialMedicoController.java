@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.HistorialMedico.dto.inventarioDTO;
 import com.example.HistorialMedico.model.HistorialMedico;
 import com.example.HistorialMedico.service.historialMedicoService;
+import com.example.HistorialMedico.service.tratamientoService;
 
 @RestController
 @RequestMapping("/api/v1/historialmedico")
@@ -23,28 +25,33 @@ public class historialMedicoController {
     @Autowired
     private historialMedicoService historialmedicoservice;
 
-    @GetMapping
-    public ResponseEntity<List<HistorialMedico>> listarHistorialMedico(){
-        List <HistorialMedico> historialMedicos=historialmedicoservice.listarHistorialMedico();
+    @Autowired
+    private tratamientoService tratamientoService;
 
-        if(historialMedicos.isEmpty()){
+    @GetMapping
+    public ResponseEntity<List<HistorialMedico>> listarHistorialMedico() {
+        List<HistorialMedico> historialMedicos = historialmedicoservice.listarHistorialMedico();
+
+        if (historialMedicos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(historialMedicos);
     }
 
     @PostMapping
-    public ResponseEntity<HistorialMedico> saveHistorialMedico(@RequestBody HistorialMedico hm){
-        HistorialMedico historialMedico2=historialmedicoservice.agregarHistorialMedico(hm);
+    public ResponseEntity<HistorialMedico> saveHistorialMedico(@RequestBody HistorialMedico hm) {
+        HistorialMedico historialMedico2 = historialmedicoservice.agregarHistorialMedico(hm);
         return ResponseEntity.status(HttpStatus.CREATED).body(historialMedico2);
     }
 
-    /*manytoone,joincolumn,JsonIgnore--- para hacer en las tablas que dijo el profe*/
-    
+    /*
+     * manytoone,joincolumn,JsonIgnore--- para hacer en las tablas que dijo el profe
+     */
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> deleteHistorialMedicoById(@PathVariable Long id){
+    public ResponseEntity<?> deleteHistorialMedicoById(@PathVariable Long id) {
         try {
-            HistorialMedico hm= historialmedicoservice.buscarHistorialMedicoPorId(id);
+            HistorialMedico hm = historialmedicoservice.buscarHistorialMedicoPorId(id);
             historialmedicoservice.eliminarHistorialMedico(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
@@ -53,9 +60,9 @@ public class historialMedicoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteHistorialMedicoPorId(@PathVariable Long id){
+    public ResponseEntity<?> deleteHistorialMedicoPorId(@PathVariable Long id) {
         try {
-            HistorialMedico hismed=historialmedicoservice.buscarHistorialMedicoPorId(id);
+            HistorialMedico hismed = historialmedicoservice.buscarHistorialMedicoPorId(id);
             historialmedicoservice.eliminarHistorialMedico(id);
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
@@ -64,10 +71,10 @@ public class historialMedicoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HistorialMedico> modificarHistorialMedico(@PathVariable Long id, @RequestBody
-    HistorialMedico historialMedico2){
+    public ResponseEntity<HistorialMedico> modificarHistorialMedico(@PathVariable Long id,
+            @RequestBody HistorialMedico historialMedico2) {
         try {
-            HistorialMedico hismed=historialmedicoservice.buscarHistorialMedicoPorId(id);
+            HistorialMedico hismed = historialmedicoservice.buscarHistorialMedicoPorId(id);
             hismed.setHistorialId(id);
             hismed.setFechaRegistro(historialMedico2.getFechaRegistro());
 
@@ -78,6 +85,14 @@ public class historialMedicoController {
         }
     }
 
-
-
+    @GetMapping("/tratamiento/{id}/inventario")
+    public ResponseEntity<inventarioDTO> getInventarioDelTratamiento(@PathVariable Long id) {
+        try {
+            inventarioDTO inventarioDTO = tratamientoService.obtenerInventarioPorTratamiento(id);
+            return ResponseEntity.ok(inventarioDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+         }
+    }
+    
 }

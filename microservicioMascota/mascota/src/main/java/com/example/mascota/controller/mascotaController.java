@@ -43,7 +43,7 @@ public class mascotaController {
     @GetMapping("/{id}")
     public ResponseEntity<?> deleteMascotaById(@PathVariable Long id){
         try {
-            Mascota masc= mascotaservice.buscarMascotaPorId(id);
+            Mascota mascota3= mascotaservice.buscarMascotaPorId(id);
             mascotaservice.eliminarMascota(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
