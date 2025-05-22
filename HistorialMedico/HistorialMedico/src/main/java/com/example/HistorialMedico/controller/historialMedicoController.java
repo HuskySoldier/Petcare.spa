@@ -19,6 +19,8 @@ import com.example.HistorialMedico.model.HistorialMedico;
 import com.example.HistorialMedico.service.historialMedicoService;
 import com.example.HistorialMedico.service.tratamientoService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/historialmedico")
 public class historialMedicoController {
@@ -39,7 +41,7 @@ public class historialMedicoController {
     }
 
     @PostMapping
-    public ResponseEntity<HistorialMedico> saveHistorialMedico(@RequestBody HistorialMedico hm) {
+    public ResponseEntity<HistorialMedico> saveHistorialMedico(@Valid@RequestBody HistorialMedico hm) {
         HistorialMedico historialMedico2 = historialmedicoservice.agregarHistorialMedico(hm);
         return ResponseEntity.status(HttpStatus.CREATED).body(historialMedico2);
     }
