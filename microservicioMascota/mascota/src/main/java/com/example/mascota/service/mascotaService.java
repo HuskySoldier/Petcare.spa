@@ -18,9 +18,9 @@ public class mascotaService {
     }
 
     public Mascota buscarMascotaPorId(Long id){
-        return mascotarepository.findById(id).get();
-        
-    }
+    return mascotarepository.findById(id)
+           .orElseThrow(() -> new RuntimeException("Mascota no encontrada con ID: " + id));
+}
 
     public Mascota agregarMascota(Mascota mascota){
         return mascotarepository.save(mascota);
@@ -29,7 +29,6 @@ public class mascotaService {
     public void eliminarMascota (Long id){
         mascotarepository.deleteById(id);
     }
+
     
-
-
 }
