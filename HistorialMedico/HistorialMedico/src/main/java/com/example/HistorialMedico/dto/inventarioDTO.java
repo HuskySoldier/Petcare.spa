@@ -2,6 +2,7 @@ package com.example.HistorialMedico.dto;
 
 import lombok.Data;
 
+
 @Data
 public class inventarioDTO {
     private Long idInventario;

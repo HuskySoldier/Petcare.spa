@@ -35,10 +35,10 @@ public class Tratamiento {
     @Column(nullable = false)
     private Long idInventario;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "historialId")
     @JsonIgnoreProperties("Tratamiento")
-    private HistorialMedico historialMedico;
+    private HistorialMedico historialMedico;*/
 
 
 
