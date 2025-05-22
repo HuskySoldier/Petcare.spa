@@ -1,7 +1,6 @@
 package com.example.HistorialMedico.model;
 
 import java.sql.Date;
-import java.util.List;
 
 
 
