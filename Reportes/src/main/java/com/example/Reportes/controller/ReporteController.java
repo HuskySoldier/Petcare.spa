@@ -14,24 +14,23 @@ import com.example.Reportes.model.Reporte;
 import com.example.Reportes.service.ReporteService;
 
 @RestController
-@RequestMapping("api/v1/reporte")
+@RequestMapping("/api/v1/reporte")
 public class ReporteController {
 
     @Autowired
     private ReporteService reporteService;
 
-
     @GetMapping
-    public ResponseEntity<List<Reporte>> getReporte(){
+    public ResponseEntity<List<Reporte>> getReporte() {
         List<Reporte> reporte = reporteService.allReporte();
-        if(reporte.isEmpty()){
+        if (reporte.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(reporte);
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<?> crearReporte(@RequestBody Reporte reporte){
+    @PostMapping
+    public ResponseEntity<?> crearReporte(@RequestBody Reporte reporte) {
         try {
             Reporte reporte2 = reporteService.crearReporte(reporte);
             return ResponseEntity.status(201).body(reporte2);
@@ -39,6 +38,4 @@ public class ReporteController {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
-
-
 }

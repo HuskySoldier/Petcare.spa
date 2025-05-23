@@ -20,7 +20,6 @@ public class ReporteService {
         return reporteRepository.save(reporte);
     }
 
-
     public Optional<Reporte> obtenerReportePorId(Long idReporte) {
         return reporteRepository.findById(idReporte);
     }
@@ -38,6 +37,4 @@ public class ReporteService {
             throw new RuntimeException("reporte no encontrado");
         }
     }
-
- 
 }

@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.Inventario.dto.ReporteDto;
 
-@FeignClient(name = "reporte-service", url = "http://localhost:8088")
+@FeignClient(name = "Reportesinv", url = "http://localhost:8088")
 public interface ReporteClient {
 
-    @PostMapping("/reporte")
+    @PostMapping("/api/v1/reporte")
     ReporteDto crearReporte(@RequestBody ReporteDto reporte);
 }

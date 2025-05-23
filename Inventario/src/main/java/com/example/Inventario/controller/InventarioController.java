@@ -16,7 +16,6 @@ import com.example.Inventario.model.Inventario;
 import com.example.Inventario.service.InventarioService;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
 @RestController
 @RequestMapping("/api/v1/inventario")
 public class InventarioController {
@@ -25,9 +24,9 @@ public class InventarioController {
 
     //
     @GetMapping
-    public ResponseEntity<List<Inventario>> getInventario(){
+    public ResponseEntity<List<Inventario>> getInventario() {
         List<Inventario> inventario = inventarioService.allInventario();
-        if(inventario.isEmpty()){
+        if (inventario.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(inventario);
@@ -35,36 +34,38 @@ public class InventarioController {
 
     //
     @PostMapping
-    public ResponseEntity<?> crearInventario(@RequestBody Inventario inventario){
+    public ResponseEntity<?> crearInventario(@RequestBody Inventario inventario) {
         try {
-            Inventario inventario2 = inventarioService.crearInventario(inventario);
-            return ResponseEntity.status(201).body(inventario2);
+            Inventario inventarioCreado = inventarioService.crearInventario(inventario);
+
+            // ✅ Verificar stock después de guardar
+            inventarioService.verificarYReportarStock(inventarioCreado);
+
+            return ResponseEntity.status(201).body(inventarioCreado);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
-
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarInventario(@PathVariable("id") Long idInventario, @RequestBody Inventario inventarioActualizado) {
-        try{
+    public ResponseEntity<?> actualizarInventario(@PathVariable("id") Long idInventario,
+            @RequestBody Inventario inventarioActualizado) {
+        try {
             inventarioService.actualizarInventario(idInventario, inventarioActualizado);
             return ResponseEntity.ok("Inventario ha sido actualizado correctamente");
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
-    //Eliminamos el inventario que deseemos
+    // Eliminamos el inventario que deseemos
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarInventario(@PathVariable("id") Long idInventario) {
-        try{
+        try {
             inventarioService.deleteInventario(idInventario);
             return ResponseEntity.ok("Inventario eliminado correctamente");
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
-
-
 }
