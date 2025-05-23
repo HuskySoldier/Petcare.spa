@@ -22,7 +22,7 @@ import com.example.Servicios.service.ServicioService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/reporte")
+@RequestMapping("/api/v1/servicio")
 public class ServicioController {
     @Autowired
     private ServicioService servicioService;
@@ -52,12 +52,12 @@ public class ServicioController {
 
     @PostMapping("/categoria")
     public ResponseEntity<Categoria> crearCategoria(@Valid @RequestBody Categoria categoria) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(CategoriaService.crearCategoria(categoria));
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.crearCategoria(categoria));
     }
 
     @GetMapping("/categoria")
     public ResponseEntity<List<Categoria>> listarCategoria() {
-        return ResponseEntity.ok(CategoriaService.listarCategorias());
+        return ResponseEntity.ok(categoriaService.listarCategoria());
     }
 
     @PutMapping("/{id}")
