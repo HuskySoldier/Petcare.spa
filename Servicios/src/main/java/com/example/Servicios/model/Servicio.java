@@ -32,7 +32,7 @@ public class Servicio {
     private int precio;
 
     @ManyToOne
-    @JoinColumn(name = "id_categoria", nullable = false)
+    @JoinColumn(name = "idCategoria", nullable = false)
     private Categoria categoria;
     
 

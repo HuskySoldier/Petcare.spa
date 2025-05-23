@@ -40,7 +40,16 @@ public class ServicioController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
+    }
 
+    @PostMapping("/categoria")
+    public ResponseEntity<Categoria> crearCategoria(@Valid @RequestBody Categoria categoria) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(CategoriaService.crearCategoria(categoria));
+    }
+
+    @GetMapping("/categoria")
+    public ResponseEntity<List<Categoria>> listarCategoria() {
+        return ResponseEntity.ok(CategoriaService.listarCategorias());
     }
 
     @PutMapping("/{id}")
