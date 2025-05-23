@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.mascota.model.Mascota;
 import com.example.mascota.service.mascotaService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/mascota")
 public class mascotaController {
@@ -54,7 +56,7 @@ public class mascotaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Mascota> modificarMascota(@PathVariable Long id, @RequestBody
+    public ResponseEntity<Mascota> modificarMascota(@Valid @PathVariable Long id, @RequestBody
     Mascota mascota2){
         try {
             Mascota masc = mascotaservice.buscarMascotaPorId(id);

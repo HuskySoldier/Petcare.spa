@@ -3,6 +3,7 @@ package com.example.Servicios.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,14 +14,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Servicios.model.Categoria;
 import com.example.Servicios.model.Servicio;
+import com.example.Servicios.service.CategoriaService;
 import com.example.Servicios.service.ServicioService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/reporte")
 public class ServicioController {
     @Autowired
     private ServicioService servicioService;
+
+    @Autowired
+    private CategoriaService categoriaService;
 
 
     @GetMapping

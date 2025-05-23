@@ -26,7 +26,7 @@ public class razaService {
 
     }
 
-    public void eliminarMascota (Long id){
+    public void eliminarRaza (Long id){
         razarepository.deleteById(id);
     }
 
