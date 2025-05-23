@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.example.mascota.model.Raza;
 
 @Repository
-public interface razaRepository extends JpaRepository<Raza,Long> {
+public interface RazaRepository extends JpaRepository<Raza,Long> {
 
 }

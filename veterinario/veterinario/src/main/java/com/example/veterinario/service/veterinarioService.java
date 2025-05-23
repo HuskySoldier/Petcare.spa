@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.veterinario.model.Veterinario;
-import com.example.veterinario.repository.veterinarioRepository;
+import com.example.veterinario.repository.VeterinarioRepository;
 
 @Service
-public class veterinarioService {
+public class VeterinarioService {
     @Autowired
-    private veterinarioRepository veterinariorepository;
+    private VeterinarioRepository veterinariorepository;
 
     public List<Veterinario>listarVeterinarios(){
         return veterinariorepository.findAll();

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.example.Reserva.model.Estado;
 
 @Repository
-public interface estadoRepository extends JpaRepository<Estado, Long> {
+public interface EstadoRepository extends JpaRepository<Estado, Long> {
 
 }

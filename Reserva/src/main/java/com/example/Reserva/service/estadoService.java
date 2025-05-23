@@ -1,17 +1,17 @@
 package com.example.Reserva.service;
 
 import com.example.Reserva.model.Estado;
-import com.example.Reserva.repository.estadoRepository;
+import com.example.Reserva.repository.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class estadoService{
+public class EstadoService{
 
     @Autowired
-    private estadoRepository EstadoRepository;
+    private EstadoRepository EstadoRepository;
 
     public List<Estado> listarEstados() {
         return EstadoRepository.findAll();

@@ -7,15 +7,15 @@ import org.springframework.context.annotation.Configuration;
 import com.example.mascota.model.Especie;
 import com.example.mascota.model.Mascota;
 import com.example.mascota.model.Raza;
-import com.example.mascota.repository.especieRepository;
-import com.example.mascota.repository.mascotaRepository;
-import com.example.mascota.repository.razaRepository;
+import com.example.mascota.repository.EspecieRepository;
+import com.example.mascota.repository.MascotaRepository;
+import com.example.mascota.repository.RazaRepository;
 
 @Configuration
-public class loadDatabase {
+public class LoadDatabase {
 
     @Bean
-    CommandLineRunner initDatabase(razaRepository razaRepo, especieRepository especieRepo, mascotaRepository mascRepo){
+    CommandLineRunner initDatabase(RazaRepository razaRepo, EspecieRepository especieRepo, MascotaRepository mascRepo){
         return args ->{
             //si no hay registros en la tablas
             if(razaRepo.count() == 0 && especieRepo.count() == 0){

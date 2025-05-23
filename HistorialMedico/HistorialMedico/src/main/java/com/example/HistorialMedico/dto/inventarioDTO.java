@@ -4,7 +4,7 @@ import lombok.Data;
 
 
 @Data
-public class inventarioDTO {
+public class InventarioDTO {
     private Long idInventario;
     private int idProducto;
     private String nombreInv;

@@ -4,7 +4,7 @@ package com.example.mascota.dto;
 import lombok.Data;
 
 @Data
-public class usuarioDTO {
+public class UsuarioDTO {
     private String nombre;
 
     private String apellido;

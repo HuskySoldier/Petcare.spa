@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.Reserva.model.Reserva;
-import com.example.Reserva.repository.reservaRepository;
+import com.example.Reserva.repository.ReservaRepository;
 
 @Service
-public class reservaService {
+public class ReservaService {
 
     @Autowired
-    private reservaRepository ReservaRepository;
+    private ReservaRepository ReservaRepository;
 
     public List<Reserva> listarReservas() {
         return ReservaRepository.findAll();

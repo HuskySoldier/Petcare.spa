@@ -4,21 +4,21 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.HistorialMedico.client.inventarioClient;
-import com.example.HistorialMedico.dto.inventarioDTO;
+import com.example.HistorialMedico.client.InventarioClient;
+import com.example.HistorialMedico.dto.InventarioDTO;
 import com.example.HistorialMedico.model.Tratamiento;
-import com.example.HistorialMedico.repository.tratamientoRepository;
+import com.example.HistorialMedico.repository.TratamientoRepository;
 
 
 @Service
-public class tratamientoService {
+public class TratamientoService {
 
 
     @Autowired
-    private tratamientoRepository tratamientorepository;
+    private TratamientoRepository tratamientorepository;
 
     @Autowired
-    private  inventarioClient Inventario;
+    private  InventarioClient Inventario;
 
     public List<Tratamiento> listarTratamientos() {
         return tratamientorepository.findAll();
@@ -28,7 +28,7 @@ public class tratamientoService {
         return tratamientorepository.save(tratamiento);
     }
 
-    public inventarioDTO obtenerInventarioPorTratamiento(Long tratamientoId) {
+    public InventarioDTO obtenerInventarioPorTratamiento(Long tratamientoId) {
        Tratamiento tratamiento = tratamientorepository.findById(tratamientoId)
             .orElseThrow(() -> new RuntimeException("Tratamiento no encontrado"));
 

@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.mascota.model.Mascota;
-import com.example.mascota.repository.mascotaRepository;
+import com.example.mascota.repository.MascotaRepository;
 
 @Service
-public class mascotaService {
+public class MascotaService {
     @Autowired
-    private mascotaRepository mascotarepository;
+    private MascotaRepository mascotarepository;
 
     public List<Mascota>listarMacotas(){
         return mascotarepository.findAll();

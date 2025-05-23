@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.HistorialMedico.model.HistorialMedico;
-import com.example.HistorialMedico.repository.historialMedicoRepository;
+import com.example.HistorialMedico.repository.HistorialMedicoRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class historialMedicoService {
+public class HistorialMedicoService {
     @Autowired
-    private historialMedicoRepository historialmedicorepository;
+    private HistorialMedicoRepository historialmedicorepository;
 
     public List<HistorialMedico> listarHistorialMedico(){
         return historialmedicorepository.findAll();

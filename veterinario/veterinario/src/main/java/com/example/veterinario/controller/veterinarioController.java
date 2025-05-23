@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.veterinario.model.Veterinario;
-import com.example.veterinario.service.veterinarioService;
+import com.example.veterinario.service.VeterinarioService;
 
 import jakarta.validation.Valid;
 
 
 @RestController
 @RequestMapping("/api/v1/veterinario")
-public class veterinarioController {
+public class VeterinarioController {
     @Autowired
-    private veterinarioService veterinarioservice;
+    private VeterinarioService veterinarioservice;
 
      @GetMapping
     public ResponseEntity<List<Veterinario>> listarVeterinarios(){

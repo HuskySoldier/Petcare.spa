@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.example.mascota.model.Especie;
 
 @Repository
-public interface especieRepository extends JpaRepository<Especie,Long> {
+public interface EspecieRepository extends JpaRepository<Especie,Long> {
 
 }

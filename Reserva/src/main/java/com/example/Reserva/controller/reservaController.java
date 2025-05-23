@@ -2,8 +2,8 @@ package com.example.Reserva.controller;
 
 import com.example.Reserva.model.Estado;
 import com.example.Reserva.model.Reserva;
-import com.example.Reserva.service.estadoService;
-import com.example.Reserva.service.reservaService;
+import com.example.Reserva.service.EstadoService;
+import com.example.Reserva.service.ReservaService;
 
 import jakarta.validation.Valid;
 
@@ -17,13 +17,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/reserva")
-public class reservaController {
+public class ReservaController {
 
     @Autowired
-    private reservaService ReservaService;
+    private ReservaService ReservaService;
 
     @Autowired
-    private estadoService EstadoService;
+    private EstadoService EstadoService;
 
     @GetMapping("/listar")
     public ResponseEntity<List<Reserva>> listarReservas() {

@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.mascota.model.Mascota;
-import com.example.mascota.service.mascotaService;
+import com.example.mascota.service.MascotaService;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/mascota")
-public class mascotaController {
+public class MascotaController {
     @Autowired
-    private mascotaService mascotaservice;
+    private MascotaService mascotaservice;
 
     @GetMapping("/total")
     public ResponseEntity<List<Mascota>> listarMascotas() {

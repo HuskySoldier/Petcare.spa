@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.HistorialMedico.model.Tratamiento;
 
-public interface tratamientoRepository extends JpaRepository<Tratamiento,Long> {
+public interface TratamientoRepository extends JpaRepository<Tratamiento,Long> {
 
 }

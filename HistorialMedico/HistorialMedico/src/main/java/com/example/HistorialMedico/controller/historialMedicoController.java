@@ -14,31 +14,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.HistorialMedico.dto.inventarioDTO;
+import com.example.HistorialMedico.dto.InventarioDTO;
 import com.example.HistorialMedico.model.HistorialMedico;
 import com.example.HistorialMedico.model.Tratamiento;
-import com.example.HistorialMedico.repository.historialMedicoRepository;
-import com.example.HistorialMedico.repository.tratamientoRepository;
-import com.example.HistorialMedico.service.historialMedicoService;
-import com.example.HistorialMedico.service.tratamientoService;
+import com.example.HistorialMedico.repository.HistorialMedicoRepository;
+import com.example.HistorialMedico.repository.TratamientoRepository;
+import com.example.HistorialMedico.service.HistorialMedicoService;
+import com.example.HistorialMedico.service.TratamientoService;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/historialmedico")
-public class historialMedicoController {
+public class HistorialMedicoController {
     @Autowired
-    private historialMedicoService historialmedicoservice;
+    private HistorialMedicoService historialmedicoservice;
 
     @Autowired
-    private tratamientoService tratamientoService;
+    private TratamientoService tratamientoService;
 
     @Autowired
-    private historialMedicoRepository historialRepo;
+    private HistorialMedicoRepository historialRepo;
 
     @Autowired
-    private tratamientoRepository tratamientoRepo;
+    private TratamientoRepository tratamientoRepo;
 
     @GetMapping
     public ResponseEntity<List<HistorialMedico>> listarHistorialMedico() {
@@ -96,9 +96,9 @@ public class historialMedicoController {
     }
 
     @GetMapping("/tratamiento/{id}/inventario")
-    public ResponseEntity<inventarioDTO> getInventarioDelTratamiento(@PathVariable Long id) {
+    public ResponseEntity<InventarioDTO> getInventarioDelTratamiento(@PathVariable Long id) {
         try {
-            inventarioDTO inventarioDTO = tratamientoService.obtenerInventarioPorTratamiento(id);
+            InventarioDTO inventarioDTO = tratamientoService.obtenerInventarioPorTratamiento(id);
             return ResponseEntity.ok(inventarioDTO);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

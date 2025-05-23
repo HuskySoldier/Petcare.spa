@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.example.veterinario.model.Veterinario;
 
 @Repository
-public interface veterinarioRepository extends JpaRepository<Veterinario, Long>{
+public interface VeterinarioRepository extends JpaRepository<Veterinario, Long>{
 
 }
