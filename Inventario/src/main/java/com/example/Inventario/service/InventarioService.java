@@ -25,7 +25,6 @@ public class InventarioService {
     // Crear nuevo inventario
     public Inventario crearInventario(Inventario inventario) {
     Inventario inventarioGuardado = inventarioRepository.save(inventario);
-
     // Aquí llamas para verificar si se debe crear un reporte
     verificarYReportarStock(inventarioGuardado);
     return inventarioGuardado;
