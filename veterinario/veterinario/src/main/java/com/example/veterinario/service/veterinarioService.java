@@ -18,7 +18,7 @@ public class veterinarioService {
     }
 
     public Veterinario buscarVeterinarioPorId(Long id){
-        return veterinariorepository.findById(id).get();
+        return veterinariorepository.findById(id).orElse(null);
     }
 
     public Veterinario agregarVeterinario(Veterinario veterinario){

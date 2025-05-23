@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.veterinario.model.Veterinario;
 import com.example.veterinario.service.veterinarioService;
 
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/api/v1/veterinario")
@@ -35,7 +37,7 @@ public class veterinarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Veterinario> saveVeterinario(@RequestBody Veterinario vt){
+    public ResponseEntity<Veterinario> saveVeterinario(@Valid @RequestBody Veterinario vt){
         Veterinario veterinario2=veterinarioservice.agregarVeterinario(vt);
         return ResponseEntity.status(HttpStatus.CREATED).body(veterinario2);
     }
