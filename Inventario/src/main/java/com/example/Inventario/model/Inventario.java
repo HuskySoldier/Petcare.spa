@@ -22,7 +22,7 @@ public class Inventario {
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long idInventario;
 
-    @Column(nullable = false)
+    @Column(nullable = false) 
     private int idProducto;
 
     @Column(nullable = false)
