@@ -40,26 +40,15 @@ public class veterinarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(veterinario2);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> deleteVeterinarioById(@PathVariable Long id){
-        try{
-            Veterinario vet= veterinarioservice.buscarVeterinarioPorId(id);
-            veterinarioservice.eliminarVeterinario(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e){
-            return ResponseEntity.notFound().build();
-        }
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteVeterinarioPorId(@PathVariable Long id){
         try {
-            Veterinario vet=veterinarioservice.buscarVeterinarioPorId(id);
             veterinarioservice.eliminarVeterinario(id);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
             
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
