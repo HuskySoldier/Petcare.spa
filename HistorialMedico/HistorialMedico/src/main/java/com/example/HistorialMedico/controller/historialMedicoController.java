@@ -19,6 +19,8 @@ import com.example.HistorialMedico.model.HistorialMedico;
 import com.example.HistorialMedico.service.historialMedicoService;
 import com.example.HistorialMedico.service.tratamientoService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/historialmedico")
 public class historialMedicoController {
@@ -39,40 +41,26 @@ public class historialMedicoController {
     }
 
     @PostMapping
-    public ResponseEntity<HistorialMedico> saveHistorialMedico(@RequestBody HistorialMedico hm) {
+    public ResponseEntity<HistorialMedico> saveHistorialMedico(@Valid @RequestBody HistorialMedico hm) {
         HistorialMedico historialMedico2 = historialmedicoservice.agregarHistorialMedico(hm);
         return ResponseEntity.status(HttpStatus.CREATED).body(historialMedico2);
     }
 
-    /*
-     * manytoone,joincolumn,JsonIgnore--- para hacer en las tablas que dijo el profe
-     */
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> deleteHistorialMedicoById(@PathVariable Long id) {
-        try {
-            HistorialMedico hm = historialmedicoservice.buscarHistorialMedicoPorId(id);
-            historialmedicoservice.eliminarHistorialMedico(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteHistorialMedicoPorId(@PathVariable Long id) {
         try {
-            HistorialMedico hismed = historialmedicoservice.buscarHistorialMedicoPorId(id);
             historialmedicoservice.eliminarHistorialMedico(id);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<HistorialMedico> modificarHistorialMedico(@PathVariable Long id,
-            @RequestBody HistorialMedico historialMedico2) {
+            @Valid @RequestBody HistorialMedico historialMedico2) {
         try {
             HistorialMedico hismed = historialmedicoservice.buscarHistorialMedicoPorId(id);
             hismed.setHistorialId(id);

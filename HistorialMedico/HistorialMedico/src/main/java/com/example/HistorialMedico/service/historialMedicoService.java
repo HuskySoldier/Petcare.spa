@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.example.HistorialMedico.model.HistorialMedico;
 import com.example.HistorialMedico.repository.historialMedicoRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class historialMedicoService {
     @Autowired
@@ -18,7 +20,8 @@ public class historialMedicoService {
     }
 
     public HistorialMedico buscarHistorialMedicoPorId(Long id){
-        return historialmedicorepository.findById(id).get();
+        return historialmedicorepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Historial no encontrado"));
     }
 
     public HistorialMedico agregarHistorialMedico(HistorialMedico historialmedico){

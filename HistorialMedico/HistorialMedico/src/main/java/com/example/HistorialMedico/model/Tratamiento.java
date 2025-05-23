@@ -17,7 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="tratamiento")
+@Table(name = "tratamiento")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -35,13 +35,9 @@ public class Tratamiento {
     @Column(nullable = false)
     private Long idInventario;
 
-    /*@ManyToOne
-    @JoinColumn(name = "historialId")
-    @JsonIgnoreProperties("Tratamiento")
-    private HistorialMedico historialMedico;*/
-
-
-
-    
+    @ManyToOne
+    @JoinColumn(name = "historialId", nullable = false)
+    @JsonIgnoreProperties("tratamientos")
+    private HistorialMedico historialMedico;
 
 }
