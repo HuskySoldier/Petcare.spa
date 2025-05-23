@@ -13,22 +13,22 @@ public class historialMedicoService {
     @Autowired
     private historialMedicoRepository historialmedicorepository;
 
-    public List<HistorialMedico> listarHistorialMedico() {
+    public List<HistorialMedico> listarHistorialMedico(){
         return historialmedicorepository.findAll();
     }
 
-    public HistorialMedico buscarHistorialMedicoPorId(Long id) {
-        return historialmedicorepository.findByIdWithTratamientos(id)
-                .orElseThrow(() -> new RuntimeException("Historial no encontrado"));
+    public HistorialMedico buscarHistorialMedicoPorId(Long id){
+        return historialmedicorepository.findById(id).get();
     }
 
-    public HistorialMedico agregarHistorialMedico(HistorialMedico historialmedico) {
+    public HistorialMedico agregarHistorialMedico(HistorialMedico historialmedico){
         return historialmedicorepository.save(historialmedico);
     }
 
-    public void eliminarHistorialMedico(Long id) {
+    public void eliminarHistorialMedico(Long id){
         historialmedicorepository.deleteById(id);
     }
+    
 
 
 }

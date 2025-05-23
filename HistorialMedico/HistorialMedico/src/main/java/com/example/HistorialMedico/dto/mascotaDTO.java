@@ -11,4 +11,5 @@ public class mascotaDTO {
 
     private String sexo;
 
+
 }
