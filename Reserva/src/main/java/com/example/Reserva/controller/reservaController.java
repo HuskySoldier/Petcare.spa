@@ -8,6 +8,7 @@ import com.example.Reserva.service.reservaService;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,13 +46,25 @@ public class reservaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteResevaPorId(@PathVariable Long id){
-        try { 
+    public ResponseEntity<?> deleteResevaPorId(@PathVariable Long id) {
+        try {
             ReservaService.eliminarReserva(id);
             return ResponseEntity.noContent().build();
-            
+
         } catch (Exception e) {
             return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteReservaPorId(@PathVariable Long id) {
+        try {
+            ReservaService.eliminarReserva(id);
+            return ResponseEntity.noContent().build();
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La reserva con ID " + id + " no existe.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar la reserva.");
         }
     }
 

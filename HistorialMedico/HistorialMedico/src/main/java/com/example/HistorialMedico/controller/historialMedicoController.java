@@ -16,9 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.HistorialMedico.dto.inventarioDTO;
 import com.example.HistorialMedico.model.HistorialMedico;
+import com.example.HistorialMedico.model.Tratamiento;
+import com.example.HistorialMedico.repository.historialMedicoRepository;
+import com.example.HistorialMedico.repository.tratamientoRepository;
 import com.example.HistorialMedico.service.historialMedicoService;
 import com.example.HistorialMedico.service.tratamientoService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 @RestController
@@ -29,6 +33,12 @@ public class historialMedicoController {
 
     @Autowired
     private tratamientoService tratamientoService;
+
+    @Autowired
+    private historialMedicoRepository historialRepo;
+
+    @Autowired
+    private tratamientoRepository tratamientoRepo;
 
     @GetMapping
     public ResponseEntity<List<HistorialMedico>> listarHistorialMedico() {
@@ -46,7 +56,19 @@ public class historialMedicoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(historialMedico2);
     }
 
+    @PostMapping("/{id}/tratamientos")
+    public ResponseEntity<Tratamiento> agregarTratamiento(
+            @PathVariable Long id,
+            @RequestBody Tratamiento tratamiento) {
 
+            HistorialMedico historial = historialRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Historial no encontrado"));
+
+             tratamiento.setHistorialMedico(historial);
+            Tratamiento nuevo = tratamientoRepo.save(tratamiento);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteHistorialMedicoPorId(@PathVariable Long id) {
@@ -80,7 +102,7 @@ public class historialMedicoController {
             return ResponseEntity.ok(inventarioDTO);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-         }
+        }
     }
-    
+
 }

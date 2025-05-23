@@ -12,8 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
-
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,12 +28,14 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservaId;
 
+    
     @Column(nullable = false)
     private Date fechaCreacion;
-
+    
     @Column(nullable = false)
     private Date fechareserva;
 
+    @Min(value = 0, message = "El total no puede ser negativo")
     @Column(nullable = false)
     private int total;
 
