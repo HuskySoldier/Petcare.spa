@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.veterinario.model.Veterinario;
 import com.example.veterinario.service.veterinarioService;
 
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/api/v1/veterinario")
@@ -40,31 +42,22 @@ public class veterinarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(veterinario2);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> deleteVeterinarioById(@PathVariable Long id){
-        try{
-            Veterinario vet= veterinarioservice.buscarVeterinarioPorId(id);
-            veterinarioservice.eliminarVeterinario(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e){
-            return ResponseEntity.notFound().build();
-        }
-    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteVeterinarioPorId(@PathVariable Long id){
         try {
-            Veterinario vet=veterinarioservice.buscarVeterinarioPorId(id);
+            
             veterinarioservice.eliminarVeterinario(id);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
             
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Veterinario> modificarVeterinario(@PathVariable Long id, @RequestBody Veterinario veterinario2){
+    public ResponseEntity<Veterinario> modificarVeterinario(@PathVariable Long id,@Valid  @RequestBody Veterinario veterinario2){
         try {
             Veterinario vet = veterinarioservice.buscarVeterinarioPorId(id);
 

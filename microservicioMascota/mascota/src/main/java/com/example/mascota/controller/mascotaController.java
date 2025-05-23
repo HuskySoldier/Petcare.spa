@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.mascota.model.Mascota;
 import com.example.mascota.service.mascotaService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/mascota")
 public class mascotaController {
@@ -40,31 +42,21 @@ public class mascotaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(mascota2);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> deleteMascotaById(@PathVariable Long id){
-        try {
-            Mascota mascota3= mascotaservice.buscarMascotaPorId(id);
-            mascotaservice.eliminarMascota(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMascotaPorId(@PathVariable Long id){
         try {
-            Mascota masc=mascotaservice.buscarMascotaPorId(id);
+            
             mascotaservice.eliminarMascota(id);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); //
+            return ResponseEntity.status(404).body(e.getMessage()); //
             
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Mascota> modificarMascota(@PathVariable Long id, @RequestBody
+    public ResponseEntity<Mascota> modificarMascota(@PathVariable Long id,@Valid @RequestBody
     Mascota mascota2){
         try {
             Mascota masc = mascotaservice.buscarMascotaPorId(id);
