@@ -40,21 +40,11 @@ public class mascotaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(mascota2);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> deleteMascotaById(@PathVariable Long id){
-        try {
-            Mascota mascota3= mascotaservice.buscarMascotaPorId(id);
-            mascotaservice.eliminarMascota(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
+    
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMascotaPorId(@PathVariable Long id){
         try {
-            Mascota masc=mascotaservice.buscarMascotaPorId(id);
             mascotaservice.eliminarMascota(id);
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
@@ -85,6 +75,6 @@ public class mascotaController {
     }
     
 
-    //validaciones- mascota no encontrada
+    
 
 }

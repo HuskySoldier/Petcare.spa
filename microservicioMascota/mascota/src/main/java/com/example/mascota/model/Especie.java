@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,8 @@ public class Especie {
     @Id
     @GeneratedValue (strategy=GenerationType.IDENTITY)
     private Long idEspecie;
-
+    
+    @NotBlank(message = "El nombre de la especie es obligatorio")
     @Column(length =50 , nullable =  false)
     private String nombreEspecie;
 

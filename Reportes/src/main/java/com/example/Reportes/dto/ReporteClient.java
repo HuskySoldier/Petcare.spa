@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.Reportes.model.Reporte;
 
-@FeignClient(name = "reporte-service", url = "http://localhost:8082")
+@FeignClient(name = "reporte-service", url = "http://localhost:8089")
 public interface ReporteClient {
     @PostMapping("/reporte")
     Reporte crearReporte(@RequestBody Reporte reporte);
