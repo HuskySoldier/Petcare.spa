@@ -9,6 +9,6 @@ import com.example.Reserva.dto.MascotaDTO;
 @FeignClient(name="Servicios" ,url = "http://localhost:8090/api/Servicios")
 public interface ServicioClient {
     @GetMapping("/idServicio/{idServicio}")
-    MascotaDTO findByIdServicio(@PathVariable("idServicio") String idServicio);
+    MascotaDTO findByIdServicio(@PathVariable String idServicio);
 
 }
