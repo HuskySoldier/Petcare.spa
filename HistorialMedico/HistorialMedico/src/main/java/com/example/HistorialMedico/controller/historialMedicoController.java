@@ -61,11 +61,11 @@ public class HistorialMedicoController {
             @PathVariable Long id,
             @RequestBody Tratamiento tratamiento) {
 
-            HistorialMedico historial = historialRepo.findById(id)
+        HistorialMedico historial = historialRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Historial no encontrado"));
 
-             tratamiento.setHistorialMedico(historial);
-            Tratamiento nuevo = tratamientoRepo.save(tratamiento);
+        tratamiento.setHistorialMedico(historial);
+        Tratamiento nuevo = tratamientoRepo.save(tratamiento);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
@@ -104,5 +104,6 @@ public class HistorialMedicoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
 
 }

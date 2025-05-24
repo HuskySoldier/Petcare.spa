@@ -34,7 +34,6 @@ public class TratamientoService {
 
         return Inventario.obtenerInventarioPorId(tratamiento.getIdInventario());
     }
-
     
 
 }
