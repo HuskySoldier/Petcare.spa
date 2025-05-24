@@ -1,9 +1,9 @@
 package com.example.Reserva.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import com.example.Reserva.model.Reserva;
@@ -19,11 +19,14 @@ public class ReservaService {
         return ReservaRepository.findAll();
     }
 
-    public Optional<Reserva> obtenerReservaPorId(Long id) {
+   /* public Optional<Reserva> obtenerReservaPorId(Long id) {
         return ReservaRepository.findById(id);
-    }
+    }*/
 
     public Reserva crearReserva(Reserva reserva) {
+        if (reserva==null) {
+            throw new RuntimeException("No se ah creado la Reserva");
+        }
         return ReservaRepository.save(reserva);
     }
 

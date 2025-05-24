@@ -36,28 +36,35 @@ public class MascotaController {
         return ResponseEntity.ok(mascota);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Mascota>buscarMascotaId(@PathVariable Long id) {
+         Mascota mascota = mascotaservice.buscarMascotaPorId(id);
+
+        if (mascota==null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(mascota);
+    }
+
     @PostMapping
     public ResponseEntity<Mascota> saveMascota(@RequestBody Mascota masc) {
         Mascota mascota2 = mascotaservice.agregarMascota(masc);
         return ResponseEntity.status(HttpStatus.CREATED).body(mascota2);
     }
 
-    
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMascotaPorId(@PathVariable Long id){
+    public ResponseEntity<?> deleteMascotaPorId(@PathVariable Long id) {
         try {
             mascotaservice.eliminarMascota(id);
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); //
-            
+
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Mascota> modificarMascota(@Valid @PathVariable Long id, @RequestBody
-    Mascota mascota2){
+    public ResponseEntity<Mascota> modificarMascota(@Valid @PathVariable Long id, @RequestBody Mascota mascota2) {
         try {
             Mascota masc = mascotaservice.buscarMascotaPorId(id);
 
@@ -73,10 +80,7 @@ public class MascotaController {
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-        
-    }
-    
 
-    
+    }
 
 }

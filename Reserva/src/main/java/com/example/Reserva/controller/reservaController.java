@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reserva")
+@RequestMapping("/api/v1/reserva")
 public class ReservaController {
 
     @Autowired

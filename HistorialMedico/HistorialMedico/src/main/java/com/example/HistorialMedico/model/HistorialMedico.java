@@ -3,8 +3,8 @@ package com.example.HistorialMedico.model;
 import java.sql.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -44,7 +44,7 @@ public class HistorialMedico {
 
     @OneToMany(mappedBy = "historialMedico", cascade = CascadeType.ALL, orphanRemoval = true)
     /*con ophera se elimina de la base de datos */
-    @JsonIgnoreProperties("historialMedico")
+    @JsonIgnore()
     private List<Tratamiento> tratamientos;
 
 }
