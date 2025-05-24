@@ -1,0 +1,35 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "VeterinarioApplication",
+            "request": "launch",
+            "mainClass": "com.example.veterinario.VeterinarioApplication",
+            "projectName": "veterinario"
+        },
+        {
+            "type": "java",
+            "name": "ServiciosApplication",
+            "request": "launch",
+            "mainClass": "com.example.Servicios.ServiciosApplication",
+            "projectName": "Servicios"
+        },
+        {
+            "type": "java",
+            "name": "InventarioApplication",
+            "request": "launch",
+            "mainClass": "com.example.Inventario.InventarioApplication",
+            "projectName": "Inventario"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ReportesinvApplication<Reportes>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.Reportes.ReportesinvApplication",
+            "projectName": "Reportes",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

@@ -27,9 +27,9 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCategoria;
     
-    @NotBlank(message = "El nombre del estado no puede estar vacío")
+    @NotBlank(message = "El nombre no puede estar vacío")
     @Column(nullable = false)
-    private String nombre;
+    private String nombreCategoria;
 
     @OneToMany(mappedBy = "categoria",cascade= CascadeType.ALL)
     @JsonIgnore

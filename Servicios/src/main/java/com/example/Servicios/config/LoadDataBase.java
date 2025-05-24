@@ -15,20 +15,20 @@ public class LoadDataBase {
     @Bean
     CommandLineRunner initDatabase(CategoriaRepository categoriaRepository, ServicioRepository servicioRepository){
         return args ->{
-            //si no hay registros en la tablas
+            //si no hay un registros en la tablas
             if(categoriaRepository.count() == 0 ){
                 //insertar la categoria defecto
             //Tipo Categoria
                 Categoria banio= new Categoria();
-                banio.setNombre("Baño");
+                banio.setNombreCategoria("Baño");
                 categoriaRepository.save(banio);
 
                 Categoria unias= new Categoria();
-                unias.setNombre("cortas uñas");
+                unias.setNombreCategoria("cortas uñas");
                 categoriaRepository.save(unias);
 
                 Categoria pelo= new Categoria();
-                pelo.setNombre("Limpieza de pelo");
+                pelo.setNombreCategoria("Limpieza de pelo");
                 categoriaRepository.save(pelo);;
 
                 //cargar dos usuarios por defecto (opcional)
