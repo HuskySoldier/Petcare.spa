@@ -22,9 +22,18 @@ public class InventarioController {
     @Autowired
     private InventarioService inventarioService;
 
-    //
     @GetMapping("/{id}")
-    public ResponseEntity<List<Inventario>> getInventario() {
+    public ResponseEntity<Inventario> getInventario(@PathVariable("id") Long idInventario) {
+        Inventario inventario = inventarioService.obtenerInventarioPorId(idInventario).get();
+        if (inventario == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(inventario);
+    }
+
+    //
+    @GetMapping("/total")
+    public ResponseEntity<List<Inventario>> getInventarioTotal() {
         List<Inventario> inventario = inventarioService.allInventario();
         if (inventario.isEmpty()) {
             return ResponseEntity.notFound().build();
