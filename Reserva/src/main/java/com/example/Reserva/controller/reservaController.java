@@ -45,16 +45,7 @@ public class ReservaController {
         return ResponseEntity.ok(EstadoService.listarEstados());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteResevaPorId(@PathVariable Long id) {
-        try {
-            ReservaService.eliminarReserva(id);
-            return ResponseEntity.noContent().build();
-
-        } catch (Exception e) {
-            return ResponseEntity.status(404).body(e.getMessage());
-        }
-    }
+    
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteReservaPorId(@PathVariable Long id) {
