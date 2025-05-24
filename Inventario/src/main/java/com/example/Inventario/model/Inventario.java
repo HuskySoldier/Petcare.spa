@@ -2,6 +2,7 @@ package com.example.Inventario.model;
 
 import java.sql.Date;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ public class Inventario {
 
     @Column(nullable = false) 
     private int idProducto;
+
 
     @Column(nullable = false)
     private String nombreInv;
