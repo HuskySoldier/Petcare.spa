@@ -74,7 +74,7 @@ public class InventarioService {
     }
     return inventarioStockBajo;
     }
-
+ //Verificacion del reporte stock
     public void verificarYReportarStock(Inventario inventario) {
     if (inventario.getStockActual() <= inventario.getStockMinimo()) {
         ReporteDto reporteDto = new ReporteDto(
