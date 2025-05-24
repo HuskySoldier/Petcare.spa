@@ -23,7 +23,7 @@ public class InventarioController {
     private InventarioService inventarioService;
 
     //
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<List<Inventario>> getInventario() {
         List<Inventario> inventario = inventarioService.allInventario();
         if (inventario.isEmpty()) {
@@ -38,7 +38,7 @@ public class InventarioController {
         try {
             Inventario inventarioCreado = inventarioService.crearInventario(inventario);
 
-            // ✅ Verificar stock después de guardar
+            //Verificar stock después de guardar
             inventarioService.verificarYReportarStock(inventarioCreado);
 
             return ResponseEntity.status(201).body(inventarioCreado);
