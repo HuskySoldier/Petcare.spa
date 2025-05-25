@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ResenasApplication",
+            "request": "launch",
+            "mainClass": "com.example.resenas.ResenasApplication",
+            "projectName": "resenas"
+        },
+        {
+            "type": "java",
             "name": "VeterinarioApplication",
             "request": "launch",
             "mainClass": "com.example.veterinario.VeterinarioApplication",

@@ -15,6 +15,7 @@ public class LoadDataBase {
     @Bean
     CommandLineRunner initDatabase(CategoriaRepository categoriaRepository, ServicioRepository servicioRepository){
         return args ->{
+            
             //si no hay un registros en la tablas
             if(categoriaRepository.count() == 0 ){
                 //insertar la categoria defecto
@@ -31,14 +32,14 @@ public class LoadDataBase {
                 pelo.setNombreCategoria("Limpieza de pelo");
                 categoriaRepository.save(pelo);;
 
-                //cargar dos usuarios por defecto (opcional)
+                //cargar tres servicios por defecto (opcional)
                 servicioRepository.save(new Servicio(null, "Baño","Limpieza de cuerpo completo",9900, banio));
                 servicioRepository.save(new Servicio(null, "Uñas","Cortar uñas",15990,unias));
                 servicioRepository.save(new Servicio(null, "Pelo", "Cortar el pelo ",12990,pelo ));
                 System.out.println("Datos iniciales Cargados");
             }
             else{
-                System.out.println("Datos ya existen. No se cargaron nuevos");
+                System.out.println("Datos ya existen. No se han creado nuevas");
             }
         };
     }

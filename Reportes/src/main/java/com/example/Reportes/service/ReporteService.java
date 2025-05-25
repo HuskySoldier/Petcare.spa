@@ -37,4 +37,5 @@ public class ReporteService {
             throw new RuntimeException("reporte no encontrado");
         }
     }
+    
 }
