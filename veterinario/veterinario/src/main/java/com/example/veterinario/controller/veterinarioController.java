@@ -35,6 +35,17 @@ public class VeterinarioController {
         return ResponseEntity.ok(veterinarios);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerVeterinarioPorId(@PathVariable Long id) {
+        Veterinario veterinario = veterinarioservice.buscarVeterinarioPorId(id);
+        if (veterinario != null) {
+            return ResponseEntity.ok(veterinario);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Veterinario con ID " + id + " no encontrado.");
+        }
+    }
+
     @PostMapping
     public ResponseEntity<?> saveVeterinario(@Valid @RequestBody Veterinario vt) {
         try {
