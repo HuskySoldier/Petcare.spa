@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class MascotaDTO {
-    private Long IdMascota;
+    private Long idMascota;
   
     private String nombre;
 
