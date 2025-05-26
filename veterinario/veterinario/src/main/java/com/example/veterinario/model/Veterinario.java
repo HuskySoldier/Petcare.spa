@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class Veterinario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long veterinario_id;
+    private Long veterinarioId;
 
     @Min(value = 1000000, message = "El RUT debe tener al menos 7 dígitos")
     @Column(nullable = false)

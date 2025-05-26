@@ -59,7 +59,7 @@ public class VeterinarioController {
         try {
             Veterinario vet = veterinarioservice.buscarVeterinarioPorId(id);
 
-            vet.setVeterinario_id(id);
+            vet.setVeterinarioId(id);
             vet.setNombre(veterinario2.getNombre());
             vet.setApellido(veterinario2.getApellido());
             vet.setEspecialidad(veterinario2.getEspecialidad());
