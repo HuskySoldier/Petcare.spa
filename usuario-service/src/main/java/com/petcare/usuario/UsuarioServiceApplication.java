@@ -11,3 +11,4 @@ public class UsuarioServiceApplication {
 	}
 
 }
+//http://localhost:8081/usuarios/1

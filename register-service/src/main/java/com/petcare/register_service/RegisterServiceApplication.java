@@ -11,3 +11,10 @@ public class RegisterServiceApplication {
         SpringApplication.run(RegisterServiceApplication.class, args);
     }
 }
+//asi se hace un register{
+//  "nombre": "Ana",
+//"apellido": "Pérez",
+//"email": "ana.perez@example.com",
+//"telefono": "987654321",
+//"password": "secreta123"
+//}

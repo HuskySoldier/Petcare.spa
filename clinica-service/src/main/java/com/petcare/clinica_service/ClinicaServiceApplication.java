@@ -11,3 +11,10 @@ public class ClinicaServiceApplication {
     }
 }
 
+//consulta en Postman
+//{
+// "nombre": "PetCare Central",
+//"direccion": "Av. Siempre Viva 742",
+//"comuna": "Santiago Centro",
+//"capacidad": "100 pacientes"
+//}

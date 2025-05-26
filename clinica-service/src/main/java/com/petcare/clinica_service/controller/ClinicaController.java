@@ -79,5 +79,3 @@ public class ClinicaController {
 }
 
 
-//Consulta en Postman
-//{"direccion": "Av. Siempre Viva 742","contacto": "+56 9 1234 5678","capacidad": 50}

@@ -12,3 +12,7 @@ public class LoginServiceApplication {
         SpringApplication.run(LoginServiceApplication.class, args);
     }
 }
+// asi se hace un loggin {
+ // "email": "ana.perez@examples.com",
+  //"password": "secretas123"
+//}

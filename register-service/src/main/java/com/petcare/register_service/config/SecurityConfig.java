@@ -12,12 +12,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Desactiva CSRF para peticiones POST sin token
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/register").permitAll()
-                .anyRequest().permitAll() // Permite todo (por ahora)
+                .anyRequest().authenticated()
             )
-            .httpBasic(Customizer.withDefaults()); // o .formLogin() si usas formularios
+            .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }

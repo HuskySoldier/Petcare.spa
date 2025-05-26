@@ -7,6 +7,7 @@ import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class RegisterService {
@@ -15,17 +16,25 @@ public class RegisterService {
     private UsuarioClient usuarioClient;
 
     public RegisterResponse register(RegisterRequest request) {
+
+        // Validaciones adicionales por si las anotaciones @NotBlank fallan
+        if (!StringUtils.hasText(request.getNombre()) ||
+            !StringUtils.hasText(request.getApellido()) ||
+            !StringUtils.hasText(request.getEmail()) ||
+            !StringUtils.hasText(request.getPassword()) ||
+            !StringUtils.hasText(request.getTelefono())) {
+            throw new RuntimeException("Todos los campos son obligatorios");
+        }
+
         try {
-            // Intentar buscar si el usuario ya existe por su email
             UsuarioDTO existente = usuarioClient.findByEmail(request.getEmail());
-
-            // Si no lanza excepción, significa que ya existe → lanzar error
             if (existente != null) {
-                throw new RuntimeException("Ya existe un usuario con ese email");
+                throw new RuntimeException("Ya existe un usuario registrado con ese correo electrónico");
             }
-
         } catch (FeignException.NotFound e) {
-            // El usuario no existe, podemos continuar con el registro
+            // OK: El usuario no existe, se puede registrar
+        } catch (FeignException e) {
+            throw new RuntimeException("Error al verificar si el usuario ya está registrado");
         }
 
         // Encriptar la contraseña
@@ -40,10 +49,11 @@ public class RegisterService {
         nuevo.setPassword(hashedPassword);
         nuevo.setRol("CLIENTE");
 
-        // Guardar nuevo usuario a través del microservicio usuario
-        UsuarioDTO creado = usuarioClient.crearUsuario(nuevo);
-
-        // Retornar respuesta de éxito
-        return new RegisterResponse("Registro exitoso", creado.getEmail(), creado.getRol());
+        try {
+            UsuarioDTO creado = usuarioClient.crearUsuario(nuevo);
+            return new RegisterResponse("Registro exitoso", creado.getEmail(), creado.getRol());
+        } catch (FeignException e) {
+            throw new RuntimeException("Usuario ya registrado: " + e.getMessage());
+        }
     }
 }
