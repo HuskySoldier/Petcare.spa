@@ -18,7 +18,7 @@ public class ServicioService {
     public Servicio crearServicio(Servicio servicio) {
         // Se valida el precio recibido como String
         validarPrecio(String.valueOf(servicio.getPrecio()));
-        // validacion por si se escriben la idCategoria que es totalmente innecesario ya que es autoincrementable
+        // validacion por si se escriben la idServicio que es totalmente innecesario ya que es autoincrementable
         if (servicio.getIdServicio() != null) {
             throw new IllegalArgumentException("No debe enviar el idServicio al crear un nuevo servicio.");
         }
@@ -33,7 +33,10 @@ public class ServicioService {
         // validacion para el precio como String para evitar este error se convierte a int 
         int precioValido = Integer.parseInt(String.valueOf(servicio.getPrecio()));
         servicio.setPrecio(precioValido);
+    
         return servicioRepository.save(servicio);
+
+
     }
 
     // validacion para que el precio no sea nulo y no tenga caracteres

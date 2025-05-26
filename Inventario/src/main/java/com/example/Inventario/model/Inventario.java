@@ -31,8 +31,8 @@ public class Inventario {
     @Column(nullable = false) 
     private int idProducto;
 
-    @NotBlank(message = "El apellido no puede estar vacío")
-    @Pattern(regexp = "^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$", message = "El apellido solo puede contener letras")
+    @NotBlank(message = "El nombre no puede estar vacío")
+    @Pattern(regexp = "^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$", message = "El nombre solo puede contener letras")
     @Column(nullable = false)
     private String nombreInv;
 

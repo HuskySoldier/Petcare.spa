@@ -36,7 +36,7 @@ public class Servicio {
     @Column(nullable = false) 
     private int precio;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "idCategoria")
     private Categoria categoria;
     

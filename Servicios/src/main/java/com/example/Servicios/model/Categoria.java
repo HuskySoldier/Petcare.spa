@@ -27,7 +27,7 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCategoria;
     
-    @NotBlank(message = "El nombre no puede estar vacío")
+    @NotBlank(message = "La categoria no puede estar vacío")
     @Column(nullable = false)
     private String nombreCategoria;
 

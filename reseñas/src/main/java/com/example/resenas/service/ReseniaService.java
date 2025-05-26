@@ -50,9 +50,6 @@ public class ReseniaService {
      * Construye un DTO que combina los datos de una reseña con la información del
      * servicio asociado,
      * obtenida mediante una llamada al microservicio de servicios.
-     *
-     * @param resenia Reseña desde la base de datos
-     * @return DTO con la reseña y datos del servicio
      */
     public ReseniaResponseDto construirRespuestaConServicio(Resenia resenia) {
         // Llamada al microservicio de servicios para obtener los datos del servicio
