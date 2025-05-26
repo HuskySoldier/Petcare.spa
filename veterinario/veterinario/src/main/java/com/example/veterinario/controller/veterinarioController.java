@@ -19,43 +19,46 @@ import com.example.veterinario.service.VeterinarioService;
 
 import jakarta.validation.Valid;
 
-
 @RestController
 @RequestMapping("/api/v1/veterinario")
 public class VeterinarioController {
     @Autowired
     private VeterinarioService veterinarioservice;
 
-     @GetMapping
-    public ResponseEntity<List<Veterinario>> listarVeterinarios(){
-        List <Veterinario> veterinarios=veterinarioservice.listarVeterinarios();
+    @GetMapping
+    public ResponseEntity<List<Veterinario>> listarVeterinarios() {
+        List<Veterinario> veterinarios = veterinarioservice.listarVeterinarios();
 
-        if(veterinarios.isEmpty()){
+        if (veterinarios.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(veterinarios);
     }
 
     @PostMapping
-    public ResponseEntity<Veterinario> saveVeterinario(@Valid @RequestBody Veterinario vt){
-        Veterinario veterinario2=veterinarioservice.agregarVeterinario(vt);
-        return ResponseEntity.status(HttpStatus.CREATED).body(veterinario2);
+    public ResponseEntity<?> saveVeterinario(@Valid @RequestBody Veterinario vt) {
+        try {
+            Veterinario veterinario2 = veterinarioservice.agregarVeterinario(vt);
+            return ResponseEntity.status(HttpStatus.CREATED).body(veterinario2);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteVeterinarioPorId(@PathVariable Long id){
+    public ResponseEntity<?> deleteVeterinarioPorId(@PathVariable Long id) {
         try {
             veterinarioservice.eliminarVeterinario(id);
             return ResponseEntity.noContent().build();
-            
+
         } catch (Exception e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Veterinario> modificarVeterinario(@PathVariable Long id, @RequestBody Veterinario veterinario2){
+    public ResponseEntity<Veterinario> modificarVeterinario(@PathVariable Long id,
+            @RequestBody Veterinario veterinario2) {
         try {
             Veterinario vet = veterinarioservice.buscarVeterinarioPorId(id);
 
@@ -68,13 +71,10 @@ public class VeterinarioController {
             veterinarioservice.agregarVeterinario(vet);
             return ResponseEntity.ok(vet);
 
-            
         } catch (Exception e) {
-           return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         }
 
     }
-
-    
 
 }

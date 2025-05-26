@@ -17,13 +17,20 @@ public class VeterinarioService {
         return veterinariorepository.findAll();
     }
 
+    public Veterinario agregarVeterinario(Veterinario veterinario){
+    if (veterinario.getVeterinarioId() != null) {
+        throw new IllegalArgumentException("No debe enviar el veterinarioId al crear un nuevo veterinario.");
+    }
+    return veterinariorepository.save(veterinario);
+}
+
+   
+
     public Veterinario buscarVeterinarioPorId(Long id){
         return veterinariorepository.findById(id).orElse(null);
     }
 
-    public Veterinario agregarVeterinario(Veterinario veterinario){
-        return veterinariorepository.save(veterinario);
-    }
+    
 
     public void eliminarVeterinario (Long id){
         veterinariorepository.deleteById(id);
