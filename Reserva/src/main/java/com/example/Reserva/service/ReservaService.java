@@ -19,12 +19,12 @@ public class ReservaService {
         return ReservaRepository.findAll();
     }
 
-   /* public Optional<Reserva> obtenerReservaPorId(Long id) {
-        return ReservaRepository.findById(id);
-    }*/
+    public Reserva buscarReservaPorId(Long id) {
+        return ReservaRepository.findById(id).orElse(null);
+    }
 
     public Reserva crearReserva(Reserva reserva) {
-        if (reserva==null) {
+        if (reserva == null) {
             throw new RuntimeException("No se ah creado la Reserva");
         }
         return ReservaRepository.save(reserva);

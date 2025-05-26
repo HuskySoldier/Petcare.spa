@@ -25,9 +25,9 @@ import jakarta.validation.Valid;
 public class MascotaController {
     @Autowired
     private MascotaService mascotaservice;
-    
-    //llama a todas las mascotas
-    @GetMapping
+
+    // llama a todas las mascotas
+    @GetMapping("/{Total}")
     public ResponseEntity<List<Mascota>> listarMascotas() {
         List<Mascota> mascota = mascotaservice.listarMacotas();
 
@@ -37,22 +37,24 @@ public class MascotaController {
         return ResponseEntity.ok(mascota);
     }
 
+    // para buscar mascota por id
     @GetMapping("/{id}")
-    public ResponseEntity<Mascota>buscarMascotaId(@PathVariable Long id) {
-         Mascota mascota = mascotaservice.buscarMascotaPorId(id);
+    public ResponseEntity<Mascota> buscarMascotaId(@PathVariable Long id) {
+        Mascota mascota = mascotaservice.buscarMascotaPorId(id);
 
-        if (mascota==null) {
+        if (mascota == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(mascota);
     }
-
+    // para guardar la mascota
     @PostMapping
     public ResponseEntity<Mascota> saveMascota(@RequestBody Mascota masc) {
         Mascota mascota2 = mascotaservice.agregarMascota(masc);
         return ResponseEntity.status(HttpStatus.CREATED).body(mascota2);
     }
 
+    //eliminar la mascota por id
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMascotaPorId(@PathVariable Long id) {
         try {
@@ -64,6 +66,7 @@ public class MascotaController {
         }
     }
 
+    //es para modificar la mascota
     @PutMapping("/{id}")
     public ResponseEntity<Mascota> modificarMascota(@Valid @PathVariable Long id, @RequestBody Mascota mascota2) {
         try {

@@ -25,7 +25,8 @@ public class VeterinarioController {
     @Autowired
     private VeterinarioService veterinarioservice;
 
-    @GetMapping
+    //llama a todos los veterinario
+    @GetMapping("/{Total}")
     public ResponseEntity<List<Veterinario>> listarVeterinarios() {
         List<Veterinario> veterinarios = veterinarioservice.listarVeterinarios();
 
@@ -35,6 +36,7 @@ public class VeterinarioController {
         return ResponseEntity.ok(veterinarios);
     }
 
+    //este es para ver veterinario por id
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerVeterinarioPorId(@PathVariable Long id) {
         Veterinario veterinario = veterinarioservice.buscarVeterinarioPorId(id);
@@ -46,6 +48,7 @@ public class VeterinarioController {
         }
     }
 
+    // este es para agregar el veterinario
     @PostMapping
     public ResponseEntity<?> saveVeterinario(@Valid @RequestBody Veterinario vt) {
         try {
@@ -56,6 +59,7 @@ public class VeterinarioController {
         }
     }
 
+    // delete por id
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteVeterinarioPorId(@PathVariable Long id) {
         try {
@@ -67,6 +71,7 @@ public class VeterinarioController {
         }
     }
 
+    //modificar el veterinario
     @PutMapping("/{id}")
     public ResponseEntity<Veterinario> modificarVeterinario(@PathVariable Long id,
             @RequestBody Veterinario veterinario2) {

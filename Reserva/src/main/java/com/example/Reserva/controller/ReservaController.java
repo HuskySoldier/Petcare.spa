@@ -24,29 +24,42 @@ public class ReservaController {
 
     @Autowired
     private EstadoService EstadoService;
-
-    @GetMapping("/listar")
+    //llama a todas las reservas
+    @GetMapping("/Total")
     public ResponseEntity<List<Reserva>> listarReservas() {
         return ResponseEntity.ok(ReservaService.listarReservas());
     }
 
+    //los llama por id
+    @GetMapping("/{id}")
+    public ResponseEntity<Reserva> buscarReservaPorId(@PathVariable Long id) {
+        Reserva reserva = ReservaService.buscarReservaPorId(id);
+
+        if (reserva == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(reserva);
+    }
+
+    //este es para crear una nueva reserva
     @PostMapping("/crear")
     public ResponseEntity<Reserva> crearReserva(@Valid @RequestBody Reserva reserva) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ReservaService.crearReserva(reserva));
     }
 
+    // este es para crear un esatado
     @PostMapping("/estado")
     public ResponseEntity<Estado> crearEstado(@Valid @RequestBody Estado estado) {
         return ResponseEntity.status(HttpStatus.CREATED).body(EstadoService.crearEstado(estado));
     }
 
+    // este es para listar los estados
     @GetMapping("/estado")
     public ResponseEntity<List<Estado>> listarEstados() {
         return ResponseEntity.ok(EstadoService.listarEstados());
     }
 
-    
-
+    // este es para eliminar por id
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteReservaPorId(@PathVariable Long id) {
         try {

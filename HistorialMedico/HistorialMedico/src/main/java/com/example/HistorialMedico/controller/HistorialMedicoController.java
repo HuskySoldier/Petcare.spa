@@ -50,12 +50,14 @@ public class HistorialMedicoController {
         return ResponseEntity.ok(historialMedicos);
     }
 
+    //agregar un historial medico
     @PostMapping
     public ResponseEntity<HistorialMedico> saveHistorialMedico(@Valid @RequestBody HistorialMedico hm) {
         HistorialMedico historialMedico2 = historialmedicoservice.agregarHistorialMedico(hm);
         return ResponseEntity.status(HttpStatus.CREATED).body(historialMedico2);
     }
 
+    //para agregar un tratamiento
     @PostMapping("/{id}/tratamientos")
     public ResponseEntity<Tratamiento> agregarTratamiento(
             @PathVariable Long id,

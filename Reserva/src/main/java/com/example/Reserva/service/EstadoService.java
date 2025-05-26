@@ -11,17 +11,20 @@ import java.util.List;
 public class EstadoService{
 
     @Autowired
-    private EstadoRepository EstadoRepository;
+    private EstadoRepository estadoRepository;
 
     public List<Estado> listarEstados() {
-        return EstadoRepository.findAll();
+        return estadoRepository.findAll();
     }
 
     public Estado crearEstado(Estado estado) {
-        return EstadoRepository.save(estado);
+        if (estado.getEstadoId() != null) {
+            throw new IllegalArgumentException("No debe enviar el estadoId al crear un nuevo estado.");
+        }
+        return estadoRepository.save(estado);
     }
 
     public Estado buscarPorId(Long id) {
-        return EstadoRepository.findById(id).orElse(null);
+        return estadoRepository.findById(id).orElse(null);
     }
 }
