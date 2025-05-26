@@ -39,7 +39,7 @@ public class HistorialMedicoController {
 
     @Autowired
     private TratamientoRepository tratamientoRepo;
-
+    // llama a todos los historiales
     @GetMapping
     public ResponseEntity<List<HistorialMedico>> listarHistorialMedico() {
         List<HistorialMedico> historialMedicos = historialmedicoservice.listarHistorialMedico();

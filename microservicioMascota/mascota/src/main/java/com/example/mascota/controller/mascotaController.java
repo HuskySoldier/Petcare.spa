@@ -25,8 +25,9 @@ import jakarta.validation.Valid;
 public class MascotaController {
     @Autowired
     private MascotaService mascotaservice;
-
-    @GetMapping("/total")
+    
+    //llama a todas las mascotas
+    @GetMapping
     public ResponseEntity<List<Mascota>> listarMascotas() {
         List<Mascota> mascota = mascotaservice.listarMacotas();
 
