@@ -35,7 +35,7 @@ public class HistorialMedico {
     @Column(nullable = false)
     private String antecedentes;
 
-    @Column(nullable = false)
+    
     private String comentario;
 
     @Column(nullable = false)

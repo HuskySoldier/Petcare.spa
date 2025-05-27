@@ -18,14 +18,14 @@ public class LoadDataBase {
     public CommandLineRunner loadInitialData(InventarioService inventarioService,InventarioRepository inventarioRepository) {
         return args -> {
             Inventario inv1 = new Inventario();
-            inv1.setIdProducto(1);
+            inv1.setIdProducto(2);
             inv1.setNombreInv("Vacuna antirrábica");
             inv1.setStockActual(10);
             inv1.setStockMinimo(5);
             inv1.setFechaUltimaActualizacion(Date.valueOf(LocalDate.now()));
 
             Inventario inv2 = new Inventario();
-            inv2.setIdProducto(2);
+            inv2.setIdProducto(1);
             inv2.setNombreInv("Desparasitante oral");
             inv2.setStockActual(3); // Bajo stock para probar reportes
             inv2.setStockMinimo(5);
