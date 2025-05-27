@@ -26,7 +26,7 @@ public class VeterinarioController {
     private VeterinarioService veterinarioservice;
 
     //llama a todos los veterinario
-    @GetMapping("/{Total}")
+    @GetMapping("/Total")
     public ResponseEntity<List<Veterinario>> listarVeterinarios() {
         List<Veterinario> veterinarios = veterinarioservice.listarVeterinarios();
 
@@ -50,7 +50,7 @@ public class VeterinarioController {
 
     // este es para agregar el veterinario
     @PostMapping
-    public ResponseEntity<?> saveVeterinario(@Valid @RequestBody Veterinario vt) {
+    public ResponseEntity<?> agregarVeterinario(@Valid @RequestBody Veterinario vt) {
         try {
             Veterinario veterinario2 = veterinarioservice.agregarVeterinario(vt);
             return ResponseEntity.status(HttpStatus.CREATED).body(veterinario2);

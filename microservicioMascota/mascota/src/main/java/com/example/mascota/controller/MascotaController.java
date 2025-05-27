@@ -27,14 +27,9 @@ public class MascotaController {
     private MascotaService mascotaservice;
 
     // llama a todas las mascotas
-    @GetMapping("/{Total}")
+    @GetMapping("/Total")
     public ResponseEntity<List<Mascota>> listarMascotas() {
-        List<Mascota> mascota = mascotaservice.listarMacotas();
-
-        if (mascota.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(mascota);
+        return ResponseEntity.ok(mascotaservice.listarMacotas());
     }
 
     // para buscar mascota por id
