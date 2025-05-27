@@ -38,6 +38,9 @@ public class HistorialMedico {
     @Column(nullable = false)
     private String comentario;
 
+    @Column(nullable = false)
+    private Long idMascota;
+
     @NotBlank(message = "Debe tener un diagnostico")
     @Column(nullable = false)
     private String diagnostico;
