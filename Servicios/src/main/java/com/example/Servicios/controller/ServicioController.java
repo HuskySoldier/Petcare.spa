@@ -52,7 +52,7 @@ public class ServicioController {
         }
         return ResponseEntity.ok(servicio.get());
     }
-
+    
     // crear un servicio
     @PostMapping
     public ResponseEntity<?> crearServicio(@Valid @RequestBody Servicio servicio) {

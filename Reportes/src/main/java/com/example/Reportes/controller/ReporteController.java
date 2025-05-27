@@ -20,7 +20,7 @@ public class ReporteController {
     @Autowired
     private ReporteService reporteService;
 
-    @GetMapping
+    @GetMapping("/total")
     public ResponseEntity<List<Reporte>> getReporte() {
         List<Reporte> reporte = reporteService.allReporte();
         if (reporte.isEmpty()) {

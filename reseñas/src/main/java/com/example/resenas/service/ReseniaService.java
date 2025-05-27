@@ -23,6 +23,8 @@ public class ReseniaService {
     @Autowired
     private ServicioClient servicioClient;
 
+    
+
     public Resenia crearReseniaDesdeDto(ReseniaDto dto) {
         // Validar calificación
         validarCalificacion(dto.getCalificacion());
@@ -104,5 +106,6 @@ public class ReseniaService {
         reseniaRepository.deleteById(idResenia);
         return true;
     }
+
 
 }

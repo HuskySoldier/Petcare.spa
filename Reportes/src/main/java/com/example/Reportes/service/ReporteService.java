@@ -28,6 +28,8 @@ public class ReporteService {
     return reporteRepository.findAll();
     }
 
+
+
     // Actualizar el reporte
     public Reporte actualizarReporte(Long idReporte, Reporte reporteActualizada) {
         if (reporteRepository.existsById(idReporte)) {
