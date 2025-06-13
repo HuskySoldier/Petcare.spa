@@ -15,19 +15,19 @@ public class RegisterService {
     @Autowired
     private UsuarioClient usuarioClient;
 
-    public RegisterResponse register(RegisterRequest request) {
+    public RegisterResponse register(UsuarioDTO usuarioDTO) {
 
         // Validaciones adicionales por si las anotaciones @NotBlank fallan
-        if (!StringUtils.hasText(request.getNombre()) ||
-            !StringUtils.hasText(request.getApellido()) ||
-            !StringUtils.hasText(request.getEmail()) ||
-            !StringUtils.hasText(request.getPassword()) ||
-            !StringUtils.hasText(request.getTelefono())) {
+        if (!StringUtils.hasText(usuarioDTO.getNombre()) ||
+            !StringUtils.hasText(usuarioDTO.getApellido()) ||
+            !StringUtils.hasText(usuarioDTO.getEmail()) ||
+            !StringUtils.hasText(usuarioDTO.getPassword()) ||
+            !StringUtils.hasText(usuarioDTO.getTelefono())) {
             throw new RuntimeException("Todos los campos son obligatorios");
         }
 
         try {
-            UsuarioDTO existente = usuarioClient.findByEmail(request.getEmail());
+            UsuarioDTO existente = usuarioClient.buscarPorEmail(usuarioDTO.getEmail());
             if (existente != null) {
                 throw new RuntimeException("Ya existe un usuario registrado con ese correo electrónico");
             }
@@ -38,14 +38,14 @@ public class RegisterService {
         }
 
         // Encriptar la contraseña
-        String hashedPassword = BCrypt.hashpw(request.getPassword(), BCrypt.gensalt());
+        String hashedPassword = BCrypt.hashpw(usuarioDTO.getPassword(), BCrypt.gensalt());
 
         // Crear nuevo usuario
         UsuarioDTO nuevo = new UsuarioDTO();
-        nuevo.setNombre(request.getNombre());
-        nuevo.setApellido(request.getApellido());
-        nuevo.setEmail(request.getEmail());
-        nuevo.setTelefono(request.getTelefono());
+        nuevo.setNombre(usuarioDTO.getNombre());
+        nuevo.setApellido(usuarioDTO.getApellido());
+        nuevo.setEmail(usuarioDTO.getEmail());
+        nuevo.setTelefono(usuarioDTO.getTelefono());
         nuevo.setPassword(hashedPassword);
         nuevo.setRol("CLIENTE");
 
