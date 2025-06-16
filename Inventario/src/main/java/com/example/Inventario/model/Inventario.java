@@ -25,15 +25,11 @@ import lombok.NoArgsConstructor;
 public class Inventario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    private Long idInventario;
-
-    @Min(value = 0, message = "El ID del producto no puede ser negativo")
-    @Column(nullable = false) 
-    private int idProducto;
+    private Long idInventario; 
 
     @NotBlank(message = "El nombre no puede estar vacío")
     @Pattern(regexp = "^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$", message = "El nombre solo puede contener letras")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nombreInv;
 
     @Min(value = 0, message = "El stock actual no puede ser negativo")

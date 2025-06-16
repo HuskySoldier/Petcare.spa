@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ReporteDto {
-    private int idProducto;
+    private Long idInventario;
     private String nombreInv;
     private String comentario; 
     private Date fechaCreacion;
 
-    public ReporteDto(int idProducto, String comentario, Date fechaCreacion) {
-    this.idProducto = idProducto;
+    public ReporteDto(Long idInventario, String comentario, Date fechaCreacion) {
+    this.idInventario = idInventario;
     this.comentario = comentario;
     this.fechaCreacion = fechaCreacion;
     }
