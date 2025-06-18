@@ -1,85 +1,68 @@
-
 package com.example.mascota.controller;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.example.mascota.model.Mascota;
 import com.example.mascota.service.MascotaService;
 
-import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/mascota")
 public class MascotaController {
+
     @Autowired
-    private MascotaService mascotaservice;
+    private MascotaService mascotaService;
 
-    // llama a todas las mascotas
-    @GetMapping("/Total")
-    public ResponseEntity<List<Mascota>> listarMascotas() {
-        return ResponseEntity.ok(mascotaservice.listarMacotas());
+    // Listar todas las mascotas
+    @GetMapping
+    public List<Mascota> listarTodas() {
+        return mascotaService.listarMacotas();
     }
 
-    // para buscar mascota por id
+    // Buscar mascota por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Mascota> buscarMascotaId(@PathVariable Long id) {
-        Mascota mascota = mascotaservice.buscarMascotaPorId(id);
-
-        if (mascota == null) {
+    public ResponseEntity<Mascota> obtenerPorId(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(mascotaService.buscarMascotaPorId(id));
+        } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(mascota);
     }
-    // para guardar la mascota
+
+    // Crear nueva mascota
     @PostMapping
-    public ResponseEntity<Mascota> saveMascota(@RequestBody Mascota masc) {
-        Mascota mascota2 = mascotaservice.agregarMascota(masc);
-        return ResponseEntity.status(HttpStatus.CREATED).body(mascota2);
+    public ResponseEntity<Mascota> crearMascota(@RequestBody Mascota mascota) {
+        try {
+            Mascota nueva = mascotaService.agregarMascota(mascota);
+            return ResponseEntity.ok(nueva);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        } catch (RuntimeException e) {
+            return ResponseEntity.internalServerError().body(null);
+        }
     }
 
-    //eliminar la mascota por id
+    // Eliminar mascota
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMascotaPorId(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         try {
-            mascotaservice.eliminarMascota(id);
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); //
-
-        }
-    }
-
-    //es para modificar la mascota
-    @PutMapping("/{id}")
-    public ResponseEntity<Mascota> modificarMascota(@Valid @PathVariable Long id, @RequestBody Mascota mascota2) {
-        try {
-            Mascota masc = mascotaservice.buscarMascotaPorId(id);
-
-            masc.setIdMascota(id);
-            masc.setNombre(mascota2.getNombre());
-            masc.setEspecie(mascota2.getEspecie());
-            masc.setRaza(mascota2.getRaza());
-            masc.setEdad(mascota2.getEdad());
-            masc.setSexo(mascota2.getSexo());
-
-            mascotaservice.agregarMascota(masc);
-            return ResponseEntity.ok(masc);
+            mascotaService.eliminarMascota(id);
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-
     }
 
+    //  Listar mascotas por ID de usuario
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<List<Mascota>> listarPorUsuario(@PathVariable Long idUsuario) {
+        List<Mascota> mascotas = mascotaService.obtenerPorIdUsuario(idUsuario);
+        if (mascotas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(mascotas);
+    }
 }

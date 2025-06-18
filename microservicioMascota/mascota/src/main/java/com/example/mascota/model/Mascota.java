@@ -38,6 +38,10 @@ public class Mascota {
     @Column(length = 100, nullable = false)
     private String sexo;
 
+    @Column(nullable = false)
+    private Long idUsuario;
+
+
     @ManyToOne
     @JoinColumn(name = "idRaza")
     @JsonIgnoreProperties("mascota")

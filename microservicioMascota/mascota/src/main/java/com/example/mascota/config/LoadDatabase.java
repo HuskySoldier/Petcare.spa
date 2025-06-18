@@ -15,77 +15,72 @@ import com.example.mascota.repository.RazaRepository;
 public class LoadDatabase {
 
     @Bean
-    CommandLineRunner initDatabase(RazaRepository razaRepo, EspecieRepository especieRepo, MascotaRepository mascRepo){
-        return args ->{
-            //si no hay registros en la tablas
-            if(razaRepo.count() == 0 && especieRepo.count() == 0){
-                //insertar los raza de perro por defecto
-                //raza de perro
-                Raza PasAle= new Raza();
+    CommandLineRunner initDatabase(RazaRepository razaRepo, EspecieRepository especieRepo, MascotaRepository mascRepo) {
+        return args -> {
+            // si no hay registros en la tablas
+            if (razaRepo.count() == 0 && especieRepo.count() == 0) {
+                // insertar los raza de perro por defecto
+                // raza de perro
+                Raza PasAle = new Raza();
                 PasAle.setNombreRaza("Pastor Alemán");
                 razaRepo.save(PasAle);
 
-                Raza bull= new Raza();
+                Raza bull = new Raza();
                 bull.setNombreRaza("Bulldog");
                 razaRepo.save(bull);
 
-                Raza husSib= new Raza();
+                Raza husSib = new Raza();
                 husSib.setNombreRaza("Husky siberiano");
                 razaRepo.save(husSib);
 
-            // raza de gatos
-                Raza persa= new Raza();
+                // raza de gatos
+                Raza persa = new Raza();
                 persa.setNombreRaza("Gato persa");
                 razaRepo.save(persa);
 
-                Raza rag= new Raza();
+                Raza rag = new Raza();
                 rag.setNombreRaza("Ragdoll");
                 razaRepo.save(rag);
 
-                Raza bom= new Raza();
+                Raza bom = new Raza();
                 bom.setNombreRaza("Bombay");
                 razaRepo.save(bom);
 
-            // raza cuyo
-                Raza ted= new Raza();
+                // raza cuyo
+                Raza ted = new Raza();
                 ted.setNombreRaza("Cobaya Teddy");
                 razaRepo.save(ted);
 
-                Raza amer= new Raza();
+                Raza amer = new Raza();
                 amer.setNombreRaza("Cuyo americano");
                 razaRepo.save(amer);
 
-                Raza rex= new Raza();
+                Raza rex = new Raza();
                 rex.setNombreRaza("Cobaya rex");
                 razaRepo.save(rex);
 
-            // especies mascota
-                Especie perro= new Especie();
+                // especies mascota
+                Especie perro = new Especie();
                 perro.setNombreEspecie("Perro");
                 especieRepo.save(perro);
 
-                Especie gato= new Especie();
+                Especie gato = new Especie();
                 gato.setNombreEspecie("Gato");
                 especieRepo.save(gato);
 
-                Especie cuyo= new Especie();
+                Especie cuyo = new Especie();
                 cuyo.setNombreEspecie("Cobaya");
                 especieRepo.save(cuyo);
-            
-            
 
-                //cargar dos usuarios por defecto (opcional)
-                mascRepo.save(new Mascota(null, "Pichicha",2, "Hembra", persa,gato));
-                mascRepo.save(new Mascota(null, "Yeremy",3,"Macho",bull,perro));
-                mascRepo.save(new Mascota(null, "Toby", 1,"Macho",ted,cuyo ));
+                // cargar dos usuarios por defecto (opcional)
+                mascRepo.save(new Mascota(null, "Pichicha", 2, "Hembra", 1L, persa, gato));
+                mascRepo.save(new Mascota(null, "Yeremy", 3, "Macho", 1L, bull, perro));
+                mascRepo.save(new Mascota(null, "Toby", 1, "Macho", 2L, ted, cuyo));
                 System.out.println("Datos iniciales Cargados");
-            }
-            else{
+            } else {
                 System.out.println("Datos ya existen. No se cargaron nuevos");
             }
         };
     }
-
-
 
 }
