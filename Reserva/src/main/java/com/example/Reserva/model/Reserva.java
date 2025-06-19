@@ -27,12 +27,14 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservaId;
 
-    
     @Column(nullable = false)
     private Date fechaCreacion;
-    
+
     @Column(nullable = false)
     private Date fechareserva;
+
+    @Column(name = "veterinario_id")
+    private Long veterinarioId;
 
     @Min(value = 0, message = "El total no puede ser negativo")
     @Column(nullable = false)

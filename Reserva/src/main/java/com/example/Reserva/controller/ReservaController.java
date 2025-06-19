@@ -42,9 +42,14 @@ public class ReservaController {
     }
 
     //este es para crear una nueva reserva
-    @PostMapping("/crear")
-    public ResponseEntity<Reserva> crearReserva(@Valid @RequestBody Reserva reserva) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(ReservaService.crearReserva(reserva));
+    @PostMapping
+    public ResponseEntity<?> crearReserva(@Valid @RequestBody Reserva reserva) {
+        try {
+            Reserva nueva = ReservaService.crearReserva(reserva);
+            return ResponseEntity.ok(nueva);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     // este es para crear un esatado
@@ -52,6 +57,8 @@ public class ReservaController {
     public ResponseEntity<Estado> crearEstado(@Valid @RequestBody Estado estado) {
         return ResponseEntity.status(HttpStatus.CREATED).body(EstadoService.crearEstado(estado));
     }
+
+    
 
     // este es para listar los estados
     @GetMapping("/estado")
