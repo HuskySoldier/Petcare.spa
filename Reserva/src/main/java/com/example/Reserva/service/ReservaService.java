@@ -69,4 +69,8 @@ public class ReservaService {
     public void eliminarReserva(Long id) {
         reservaRepository.deleteById(id);
     }
+
+    public List<Reserva> listarReservasPorUsuarioId(Long usuarioId) {
+        return reservaRepository.findByUsuarioId(usuarioId);
+    }
 }

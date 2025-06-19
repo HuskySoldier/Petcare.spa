@@ -36,6 +36,9 @@ public class Reserva {
     @Column(name = "veterinario_id")
     private Long veterinarioId;
 
+    @Column(name = "usuario_id", nullable = false)
+    private Long usuarioId;
+
     @Min(value = 0, message = "El total no puede ser negativo")
     @Column(nullable = false)
     private int total;
