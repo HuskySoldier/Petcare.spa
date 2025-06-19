@@ -25,7 +25,7 @@ public class VeterinarioController {
     @Autowired
     private VeterinarioService veterinarioservice;
 
-    //llama a todos los veterinario
+    // llama a todos los veterinario
     @GetMapping("/Total")
     public ResponseEntity<List<Veterinario>> listarVeterinarios() {
         List<Veterinario> veterinarios = veterinarioservice.listarVeterinarios();
@@ -36,7 +36,7 @@ public class VeterinarioController {
         return ResponseEntity.ok(veterinarios);
     }
 
-    //este es para ver veterinario por id
+    // este es para ver veterinario por id
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerVeterinarioPorId(@PathVariable Long id) {
         Veterinario veterinario = veterinarioservice.buscarVeterinarioPorId(id);
@@ -55,7 +55,7 @@ public class VeterinarioController {
             Veterinario veterinario2 = veterinarioservice.agregarVeterinario(vt);
             return ResponseEntity.status(HttpStatus.CREATED).body(veterinario2);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
         }
     }
 
@@ -71,7 +71,7 @@ public class VeterinarioController {
         }
     }
 
-    //modificar el veterinario
+    // modificar el veterinario
     @PutMapping("/{id}")
     public ResponseEntity<Veterinario> modificarVeterinario(@PathVariable Long id,
             @RequestBody Veterinario veterinario2) {
@@ -92,5 +92,7 @@ public class VeterinarioController {
         }
 
     }
+
+    
 
 }

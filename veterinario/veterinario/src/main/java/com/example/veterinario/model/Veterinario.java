@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Veterinario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long veterinarioId;
@@ -34,12 +35,13 @@ public class Veterinario {
     @Column(nullable = false)
     private String apellido;
 
-    @Column (nullable = false)
+    @Column(nullable = false)
     private String especialidad;
 
     @Column(nullable = false)
     private String correo;
 
-
-
+    @Column(nullable = false)
+    private Long usuarioId;
 }
+
