@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.HistorialMedico.dto.InventarioDTO;
+import com.example.HistorialMedico.client.MascotaClient;
 import com.example.HistorialMedico.model.HistorialMedico;
 import com.example.HistorialMedico.model.Tratamiento;
 import com.example.HistorialMedico.repository.HistorialMedicoRepository;
@@ -39,6 +39,10 @@ public class HistorialMedicoController {
 
     @Autowired
     private TratamientoRepository tratamientoRepo;
+
+    @Autowired
+    private MascotaClient mascotaClient;
+
     // llama a todos los historiales
     @GetMapping
     public ResponseEntity<List<HistorialMedico>> listarHistorialMedico() {
@@ -50,14 +54,14 @@ public class HistorialMedicoController {
         return ResponseEntity.ok(historialMedicos);
     }
 
-    //agregar un historial medico
+    // agregar un historial medico
     @PostMapping
-    public ResponseEntity<HistorialMedico> saveHistorialMedico(@Valid @RequestBody HistorialMedico hm) {
+    public ResponseEntity<HistorialMedico> agregarHistorialMedico(@Valid @RequestBody HistorialMedico hm) {
         HistorialMedico historialMedico2 = historialmedicoservice.agregarHistorialMedico(hm);
         return ResponseEntity.status(HttpStatus.CREATED).body(historialMedico2);
     }
 
-    //para agregar un tratamiento
+    // para agregar un tratamiento
     @PostMapping("/{id}/tratamientos")
     public ResponseEntity<Tratamiento> agregarTratamiento(
             @PathVariable Long id,
@@ -84,28 +88,30 @@ public class HistorialMedicoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<HistorialMedico> modificarHistorialMedico(@PathVariable Long id,
-            @Valid @RequestBody HistorialMedico historialMedico2) {
+            @Valid @RequestBody HistorialMedico historialActualizado) {
         try {
             HistorialMedico hismed = historialmedicoservice.buscarHistorialMedicoPorId(id);
-            hismed.setHistorialId(id);
-            hismed.setFechaRegistro(historialMedico2.getFechaRegistro());
 
-            historialmedicoservice.agregarHistorialMedico(hismed);
-            return ResponseEntity.ok(hismed);
-        } catch (Exception e) {
+            hismed.setFechaRegistro(historialActualizado.getFechaRegistro());
+            hismed.setAntecedentes(historialActualizado.getAntecedentes());
+            hismed.setComentario(historialActualizado.getComentario());
+            hismed.setIdMascota(historialActualizado.getIdMascota());
+            hismed.setDiagnostico(historialActualizado.getDiagnostico());
+
+            HistorialMedico actualizado = historialmedicoservice.agregarHistorialMedico(hismed);
+            return ResponseEntity.ok(actualizado);
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping("/tratamiento/{id}/inventario")
-    public ResponseEntity<InventarioDTO> getInventarioDelTratamiento(@PathVariable Long id) {
-        try {
-            InventarioDTO inventarioDTO = tratamientoService.obtenerInventarioPorTratamiento(id);
-            return ResponseEntity.ok(inventarioDTO);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+    @GetMapping("/mascota/{idMascota}")
+    public ResponseEntity<List<HistorialMedico>> obtenerHistorialPorMascota(@PathVariable Long idMascota) {
+        List<HistorialMedico> historiales = historialmedicoservice.buscarPorIdMascota(idMascota);
+        if (historiales.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.ok(historiales);
     }
-
-
 }

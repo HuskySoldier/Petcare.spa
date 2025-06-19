@@ -9,7 +9,7 @@ import com.example.HistorialMedico.dto.MascotaDTO;
 @FeignClient(name = "microservicioMascota", url = "http://localhost:8083/api/v1/mascota")
 public interface MascotaClient {
 
-    @GetMapping("/IdMascota/{IdMascota}")
-    MascotaDTO findByIdMascota(@PathVariable("IdMascota") String IdMascota);
-
+    @GetMapping("/IdMascota")
+    MascotaDTO findByIdMascota(@PathVariable("IdMascota") Long IdMascota);
 }
+

@@ -1,6 +1,7 @@
 package com.example.HistorialMedico.model;
 
-import java.sql.Date;
+
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -27,7 +28,7 @@ public class Tratamiento {
     private Long tratamientoId;
 
     @Column(nullable = false)
-    private Date fechaTratamiento;
+    private LocalDate fechaTratamiento;
 
     @Column(nullable = false)
     private String descripcion;

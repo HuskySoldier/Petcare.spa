@@ -15,21 +15,25 @@ public class HistorialMedicoService {
     @Autowired
     private HistorialMedicoRepository historialmedicorepository;
 
-    public List<HistorialMedico> listarHistorialMedico(){
+    public List<HistorialMedico> listarHistorialMedico() {
         return historialmedicorepository.findAll();
     }
 
-    public HistorialMedico buscarHistorialMedicoPorId(Long id){
+    public HistorialMedico buscarHistorialMedicoPorId(Long id) {
         return historialmedicorepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Historial no encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Historial no encontrado"));
     }
 
-    public HistorialMedico agregarHistorialMedico(HistorialMedico historialmedico){
+    public HistorialMedico agregarHistorialMedico(HistorialMedico historialmedico) {
         return historialmedicorepository.save(historialmedico);
     }
 
-    public void eliminarHistorialMedico(Long id){
+    public void eliminarHistorialMedico(Long id) {
         historialmedicorepository.deleteById(id);
+    }
+
+    public List<HistorialMedico> buscarPorIdMascota(Long idMascota) {
+        return historialmedicorepository.findByIdMascota(idMascota);
     }
     
 
