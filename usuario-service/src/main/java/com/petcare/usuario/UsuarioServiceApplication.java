@@ -11,4 +11,6 @@ public class UsuarioServiceApplication {
 	}
 
 }
-//http://localhost:8081/usuarios/1
+//SWAGGER
+//http://localhost:8082/swagger-ui/index.html#/Usuario/usuario
+//http://localhost:8082/usuarios/1

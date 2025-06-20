@@ -22,8 +22,8 @@ public class LoadDatabase {
                 usuarioRepo.save(Usuario.builder()
                         .nombre("Admin")
                         .apellido("Principal")
-                        .email("admin@petcare.com")
-                        .password(encoder.encode("admin123"))
+                        .email("admin@petcare.com")// email para iniciar sesión
+                        .password(encoder.encode("admin123"))//clave para iniciar sesión
                         .telefono("111111111")
                         .rol(Rol.ADMINISTRADOR)
                         .build());
@@ -51,7 +51,7 @@ public class LoadDatabase {
                         .build());
             }
 
-            System.out.println("✅ Verificación completa: usuarios precargados si no existían.");
+            System.out.println(" Verificación completa: usuarios precargados si no existían.");
         };
     }
 }
