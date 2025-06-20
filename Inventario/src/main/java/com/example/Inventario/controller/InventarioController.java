@@ -40,7 +40,7 @@ public class InventarioController {
         return ResponseEntity.ok(inventarioOpt.get());
     } catch (FeignException.NotFound e) {
         return ResponseEntity.status(404).build();
-    } catch (RuntimeException e) {
+    } catch (RuntimeException e) {          
         return ResponseEntity.status(403).body(null);
     }
 }

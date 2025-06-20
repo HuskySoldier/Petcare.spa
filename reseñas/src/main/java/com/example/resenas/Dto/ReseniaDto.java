@@ -7,4 +7,5 @@ public class ReseniaDto {
     private String comentario;
     private int calificacion;
     private Long servicioId;
+    private Long usuarioId;
 }

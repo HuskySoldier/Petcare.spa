@@ -10,6 +10,7 @@ import com.example.resenas.Dto.ReseniaDto;
 import com.example.resenas.Dto.ReseniaResponseDto;
 import com.example.resenas.Dto.ServicioDto;
 import com.example.resenas.client.ServicioClient;
+import com.example.resenas.client.UsuarioClient;
 import com.example.resenas.model.Resenia;
 import com.example.resenas.repository.ReseniaRepository;
 
@@ -23,15 +24,25 @@ public class ReseniaService {
     @Autowired
     private ServicioClient servicioClient;
 
-    
+    @Autowired
+    private UsuarioClient usuarioClient;
 
     public Resenia crearReseniaDesdeDto(ReseniaDto dto) {
         // Validar calificación
         validarCalificacion(dto.getCalificacion());
+
         // Validar comentario
         if (dto.getComentario() == null || !dto.getComentario().matches("^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$")) {
             throw new IllegalArgumentException("El comentario solo puede contener letras y espacios");
         }
+
+        // Validar existencia del usuario
+        try {
+            usuarioClient.obtenerUsuarioPorId(dto.getUsuarioId());
+        } catch (FeignException.NotFound e) {
+            throw new IllegalArgumentException("El usuario con ID " + dto.getUsuarioId() + " no existe.");
+        }
+
         // Validar existencia del servicio
         ServicioDto servicio;
         try {
@@ -39,8 +50,10 @@ public class ReseniaService {
         } catch (FeignException.NotFound e) {
             throw new IllegalArgumentException("El servicio con ID " + dto.getServicioId() + " no existe.");
         }
+
         // Crear y guardar la reseña
         Resenia resenia = new Resenia();
+        resenia.setUsuarioId(dto.getUsuarioId());
         resenia.setComentario(dto.getComentario());
         resenia.setCalificacion(dto.getCalificacion());
         resenia.setServicioId(dto.getServicioId());
@@ -63,11 +76,10 @@ public class ReseniaService {
         response.setIdResenia(resenia.getIdResenia());
         response.setComentario(resenia.getComentario());
         response.setCalificacion(resenia.getCalificacion());
-
+        response.setUsuarioId(resenia.getUsuarioId());
         response.setServicioId(servicio.getIdServicio());
         response.setServicioNombre(servicio.getNombre());
         response.setServicioPrecio(servicio.getPrecio());
-
         return response;
     }
 
@@ -106,6 +118,5 @@ public class ReseniaService {
         reseniaRepository.deleteById(idResenia);
         return true;
     }
-
 
 }

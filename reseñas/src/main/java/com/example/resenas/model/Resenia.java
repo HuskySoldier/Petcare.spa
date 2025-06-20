@@ -1,4 +1,5 @@
 package com.example.resenas.model;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,14 +11,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity 
-@Table(name="resenas") 
+@Entity
+@Table(name = "resenas")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class Resenia {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idResenia;
 
     @Column(length = 100)
@@ -25,7 +26,10 @@ public class Resenia {
 
     @Column(nullable = false)
     private int calificacion;
-    
+
     @Column(nullable = false)
     private Long servicioId;
+
+    @Column(nullable = false)
+    private Long usuarioId;
 }
