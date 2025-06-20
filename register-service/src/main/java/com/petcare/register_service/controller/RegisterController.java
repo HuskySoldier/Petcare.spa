@@ -6,6 +6,20 @@ import com.petcare.register_service.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+// Swagger OpenAPI imports
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+/**
+ * Controlador para registro de usuarios.
+ * 
+ * Implementa endpoint con soporte para HATEOAS (en futuras versiones).
+ */
+@Tag(name = "Registro", description = "Operaciones de registro de usuarios")
 @RestController
 @RequestMapping("/register")
 public class RegisterController {
@@ -13,8 +27,20 @@ public class RegisterController {
     @Autowired
     private RegisterService registerService;
 
-   @PostMapping
-    public RegisterResponse registrar(@RequestBody UsuarioDTO usuarioDTO) {
+    @Operation(
+        summary = "Registrar nuevo usuario",
+        description = "Permite registrar un nuevo usuario en el sistema.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Usuario registrado exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = RegisterResponse.class))
+            )
+        }
+    )
+    @PostMapping
+    public RegisterResponse registrar(
+            @Parameter(description = "Datos del usuario a registrar", required = true) @RequestBody UsuarioDTO usuarioDTO) {
         return registerService.register(usuarioDTO);
     }
 }

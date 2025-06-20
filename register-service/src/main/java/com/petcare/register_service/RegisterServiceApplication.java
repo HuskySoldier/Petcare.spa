@@ -15,11 +15,14 @@ public class RegisterServiceApplication {
     
 
 }
-
-//asi se hace un register{
+//SWAGGER
+//http://localhost:8080/swagger-ui/index.html#/Register/register
+//http://localhost:8080/register
+//consulta en Postman
+//{
 //  "nombre": "Ana",
-//"apellido": "Pérez",
-//"email": "ana.perez@example.com",
-//"telefono": "987654321",
-//"password": "secreta123"
+//  "apellido": "Pérez",
+//  "email": "ana.perez@example.com",
+//  "telefono": "987654321",
+//  "password": "secreta123"
 //}
