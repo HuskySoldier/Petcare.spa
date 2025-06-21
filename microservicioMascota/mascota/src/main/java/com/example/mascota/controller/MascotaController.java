@@ -3,6 +3,12 @@ package com.example.mascota.controller;
 import com.example.mascota.model.Mascota;
 import com.example.mascota.service.MascotaService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +22,23 @@ public class MascotaController {
     @Autowired
     private MascotaService mascotaService;
 
+    @Operation(summary="Permite obtener una lista con todas las mascotas que estan en la clinica")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Generó la lista con todas las mascotas",
+        content=@Content(schema=@Schema(implementation=Mascota.class)))
+    })
+
     // Listar todas las mascotas
     @GetMapping
     public List<Mascota> listarTodas() {
         return mascotaService.listarMacotas();
     }
 
+    @Operation(summary="Permite buscar una mascota por su id")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Se genero la busqueda de la informaciond e la mascota",
+        content=@Content(schema=@Schema(implementation=Mascota.class)))
+    })
     // Buscar mascota por ID
     @GetMapping("/{id}")
     public ResponseEntity<Mascota> obtenerPorId(@PathVariable Long id) {
@@ -31,6 +48,12 @@ public class MascotaController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @Operation(summary="Permite crear una nueva mascota")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Generó el ingreso d la nueva mascota",
+        content=@Content(schema=@Schema(implementation=Mascota.class)))
+    })
 
     // Crear nueva mascota
     @PostMapping
@@ -44,7 +67,12 @@ public class MascotaController {
             return ResponseEntity.internalServerError().body(null);
         }
     }
-
+    
+    @Operation(summary="Permite eliminar una mascota por su id")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Se elimino la mascota por su id",
+        content=@Content(schema=@Schema(implementation=Mascota.class)))
+    })
     // Eliminar mascota
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
@@ -56,6 +84,11 @@ public class MascotaController {
         }
     }
 
+    @Operation(summary="Permite busacar una mascota por el id del dueño")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Se Genero la informacion de la mascota",
+        content=@Content(schema=@Schema(implementation=Mascota.class)))
+    })
     //  Listar mascotas por ID de usuario
     @GetMapping("/usuario/{idUsuario}")
     public ResponseEntity<List<Mascota>> listarPorUsuario(@PathVariable Long idUsuario) {

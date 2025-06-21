@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.veterinario.model.Veterinario;
 import com.example.veterinario.service.VeterinarioService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
 @RestController
@@ -24,6 +29,12 @@ import jakarta.validation.Valid;
 public class VeterinarioController {
     @Autowired
     private VeterinarioService veterinarioservice;
+
+    @Operation(summary="Permite obtener una lista con todos los Veterinarios que hay en la clinica")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Generó la lista con todos los Veterinarios",
+        content=@Content(schema=@Schema(implementation=Veterinario.class)))
+    })
 
     // llama a todos los veterinario
     @GetMapping("/Total")
@@ -36,6 +47,11 @@ public class VeterinarioController {
         return ResponseEntity.ok(veterinarios);
     }
 
+    @Operation(summary="Permite obtener los datos del veteinario con solo el id")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Genero los datos del veterinario llamados por su id",
+        content=@Content(schema=@Schema(implementation=Veterinario.class)))
+    })
     // este es para ver veterinario por id
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerVeterinarioPorId(@PathVariable Long id) {
@@ -47,7 +63,12 @@ public class VeterinarioController {
                     .body("Veterinario con ID " + id + " no encontrado.");
         }
     }
-
+ 
+    @Operation(summary="Permite agregar unnuevo veterinario a la clinica")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Genero el ingreso del nuevo veterinario al sistema",
+        content=@Content(schema=@Schema(implementation=Veterinario.class)))
+    })
     // este es para agregar el veterinario
     @PostMapping
     public ResponseEntity<?> agregarVeterinario(@Valid @RequestBody Veterinario vt) {
@@ -58,6 +79,12 @@ public class VeterinarioController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
         }
     }
+
+    @Operation(summary="Permite eliminar el veterinario por su id")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="elimino al veterinario por su id",
+        content=@Content(schema=@Schema(implementation=Veterinario.class)))
+    })
 
     // delete por id
     @DeleteMapping("/{id}")
@@ -70,6 +97,12 @@ public class VeterinarioController {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
+
+    @Operation(summary="Permite Modificar los datos del veterinario por su Id")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Genero el cambio de los nuevos datos del usuario",
+        content=@Content(schema=@Schema(implementation=Veterinario.class)))
+    })
 
     // modificar el veterinario
     @PutMapping("/{id}")

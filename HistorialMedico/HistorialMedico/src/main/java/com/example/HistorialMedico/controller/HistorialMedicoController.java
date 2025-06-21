@@ -22,6 +22,11 @@ import com.example.HistorialMedico.repository.TratamientoRepository;
 import com.example.HistorialMedico.service.HistorialMedicoService;
 import com.example.HistorialMedico.service.TratamientoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
@@ -43,6 +48,12 @@ public class HistorialMedicoController {
     @Autowired
     private MascotaClient mascotaClient;
 
+    @Operation(summary="Permite obtener una lista con todos los Historiales Medicos")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Generó la lista con todos los Historiales Medicos",
+        content=@Content(schema=@Schema(implementation=HistorialMedico.class)))
+    })
+
     // llama a todos los historiales
     @GetMapping
     public ResponseEntity<List<HistorialMedico>> listarHistorialMedico() {
@@ -54,12 +65,24 @@ public class HistorialMedicoController {
         return ResponseEntity.ok(historialMedicos);
     }
 
+    @Operation(summary="Permite agregar un Historial medico")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Generó El nuevo historial Medico",
+        content=@Content(schema=@Schema(implementation=HistorialMedico.class)))
+    })
+
     // agregar un historial medico
     @PostMapping
     public ResponseEntity<HistorialMedico> agregarHistorialMedico(@Valid @RequestBody HistorialMedico hm) {
         HistorialMedico historialMedico2 = historialmedicoservice.agregarHistorialMedico(hm);
         return ResponseEntity.status(HttpStatus.CREATED).body(historialMedico2);
     }
+
+    @Operation(summary="Permite agregar un nuevo tratamiento")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Generó El nuevo tratamiento ",
+        content=@Content(schema=@Schema(implementation=HistorialMedico.class)))
+    })
 
     // para agregar un tratamiento
     @PostMapping("/{id}/tratamientos")
@@ -76,6 +99,13 @@ public class HistorialMedicoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
 
+    @Operation(summary="Permite eliminar un Historial medico por su Id")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Se elimino el Historial medico por su id",
+        content=@Content(schema=@Schema(implementation=HistorialMedico.class)))
+    })
+    
+    //eliminar un Historial medico por su id
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteHistorialMedicoPorId(@PathVariable Long id) {
         try {
@@ -86,6 +116,13 @@ public class HistorialMedicoController {
         }
     }
 
+    @Operation(summary="Permite modificar un Historial medico por su id")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Se Generó la modificacion del historial Medico",
+        content=@Content(schema=@Schema(implementation=HistorialMedico.class)))
+    })
+
+    //modificar un Historial medico por su id
     @PutMapping("/{id}")
     public ResponseEntity<HistorialMedico> modificarHistorialMedico(@PathVariable Long id,
             @Valid @RequestBody HistorialMedico historialActualizado) {
@@ -105,7 +142,13 @@ public class HistorialMedicoController {
         }
     }
 
+    @Operation(summary="Permite Obtener un Historial medico por la mascota y us Id ")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode="200", description="Se genero la informacion del historial medico de la mascota",
+        content=@Content(schema=@Schema(implementation=HistorialMedico.class)))
+    })
 
+    //obtener un historial medico por la mascota
     @GetMapping("/mascota/{idMascota}")
     public ResponseEntity<List<HistorialMedico>> obtenerHistorialPorMascota(@PathVariable Long idMascota) {
         List<HistorialMedico> historiales = historialmedicoservice.buscarPorIdMascota(idMascota);
