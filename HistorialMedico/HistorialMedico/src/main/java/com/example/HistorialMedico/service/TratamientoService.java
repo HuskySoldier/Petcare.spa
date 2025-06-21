@@ -12,7 +12,6 @@ import com.example.HistorialMedico.repository.TratamientoRepository;
 @Service
 public class TratamientoService {
 
-
     @Autowired
     private TratamientoRepository tratamientorepository;
 
@@ -27,7 +26,6 @@ public class TratamientoService {
         return tratamientorepository.save(tratamiento);
     }
 
-    
-    
+     
 
 }
