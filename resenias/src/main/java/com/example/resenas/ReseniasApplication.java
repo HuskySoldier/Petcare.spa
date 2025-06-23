@@ -6,9 +6,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients(basePackages = "com.example.Resenas.client")
-public class ResenasApplication {
+public class ReseniasApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ResenasApplication.class, args);
+		SpringApplication.run(ReseniasApplication.class, args);
 	}
 }

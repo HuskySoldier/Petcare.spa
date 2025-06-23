@@ -9,4 +9,9 @@ public class ServicioDto {
     private String descripcion;
     private int precio;
 
+    public ServicioDto(Long idServicio, String nombre, int precio) {
+    this.idServicio = idServicio;
+    this.nombre = nombre;
+    this.precio = precio;
+}
 }

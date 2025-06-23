@@ -1,6 +1,6 @@
 package com.example.Inventario.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 
 import jakarta.persistence.Column;
@@ -13,13 +13,12 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity 
 @Table(name="inventario") 
-@AllArgsConstructor
+
 @NoArgsConstructor
 @Data
 public class Inventario {
@@ -44,4 +43,12 @@ public class Inventario {
     @PastOrPresent(message = "La fecha debe ser actual o pasada")
     @Column(nullable = false)
     private Date fechaUltimaActualizacion;
+    
+    public Inventario(Long idInventario, String nombreInv, int stockActual, int stockMinimo, java.util.Date fechaUltimaActualizacion) {
+    this.idInventario = idInventario;
+    this.nombreInv = nombreInv;
+    this.stockActual = stockActual;
+    this.stockMinimo = stockMinimo;
+    this.fechaUltimaActualizacion = (@PastOrPresent(message = "La fecha debe ser actual o pasada") Date) fechaUltimaActualizacion;
+}
 }

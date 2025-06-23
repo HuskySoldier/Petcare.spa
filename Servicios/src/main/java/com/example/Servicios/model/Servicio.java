@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,7 +33,7 @@ public class Servicio {
     @Column(nullable = false) 
     private String descripcion;
 
-    @NotBlank(message = "El precio no puede estar vacio")
+    @NotNull(message = "El precio no puede estar vacio")
     @Column(nullable = false) 
     private int precio;
 

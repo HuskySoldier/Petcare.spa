@@ -18,15 +18,36 @@ import com.example.Inventario.model.Inventario;
 import com.example.Inventario.service.InventarioService;
 
 import feign.FeignException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.web.bind.annotation.PutMapping;
 
+@Tag(name = "Inventario", description = "Operaciones relacionadas con la gestion del inventario")
 @RestController
 @RequestMapping("/api/v1/inventario")
 public class InventarioController {
     @Autowired
     private InventarioService inventarioService;
-
+    
+    @Operation(
+        summary = "Listar un inventario por id ",
+        description = "Obtiene la lista de todo los inventarios.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Inventario obtenido exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Inventario.class))
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Inventario no encontrado"
+            )
+        }
+    )
     @GetMapping("/{id}") // obtener un inventario por su id, solo si el usuario tiene un rol valido
     public ResponseEntity<Inventario> getInventario(
         @PathVariable("id") Long idInventario, // id del inventario  (parte de la URL)
@@ -45,7 +66,17 @@ public class InventarioController {
     }
 }
 
-    //
+    @Operation(
+        summary = "Listar todos los inventarios",
+        description = "Obtiene la lista de todo los inventarios.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Lista de inventario obtenido exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Inventario.class))
+            )
+        }
+    )
     @GetMapping("/total")
     public ResponseEntity<List<Inventario>> getInventarioTotal(@RequestHeader("X-USER-ID") Long idUsuario) {
     try {
@@ -61,6 +92,17 @@ public class InventarioController {
     }
 }
 
+    @Operation(
+        summary = "Crear un nuevo inventario",
+        description = "Crea una invnetario con los datos proporcionados.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Inventario creado exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Inventario.class))
+            )
+        }
+    )
     // se esta creando el inventario
     @PostMapping
     public ResponseEntity<?> crearInventario(
@@ -76,6 +118,21 @@ public class InventarioController {
         }
     }
 
+    @Operation(
+        summary = "Actualizar completamente un inventario",
+        description = "Actualiza todos los datos de un inventario existente.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Inventario actualizado exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Inventario.class))
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Inventario no encontrado"
+            )
+        }
+    )
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarInventario(
             @PathVariable("id") Long idInventario, // id del inventario  (parte de la URL)
@@ -91,6 +148,21 @@ public class InventarioController {
         }
     }
 
+    @Operation(
+        summary = "Elimina un inventario",
+        description = "Elimina un inventario completamente.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Inventario eliminado exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Inventario.class))
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Inventario no encontrada"
+            )
+        }
+    )
     // Eliminamos el inventario que deseemos
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteInventario(

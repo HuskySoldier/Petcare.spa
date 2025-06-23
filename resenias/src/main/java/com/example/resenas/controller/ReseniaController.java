@@ -22,15 +22,31 @@ import com.example.resenas.Dto.ReseniaResponseDto;
 import com.example.resenas.model.Resenia;
 import com.example.resenas.service.ReseniaService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Resenias", description = "Operaciones relacionadas con la gestion de las resenias")
 @RestController
 @RequestMapping("/api/v1/resena")
 public class ReseniaController {
 
     @Autowired
     private ReseniaService reseniaService;
-
+    @Operation(
+        summary = "Listar todas las resenia ",
+        description = "Obtiene toda la lista de las resenias.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Resenia obtenido exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Resenia.class))
+            )
+        }
+    )
     // buscar todos las reseñas
     @GetMapping("/total")
     public ResponseEntity<?> getTodasLasResenas() {
@@ -43,6 +59,21 @@ public class ReseniaController {
         return ResponseEntity.ok(respuestas);
     }
 
+    @Operation(
+        summary = "Listar una resenia por id ",
+        description = "Obtiene la lista de todas las resenias.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Resenia obtenido exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Resenia.class))
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Resenia no encontrada"
+            )
+        }
+    )
     // buscar un reseña por id
     @GetMapping("/{id}")
     public ResponseEntity<?> getResenia(@PathVariable("id") Long id) {
@@ -57,7 +88,17 @@ public class ReseniaController {
     }
 
 
-
+    @Operation(
+        summary = "Crear una  resenia ",
+        description = "Se crea una resenia.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Resenia creada exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Resenia.class))
+            )
+        }
+    )
     // Se crea una reseña por el dto para no tener problemas con el idresenia
     @PostMapping
     public ResponseEntity<?> crearResenia(@Valid @RequestBody ReseniaDto dto) {
@@ -69,6 +110,21 @@ public class ReseniaController {
         }
     }
 
+    @Operation(
+        summary = "Actualizar una resenia por id ",
+        description = "Se actualiza la resenia por id.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Resenia actualizada exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Resenia.class))
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Resenia no encontrada"
+            )
+        }
+    )
     // Se busca una reseña por mediante el id especifico
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarResenia(@PathVariable("id") Long idResenia,
@@ -87,6 +143,21 @@ public class ReseniaController {
         return ResponseEntity.status(400).body("Error uno ed los campos tiene un dato incorrecto.");
     }
 
+    @Operation(
+        summary = "Se elimina una resenia por id ",
+        description = "Se elimina una resenia resenias por id.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Resenia eliminada exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Resenia.class))
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Resenia no encontrada"
+            )
+        }
+    )
     // Eliminamos la reseña que deseemos
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarResenia(@PathVariable("id") Long idResenia) {

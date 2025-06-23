@@ -22,7 +22,14 @@ import com.example.Servicios.model.Servicio;
 import com.example.Servicios.service.CategoriaService;
 import com.example.Servicios.service.ServicioService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+
+    @Tag(name = "Servicios y Categorias", description = "Operaciones relacionadas con la gestion de los servicios y categorias")
 
 @RestController
 @RequestMapping("/api/v1/servicio")
@@ -33,6 +40,17 @@ public class ServicioController {
     @Autowired
     private CategoriaService categoriaService;
 
+    @Operation(
+        summary = "Listar todas los servicios ",
+        description = "Obtiene toda la lista de los servicios.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Servicio obtenido exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Servicio.class))
+            )
+        }
+    )
     // buscar todos los servicios
     @GetMapping("/total")
     public ResponseEntity<List<Servicio>> getServicio() {
@@ -43,6 +61,21 @@ public class ServicioController {
         return ResponseEntity.ok(servicio);
     }
 
+    @Operation(
+        summary = "Buscar un servicio por id ",
+        description = "Se busca un servicio por id.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Servicio obtenido exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Servicio.class))
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Servicio no encontrado"
+            )
+        }
+    )
     // buscar un servicio por id
     @GetMapping("/{id}")
     public ResponseEntity<?> getServicio(@PathVariable("id") Long idServicio) {
@@ -53,6 +86,17 @@ public class ServicioController {
         return ResponseEntity.ok(servicio.get());
     }
     
+    @Operation(
+        summary = "Se crea un servicio ",
+        description = "Se crea un servicio.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Servicio creado exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Servicio.class))
+            )
+        }
+    )
     // crear un servicio
     @PostMapping
     public ResponseEntity<?> crearServicio(@Valid @RequestBody Servicio servicio) {
@@ -70,18 +114,55 @@ public class ServicioController {
         return ResponseEntity.status(400).body("Error el precio tiene un dato incorrecto.");
     }
 
+    @Operation(
+        summary = "Se crea una categoria ",
+        description = "Se crea una categoria.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Categoria creado exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Categoria.class))
+            )
+        }
+    )
     // crear una categoria
     @PostMapping("/categoria")
     public ResponseEntity<Categoria> crearCategoria(@Valid @RequestBody Categoria categoria) {
         return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.crearCategoria(categoria));
     }
 
+    @Operation(
+        summary = "Listar todas las categorias ",
+        description = "Obtiene toda la lista de las categorias.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Categoria obtenido exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Categoria.class))
+            )
+        }
+    )
     // obtener todas las categoria
     @GetMapping("/categoria")
     public ResponseEntity<List<Categoria>> listarCategoria() {
         return ResponseEntity.ok(categoriaService.listarCategoria());
     }
 
+    @Operation(
+        summary = "Actualiza un servicio por id ",
+        description = "Se actualiza un servicio por id.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Servicio actualizado exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Servicio.class))
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Servicio no encontrado"
+            )
+        }
+    )
     // actualizar un servicio por id
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarServicio(@Valid @PathVariable("id") Long idServicio,
@@ -94,6 +175,21 @@ public class ServicioController {
         }
     }
 
+    @Operation(
+        summary = "Elimina un servicio por id ",
+        description = "Se elimina un servicio por id.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Servicio eliminado exitosamente",
+                content = @Content(mediaType = "application/json", schema = @Schema(implementation = Servicio.class))
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Servicio no encontrado"
+            )
+        }
+    )
     // eliminar un servicio por id
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarServicio(@PathVariable("id") Long idServicio) {

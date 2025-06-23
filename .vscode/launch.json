@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ReseniasApplication",
+            "request": "launch",
+            "mainClass": "com.example.resenas.ReseniasApplication",
+            "projectName": "resenas"
+        },
+        {
+            "type": "java",
+            "name": "ResenasApplication",
+            "request": "launch",
+            "mainClass": "com.example.resenas.ResenasApplication",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "ClinicaServiceApplication",
             "request": "launch",
             "mainClass": "com.petcare.clinica_service.ClinicaServiceApplication",
