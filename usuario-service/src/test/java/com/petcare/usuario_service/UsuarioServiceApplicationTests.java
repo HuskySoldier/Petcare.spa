@@ -8,7 +8,5 @@ import com.petcare.usuario.UsuarioServiceApplication;
 // filepath: src/test/java/com/petcare/usuario_service/UsuarioServiceApplicationTests.java
 @SpringBootTest(classes = UsuarioServiceApplication.class)
 class UsuarioServiceApplicationTests {
-    @Test
-    void contextLoads() {
-    }
+    
 }

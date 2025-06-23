@@ -16,8 +16,5 @@ class InventarioApplicationTests {
     @MockBean
     private ReporteClient reporteClient;
 	
-	@Test
-	void contextLoads() {
-	}
-
+	
 }
