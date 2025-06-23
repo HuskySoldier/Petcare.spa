@@ -10,9 +10,7 @@ public class ClinicaServiceApplication {
         SpringApplication.run(ClinicaServiceApplication.class, args);
     }
 }
-//SWAGGER
-//http://localhost:8019/swagger-ui/index.html#/
-//http://localhost:8019/clinicas
+
 //consulta en Postman
 //{
 // "nombre": "PetCare Central",
