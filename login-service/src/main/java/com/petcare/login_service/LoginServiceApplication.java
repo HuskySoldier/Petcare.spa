@@ -12,7 +12,7 @@ public class LoginServiceApplication {
         SpringApplication.run(LoginServiceApplication.class, args);
     }
 }
-//swagger http://localhost:8079/swagger-ui/index.html#/Login/login
+//swagger http://localhost:8079/loggin
 //loggin con Postman http://localhost:8079/login
 // asi se hace un loggin {
  // "email": "ana.perez@examples.com",
