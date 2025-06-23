@@ -11,7 +11,7 @@ public class ClinicaServiceApplication {
     }
 }
 //SWAGGER
-//http://localhost:8019/swagger-ui/index.html#/
+//http://localhost:8019/clinica
 //http://localhost:8019/clinicas
 //consulta en Postman
 //{
