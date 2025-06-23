@@ -13,19 +13,13 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/usuarios/**",
-                    "/usuario",
-                    "/usuario/",
-                    "/usuario/**",
-                    "/usuarioservice/swagger-ui.html",
-                    "/usuarioservice/swagger-ui/**",
-                    "/usuarioservice/api-docs",
-                    "/usuarioservice/api-docs/**"
-                ).permitAll()
+                .requestMatchers("/usuarios/**").permitAll() // permite acceso sin token
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
             );
         return http.build();
     }
+
+
 
 }

@@ -16,7 +16,7 @@ public class RegisterServiceApplication {
 
 }
 //SWAGGER
-//http://localhost:8080/register/swagger-ui/index.html
+//http://localhost:8080/swagger-ui/index.html#/Register/register
 //http://localhost:8080/register
 //consulta en Postman
 //{
