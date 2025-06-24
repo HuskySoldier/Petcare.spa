@@ -54,4 +54,6 @@ public class HistorialMedico {
     @JsonIgnore()
     private List<Tratamiento> tratamientos;
 
+    
+
 }

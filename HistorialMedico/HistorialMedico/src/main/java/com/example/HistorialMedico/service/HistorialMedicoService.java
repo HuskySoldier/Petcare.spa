@@ -39,7 +39,7 @@ public class HistorialMedicoService {
         }
         UsuarioDTO usuario = usuarioClient.obtenerUsuarioPorId(idUsuario);
         Rol rol = Rol.valueOf(usuario.getRol()); 
-        if (rol != Rol.JEFE_INVENTARIO && rol != Rol.ADMINISTRADOR) {
+        if (rol != Rol.ADMINISTRADOR && rol != Rol.VETERINARIO) {
             throw new RuntimeException(
                     "Acceso denegado: no tienes permisos suficientes para crear un historial médico.");
         }
