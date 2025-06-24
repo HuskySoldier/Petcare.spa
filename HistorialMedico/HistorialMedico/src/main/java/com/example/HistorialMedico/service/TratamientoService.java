@@ -11,6 +11,9 @@ import com.example.HistorialMedico.enums.Rol;
 import com.example.HistorialMedico.model.Tratamiento;
 import com.example.HistorialMedico.repository.TratamientoRepository;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "TratamientoService", description = "Lógica de negocio para tratamientos")
 @Service
 public class TratamientoService {
 

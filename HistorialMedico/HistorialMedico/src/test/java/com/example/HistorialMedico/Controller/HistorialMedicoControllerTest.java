@@ -1,4 +1,4 @@
-package com.example.HistorialMedico.controller;
+package com.example.HistorialMedico.Controller;
 
 import com.example.HistorialMedico.controller.HistorialMedicoController;
 import com.example.HistorialMedico.model.HistorialMedico;
@@ -149,6 +149,10 @@ public class HistorialMedicoControllerTest {
         HistorialMedico actualizado = new HistorialMedico();
         actualizado.setIdMascota(1L);
         actualizado.setComentario("Modificado");
+        // Asegúrate de poblar todos los campos requeridos por validaciones
+        actualizado.setFechaRegistro(LocalDate.now());
+        actualizado.setAntecedentes("Antecedentes test");
+        actualizado.setDiagnostico("Diagnóstico test");
 
         when(historialMedicoService.modificarHistorialMedico(eq(1L), any(HistorialMedico.class), eq(123L)))
                 .thenReturn(actualizado);

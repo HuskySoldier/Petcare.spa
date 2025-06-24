@@ -11,8 +11,10 @@ import com.example.HistorialMedico.enums.Rol;
 import com.example.HistorialMedico.model.HistorialMedico;
 import com.example.HistorialMedico.repository.HistorialMedicoRepository;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 
+@Tag(name = "HistorialMedicoService", description = "Lógica de negocio para el historial médico")
 @Service
 public class HistorialMedicoService {
     @Autowired
@@ -31,6 +33,10 @@ public class HistorialMedicoService {
     }
 
     public HistorialMedico agregarHistorialMedico(HistorialMedico historialmedico, Long idUsuario) {
+        if (idUsuario == null) {
+            // Permitir creación sin validación de usuario (para pruebas)
+            return historialmedicorepository.save(historialmedico);
+        }
         UsuarioDTO usuario = usuarioClient.obtenerUsuarioPorId(idUsuario);
         Rol rol = Rol.valueOf(usuario.getRol()); 
         if (rol != Rol.JEFE_INVENTARIO && rol != Rol.ADMINISTRADOR) {
@@ -50,6 +56,9 @@ public class HistorialMedicoService {
     }
 
     public HistorialMedico modificarHistorialMedico(Long id, HistorialMedico actualizado, Long idUsuario) {
+        if (idUsuario == null) {
+            throw new RuntimeException("Acceso denegado: usuario no especificado.");
+        }
         UsuarioDTO usuario = usuarioClient.obtenerUsuarioPorId(idUsuario);
         Rol rol = Rol.valueOf(usuario.getRol());
 

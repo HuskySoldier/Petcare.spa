@@ -12,4 +12,6 @@ public class HistorialMedicoApplication {
 		SpringApplication.run(HistorialMedicoApplication.class, args);
 	}
 
+	// Para acceder a la documentación Swagger, visita:
+	// http://localhost:8086/swagger-ui.html
 }
