@@ -13,3 +13,15 @@ public class ServiciosApplication {
 	}
 
 }
+//http://localhost:8090/swagger-ui/index.html#/
+/*http://localhost:8090/api/v1/servicio
+ * 
+ * {
+        "nombre": "asd",
+        "descripcion": "123",
+        "precio": 123,
+        "categoria": {
+            "nombreCategoria": "asd"
+        }
+    }
+ */

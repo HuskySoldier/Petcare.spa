@@ -1,6 +1,7 @@
 package com.example.Servicios.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
@@ -18,18 +19,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(MockitoExtension.class)//habilitar la inicialización automatica de los mocks
 public class ServicioServiceTest {
 
     @Mock
     private ServicioRepository servicioRepository;
 
-    @InjectMocks
+    @InjectMocks// objeto de prueba los mocks inyectados
     private ServicioService servicioService;
 
     private Servicio servicioValido;
 
-    @BeforeEach
+    @BeforeEach// Este método se ejecuta automáticamente **antes de cada test** inicializar objetos comunes
+                // * o preparar datos necesarios para cada uno de los métodos de prueba de forma independiente
     public void setUp() {
         Categoria categoria = new Categoria();
         categoria.setNombreCategoria("Veterinaria");

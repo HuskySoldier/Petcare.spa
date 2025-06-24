@@ -12,3 +12,13 @@ public class ReseniasApplication {
 		SpringApplication.run(ReseniasApplication.class, args);
 	}
 }
+//http://localhost:8091/swagger-ui/index.html#/
+
+/*http://localhost:8091/api/v1/resena
+ * 
+ * {
+    "comentario": "asd",
+    "calificacion": 4,
+    "servicioId":4
+}
+ */
