@@ -3,15 +3,15 @@ package com.example.mascota.controller;
 import com.example.mascota.model.Mascota;
 import com.example.mascota.service.MascotaService;
 
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,7 +45,7 @@ public class MascotaController {
             @PathVariable("id") Long idMascota,
             @RequestHeader("X-USER-ID") Long idUsuario) {
         try {
-            Mascota mascota =  mascotaService.buscarMascotaPorId(idMascota);
+            Mascota mascota = mascotaService.buscarMascotaPorId(idMascota);
             if (mascota == null) {
                 return ResponseEntity.notFound().build(); // no existe la mascota
             }
@@ -62,14 +62,15 @@ public class MascotaController {
 
     // Crear nueva mascota
     @PostMapping
-    public ResponseEntity<Mascota> crearMascota(@RequestBody Mascota mascota) {
+    public ResponseEntity<?> crearMascota(@Valid @RequestBody Mascota mascota) {
         try {
             Mascota nueva = mascotaService.agregarMascota(mascota);
-            return ResponseEntity.ok(nueva);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         } catch (RuntimeException e) {
-            return ResponseEntity.internalServerError().body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error interno del servidor: " + e.getMessage());
         }
     }
 

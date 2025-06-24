@@ -13,7 +13,6 @@ public interface UsuarioClient {
     UsuarioDTO findByEmail(@PathVariable String email);
 
     @GetMapping("/{id}")
-    UsuarioDTO getUsuarioById(@PathVariable Long id);
+    UsuarioDTO obtenerUsuarioPorId(@PathVariable("id") Long idUsuario);
 
-    UsuarioDTO obtenerUsuarioPorId(Long idUsuario);
 }

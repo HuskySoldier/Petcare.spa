@@ -52,7 +52,7 @@
             // Validar rol del usuario (por ejemplo, solo usuarios tipo CLIENTE pueden tener
             // mascotas)
             Rol rol = Rol.valueOf(usuario.getRol().toUpperCase());
-            if (rol != Rol.CLIENTE) {
+            if (rol != Rol.ADMINISTRADOR && rol != Rol.VETERINARIO && rol != Rol.CLIENTE) {
                 throw new RuntimeException("Solo los usuarios con rol CLIENTE pueden tener mascotas.");
             }
 

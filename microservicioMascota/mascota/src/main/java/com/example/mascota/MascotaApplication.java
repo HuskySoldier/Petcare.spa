@@ -13,3 +13,19 @@ public class MascotaApplication {
 	}
 
 }
+//http://localhost:8083/swagger-ui/index.html#/
+//HEADERS X-USER-ID y NUMERO CLIENTE 2
+//http://localhost:8083/api/v1/mascota
+/*{
+  "nombre": "Fido",
+  "edad": 3,
+  "sexo": "Macho",
+  "idUsuario": 1,
+  "raza": {
+    "nombreRaza": "Labrador"
+  },
+  "especie": {
+    "nombreEspecie": "Perro"
+  }
+}
+ */

@@ -6,8 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,12 +37,16 @@ public class Veterinario {
     @Column(nullable = false)
     private String apellido;
 
+    @NotBlank(message = "La especialidad no puede estar vacía")
     @Column(nullable = false)
     private String especialidad;
 
+    @NotBlank(message = "El correo no puede estar vacío")
+    @Email(message = "El correo debe ser válido")
     @Column(nullable = false)
     private String correo;
 
+    @NotNull(message = "El usuarioId no puede ser nulo")
     @Column(nullable = false)
     private Long usuarioId;
 }
