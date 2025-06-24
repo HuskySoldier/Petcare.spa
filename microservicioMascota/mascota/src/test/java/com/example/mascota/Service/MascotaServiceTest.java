@@ -2,7 +2,6 @@ package com.example.mascota.Service;
 
 import com.example.mascota.client.UsuarioClient;
 import com.example.mascota.dto.UsuarioDTO;
-import com.example.mascota.enums.Rol;
 import com.example.mascota.model.Especie;
 import com.example.mascota.model.Mascota;
 import com.example.mascota.model.Raza;
@@ -56,7 +55,7 @@ public class MascotaServiceTest {
         mascota.setRaza(raza);
         mascota.setEspecie(especie);
 
-        usuarioDTO = new UsuarioDTO(0, null, null, null);
+        usuarioDTO = new UsuarioDTO();
         usuarioDTO.setRol("CLIENTE");
     }
 

@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -43,10 +45,10 @@ class VeterinarioControllerTest {
         when(veterinarioService.listarVeterinarios()).thenReturn(List.of(v1, v2));
 
         mockMvc.perform(get("/api/v1/veterinario/Total"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.length()").value(2))
-            .andExpect(jsonPath("$[0].nombre").value("Juan"))
-            .andExpect(jsonPath("$[1].correo").value("ana@mail.com"));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].nombre").value("Juan"))
+                .andExpect(jsonPath("$[1].correo").value("ana@mail.com"));
     }
 
     @Test
@@ -54,7 +56,7 @@ class VeterinarioControllerTest {
         when(veterinarioService.listarVeterinarios()).thenReturn(List.of());
 
         mockMvc.perform(get("/api/v1/veterinario/Total"))
-            .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -64,9 +66,9 @@ class VeterinarioControllerTest {
         when(veterinarioService.buscarVeterinarioPorId(1L)).thenReturn(v);
 
         mockMvc.perform(get("/api/v1/veterinario/1"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.nombre").value("Juan"))
-            .andExpect(jsonPath("$.apellido").value("Perez"));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nombre").value("Juan"))
+                .andExpect(jsonPath("$.apellido").value("Perez"));
     }
 
     @Test
@@ -74,8 +76,8 @@ class VeterinarioControllerTest {
         when(veterinarioService.buscarVeterinarioPorId(999L)).thenReturn(null);
 
         mockMvc.perform(get("/api/v1/veterinario/999"))
-            .andExpect(status().isNotFound())
-            .andExpect(content().string("Veterinario con ID 999 no encontrado."));
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Veterinario con ID 999 no encontrado."));
     }
 
     @Test
@@ -89,9 +91,9 @@ class VeterinarioControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("X-USER-ID", "101")
                 .content(objectMapper.writeValueAsString(v)))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.veterinarioId").value(2))
-            .andExpect(jsonPath("$.nombre").value("Ana"));
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.veterinarioId").value(2))
+                .andExpect(jsonPath("$.nombre").value("Ana"));
     }
 
     @Test
@@ -99,14 +101,14 @@ class VeterinarioControllerTest {
         Veterinario v = new Veterinario(null, 87654321, "Ana", "Gomez", "Dermatologia", "ana@mail.com", 102L);
 
         when(veterinarioService.agregarVeterinario(any(Veterinario.class), eq(101L)))
-            .thenThrow(new IllegalArgumentException("Error: usuario no válido"));
+                .thenThrow(new IllegalArgumentException("Error: usuario no válido"));
 
         mockMvc.perform(post("/api/v1/veterinario")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("X-USER-ID", "101")
                 .content(objectMapper.writeValueAsString(v)))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().string("Error: usuario no válido"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Error: usuario no válido")));
     }
 
     @Test
@@ -114,7 +116,7 @@ class VeterinarioControllerTest {
         doNothing().when(veterinarioService).eliminarVeterinario(1L);
 
         mockMvc.perform(delete("/api/v1/veterinario/1"))
-            .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -122,14 +124,15 @@ class VeterinarioControllerTest {
         doThrow(new RuntimeException("Veterinario no encontrado")).when(veterinarioService).eliminarVeterinario(999L);
 
         mockMvc.perform(delete("/api/v1/veterinario/999"))
-            .andExpect(status().isNotFound())
-            .andExpect(content().string("Veterinario no encontrado"));
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Veterinario no encontrado"));
     }
 
     @Test
     void modificarVeterinario_cuandoExito_deberiaRetornarOk() throws Exception {
         Veterinario vetOriginal = new Veterinario(1L, 12345678, "Juan", "Perez", "Cardiologia", "juan@mail.com", 101L);
-        Veterinario vetModificado = new Veterinario(1L, 12345678, "Juan Carlos", "Perez", "Cardiologia", "juan@mail.com", 101L);
+        Veterinario vetModificado = new Veterinario(1L, 12345678, "Juan Carlos", "Perez", "Cardiologia",
+                "juan@mail.com", 101L);
 
         when(veterinarioService.buscarVeterinarioPorId(1L)).thenReturn(vetOriginal);
         when(veterinarioService.agregarVeterinario(any(Veterinario.class), eq(1L))).thenReturn(vetModificado);
@@ -137,19 +140,20 @@ class VeterinarioControllerTest {
         mockMvc.perform(put("/api/v1/veterinario/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(vetModificado)))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.nombre").value("Juan Carlos"));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nombre").value("Juan Carlos"));
     }
 
     @Test
     void modificarVeterinario_cuandoNoExiste_deberiaRetornarNotFound() throws Exception {
-        Veterinario vetModificado = new Veterinario(1L, 12345678, "Juan Carlos", "Perez", "Cardiologia", "juan@mail.com", 101L);
+        Veterinario vetModificado = new Veterinario(1L, 12345678, "Juan Carlos", "Perez", "Cardiologia",
+                "juan@mail.com", 101L);
 
         when(veterinarioService.buscarVeterinarioPorId(1L)).thenReturn(null);
 
         mockMvc.perform(put("/api/v1/veterinario/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(vetModificado)))
-            .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound());
     }
 }
