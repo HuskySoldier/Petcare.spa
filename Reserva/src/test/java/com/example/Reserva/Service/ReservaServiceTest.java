@@ -1,6 +1,5 @@
 package com.example.Reserva.Service;
 
-
 import com.example.Reserva.client.UsuarioClient;
 import com.example.Reserva.client.VeterinarioClient;
 import com.example.Reserva.dto.UsuarioDTO;
@@ -89,6 +88,29 @@ class ReservaServiceTest {
     }
 
     @Test
+    void crearReserva_conReservaNula_deberiaLanzarExcepcion() {
+        assertThrows(RuntimeException.class, () -> reservaService.crearReserva(null));
+        verify(reservaRepository, never()).save(any());
+    }
+
+    @Test
+    void crearReserva_veterinarioNoExiste_deberiaLanzarExcepcion() {
+        when(veterinarioClient.obtenerVeterinarioPorId(5L)).thenThrow(new RuntimeException());
+
+        assertThrows(IllegalArgumentException.class, () -> reservaService.crearReserva(reserva));
+        verify(reservaRepository, never()).save(any());
+    }
+
+    @Test
+    void crearReserva_usuarioNoExiste_deberiaLanzarExcepcion() {
+        when(veterinarioClient.obtenerVeterinarioPorId(5L)).thenReturn(vetDTO);
+        when(usuarioClient.findByEmail("vet@ejemplo.com")).thenThrow(new RuntimeException());
+
+        assertThrows(IllegalArgumentException.class, () -> reservaService.crearReserva(reserva));
+        verify(reservaRepository, never()).save(any());
+    }
+
+    @Test
     void actualizarReserva_existente_deberiaActualizarCampos() {
         Reserva nueva = new Reserva(null, Date.valueOf("2025-07-01"), Date.valueOf("2025-07-10"), 5L, 1L, 20000, reserva.getEstado());
 
@@ -120,4 +142,3 @@ class ReservaServiceTest {
         assertEquals(1L, resultado.get(0).getUsuarioId());
     }
 }
-

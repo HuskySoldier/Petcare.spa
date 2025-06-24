@@ -6,12 +6,16 @@
     import org.springframework.stereotype.Service;
 
     import com.example.mascota.client.UsuarioClient;
+    import com.example.mascota.dto.UsuarioDTO;
+    import com.example.mascota.enums.Rol;
     import com.example.mascota.model.Especie;
     import com.example.mascota.model.Mascota;
     import com.example.mascota.model.Raza;
     import com.example.mascota.repository.EspecieRepository;
     import com.example.mascota.repository.MascotaRepository;
     import com.example.mascota.repository.RazaRepository;
+
+    import feign.FeignException;
 
     @Service
     public class MascotaService {
@@ -33,21 +37,26 @@
         }
 
         public Mascota agregarMascota(Mascota mascota) {
-            if (mascota.getIdMascota() != null) {
-                throw new IllegalArgumentException("No debe enviar el idMascota al crear una nueva mascota.");
-            }
-
             if (mascota.getIdUsuario() == null) {
-                throw new IllegalArgumentException("Debe enviar el id del usuario dueño de la mascota.");
+                throw new IllegalArgumentException("Debe indicar el ID del usuario dueño de la mascota.");
             }
 
-            // Validar que el usuario exista usando el microservicio de usuario
+            // Validar existencia del usuario
+            UsuarioDTO usuario;
             try {
-                usuarioClient.getUsuarioById(mascota.getIdUsuario());
-            } catch (Exception e) {
-                throw new RuntimeException("Usuario con ID " + mascota.getIdUsuario() + " no existe.");
+                usuario = usuarioClient.obtenerUsuarioPorId(mascota.getIdUsuario());
+            } catch (FeignException.NotFound e) {
+                throw new RuntimeException("El usuario con ID " + mascota.getIdUsuario() + " no existe.");
             }
 
+            // Validar rol del usuario (por ejemplo, solo usuarios tipo CLIENTE pueden tener
+            // mascotas)
+            Rol rol = Rol.valueOf(usuario.getRol().toUpperCase());
+            if (rol != Rol.CLIENTE) {
+                throw new RuntimeException("Solo los usuarios con rol CLIENTE pueden tener mascotas.");
+            }
+
+            // Validar datos obligatorios de especie y raza
             if (mascota.getRaza() == null || mascota.getRaza().getNombreRaza() == null) {
                 throw new IllegalArgumentException("Debe enviar el nombre de la raza.");
             }
@@ -56,21 +65,13 @@
                 throw new IllegalArgumentException("Debe enviar el nombre de la especie.");
             }
 
-            // Buscar o crear raza
+            // Guardar especie y raza si no existen
             Raza raza = razaRepository.findByNombreRaza(mascota.getRaza().getNombreRaza())
-                    .orElseGet(() -> {
-                        Raza nueva = new Raza();
-                        nueva.setNombreRaza(mascota.getRaza().getNombreRaza());
-                        return razaRepository.save(nueva);
-                    });
+                    .orElseGet(() -> razaRepository.save(new Raza(null, mascota.getRaza().getNombreRaza(), null)));
 
-            // Buscar o crear especie
             Especie especie = especieRepository.findByNombreEspecie(mascota.getEspecie().getNombreEspecie())
-                    .orElseGet(() -> {
-                        Especie nueva = new Especie();
-                        nueva.setNombreEspecie(mascota.getEspecie().getNombreEspecie());
-                        return especieRepository.save(nueva);
-                    });
+                    .orElseGet(
+                            () -> especieRepository.save(new Especie(null, mascota.getEspecie().getNombreEspecie(), null)));
 
             mascota.setRaza(raza);
             mascota.setEspecie(especie);
@@ -91,4 +92,22 @@
         public List<Mascota> obtenerPorIdUsuario(Long idUsuario) {
             return mascotaRepository.findByIdUsuario(idUsuario);
         }
+
+        public List<Mascota> allMascotas(Long idUsuario) {
+            UsuarioDTO usuario = usuarioClient.obtenerUsuarioPorId(idUsuario);
+
+            Rol rol;
+            try {
+                rol = Rol.valueOf(usuario.getRol().trim().toUpperCase());
+            } catch (Exception e) {
+                throw new RuntimeException("Rol no válido o no especificado.");
+            }
+
+            if (rol != Rol.ADMINISTRADOR && rol != Rol.VETERINARIO) {
+                throw new RuntimeException("Acceso denegado: no tienes permisos para ver todas las mascotas.");
+            }
+
+            return mascotaRepository.findAll();
+        }
+
     }

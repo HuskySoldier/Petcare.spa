@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,7 +31,7 @@ class EstadoServiceTest {
 
     private Estado estado;
 
-    @BeforeEach
+    @BeforeEach//se usa para inicializar objetos comunes antes de cada test y evitar repetir código.
     void setUp() {
         estado = new Estado(1L, "Confirmada", "Reserva confirmada", null);
     }
@@ -72,4 +73,16 @@ class EstadoServiceTest {
         assertEquals("Confirmada", resultado.getNombreEstado());
         verify(estadoRepository).findById(1L);
     }
+
+    @Test
+    void crearEstado_conId_deberiaLanzarExcepcion() {
+        Estado estadoConId = new Estado(5L, "Rechazada", "No válida", null);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            estadoService.crearEstado(estadoConId);
+        });
+
+        verify(estadoRepository, never()).save(any());
+    }
+
 }

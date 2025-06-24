@@ -1,13 +1,10 @@
 package com.example.mascota.Controller;
 
-
-import com.example.mascota.model.Mascota;
-import com.example.mascota.model.Raza;
 import com.example.mascota.controller.MascotaController;
-import com.example.mascota.model.Especie;
+import com.example.mascota.model.Mascota;
 import com.example.mascota.service.MascotaService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,11 +17,9 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(MascotaController.class)
 class MascotaControllerTest {
@@ -63,9 +58,25 @@ class MascotaControllerTest {
 
         when(mascotaService.buscarMascotaPorId(1L)).thenReturn(m);
 
-        mockMvc.perform(get("/api/v1/mascota/1"))
+        mockMvc.perform(get("/api/v1/mascota/1").header("X-USER-ID", 10L))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.idMascota").value(1));
+    }
+
+    @Test
+    void obtenerPorId_cuandoNoExiste_deberiaRetornarNotFound() throws Exception {
+        when(mascotaService.buscarMascotaPorId(1L)).thenReturn(null);
+
+        mockMvc.perform(get("/api/v1/mascota/1").header("X-USER-ID", 10L))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void obtenerPorId_cuandoLanzaExcepcion_deberiaRetornarForbidden() throws Exception {
+        when(mascotaService.buscarMascotaPorId(1L)).thenThrow(new RuntimeException("Acceso denegado"));
+
+        mockMvc.perform(get("/api/v1/mascota/1").header("X-USER-ID", 10L))
+            .andExpect(status().isForbidden());
     }
 
     @Test
@@ -87,11 +98,41 @@ class MascotaControllerTest {
     }
 
     @Test
+    void crearMascota_cuandoIllegalArgumentException_deberiaRetornarBadRequest() throws Exception {
+        Mascota m = new Mascota();
+        when(mascotaService.agregarMascota(any(Mascota.class))).thenThrow(new IllegalArgumentException("Datos inválidos"));
+
+        mockMvc.perform(post("/api/v1/mascota")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(m)))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void crearMascota_cuandoRuntimeException_deberiaRetornarInternalServerError() throws Exception {
+        Mascota m = new Mascota();
+        when(mascotaService.agregarMascota(any(Mascota.class))).thenThrow(new RuntimeException("Error interno"));
+
+        mockMvc.perform(post("/api/v1/mascota")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(m)))
+            .andExpect(status().isInternalServerError());
+    }
+
+    @Test
     void eliminar_cuandoExito_deberiaRetornarNoContent() throws Exception {
         doNothing().when(mascotaService).eliminarMascota(1L);
 
         mockMvc.perform(delete("/api/v1/mascota/1"))
             .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void eliminar_cuandoLanzaExcepcion_deberiaRetornarNotFound() throws Exception {
+        doThrow(new RuntimeException("No existe")).when(mascotaService).eliminarMascota(1L);
+
+        mockMvc.perform(delete("/api/v1/mascota/1"))
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -105,5 +146,13 @@ class MascotaControllerTest {
         mockMvc.perform(get("/api/v1/mascota/usuario/10"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
+    void listarPorUsuario_cuandoNoHayMascotas_deberiaRetornarNoContent() throws Exception {
+        when(mascotaService.obtenerPorIdUsuario(10L)).thenReturn(List.of());
+
+        mockMvc.perform(get("/api/v1/mascota/usuario/10"))
+            .andExpect(status().isNoContent());
     }
 }

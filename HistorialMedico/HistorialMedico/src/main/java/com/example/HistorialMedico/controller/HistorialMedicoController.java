@@ -74,7 +74,7 @@ public class HistorialMedicoController {
     // agregar un historial medico
     @PostMapping
     public ResponseEntity<HistorialMedico> agregarHistorialMedico(@Valid @RequestBody HistorialMedico hm) {
-        HistorialMedico historialMedico2 = historialmedicoservice.agregarHistorialMedico(hm);
+        HistorialMedico historialMedico2 = historialmedicoservice.agregarHistorialMedico(hm, null);
         return ResponseEntity.status(HttpStatus.CREATED).body(historialMedico2);
     }
 
@@ -135,7 +135,7 @@ public class HistorialMedicoController {
             hismed.setIdMascota(historialActualizado.getIdMascota());
             hismed.setDiagnostico(historialActualizado.getDiagnostico());
 
-            HistorialMedico actualizado = historialmedicoservice.agregarHistorialMedico(hismed);
+            HistorialMedico actualizado = historialmedicoservice.agregarHistorialMedico(hismed, id);
             return ResponseEntity.ok(actualizado);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();

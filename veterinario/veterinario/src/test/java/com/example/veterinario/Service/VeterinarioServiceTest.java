@@ -1,7 +1,5 @@
 package com.example.veterinario.Service;
 
-
-
 import com.example.veterinario.client.VeterinarioClient;
 import com.example.veterinario.dto.UsuarioDTO;
 import com.example.veterinario.model.Veterinario;
@@ -52,17 +50,21 @@ class VeterinarioServiceTest {
     @Test
     void agregarVeterinario_datosValidos_deberiaGuardarYRetornarVeterinario() {
         Veterinario v = new Veterinario(null, 12345678, "Juan", "Perez", "Cardiologia", "juan@mail.com", 101L);
-        UsuarioDTO usuarioDTO = new UsuarioDTO(); // puede estar vacío
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setRol("ADMINISTRADOR");
 
         when(veterinarioClient.findById(101L))
-                .thenReturn(new ResponseEntity<>(usuarioDTO, HttpStatus.OK));
+                .thenReturn(new ResponseEntity<>(usuarioDTO, HttpStatus.OK))
+                .thenReturn(new ResponseEntity<>(usuarioDTO, HttpStatus.OK)); // para la segunda llamada
+
         when(veterinariorepository.save(v)).thenReturn(v);
 
-        Veterinario resultado = veterinarioService.agregarVeterinario(v);
+        Veterinario resultado = veterinarioService.agregarVeterinario(v, 101L);
 
         assertNotNull(resultado);
         assertEquals("Juan", resultado.getNombre());
-        verify(veterinarioClient, times(1)).findById(101L);
+
+        verify(veterinarioClient, times(2)).findById(101L); // espera dos llamadas
         verify(veterinariorepository, times(1)).save(v);
     }
 
@@ -88,4 +90,3 @@ class VeterinarioServiceTest {
         verify(veterinariorepository, times(1)).deleteById(1L);
     }
 }
-

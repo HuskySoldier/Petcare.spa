@@ -1,12 +1,8 @@
 package com.example.mascota.Service;
 
-
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
 import com.example.mascota.client.UsuarioClient;
+import com.example.mascota.dto.UsuarioDTO;
+import com.example.mascota.enums.Rol;
 import com.example.mascota.model.Especie;
 import com.example.mascota.model.Mascota;
 import com.example.mascota.model.Raza;
@@ -15,20 +11,22 @@ import com.example.mascota.repository.MascotaRepository;
 import com.example.mascota.repository.RazaRepository;
 import com.example.mascota.service.MascotaService;
 
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class MascotaServiceTest {
-
-    @InjectMocks
-    private MascotaService mascotaService;
+public class MascotaServiceTest {
 
     @Mock
     private MascotaRepository mascotaRepository;
@@ -42,77 +40,84 @@ class MascotaServiceTest {
     @Mock
     private UsuarioClient usuarioClient;
 
-    @Test
-    void agregarMascota_CuandoDatosValidos_DeberiaGuardarYRetornarMascota() {
-        // Arrange
-        Mascota mascota = new Mascota();
+    @InjectMocks
+    private MascotaService mascotaService;
+
+    private Mascota mascota;
+    private UsuarioDTO usuarioDTO;
+
+    @BeforeEach//se usa para inicializar objetos comunes antes de cada test y evitar repetir código.
+    void setUp() {
+        Raza raza = new Raza(null, "Labrador", null);
+        Especie especie = new Especie(null, "Perro", null);
+
+        mascota = new Mascota();
         mascota.setIdUsuario(1L);
-        mascota.setRaza(new Raza(null, "Poodle", null));
-        mascota.setEspecie(new Especie(null, "Canino", null));
+        mascota.setRaza(raza);
+        mascota.setEspecie(especie);
 
-        when(usuarioClient.getUsuarioById(1L)).thenReturn(null); // usuario existe
+        usuarioDTO = new UsuarioDTO(0, null, null, null);
+        usuarioDTO.setRol("CLIENTE");
+    }
 
-        Raza raza = new Raza(1L, "Poodle", null);
-        Especie especie = new Especie(1L, "Canino", null);
+    @Test
+    void agregarMascota_datosValidos_deberiaGuardar() {
+        when(usuarioClient.obtenerUsuarioPorId(1L)).thenReturn(usuarioDTO);
+        when(razaRepository.findByNombreRaza("Labrador")).thenReturn(Optional.empty());
+        when(razaRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+        when(especieRepository.findByNombreEspecie("Perro")).thenReturn(Optional.empty());
+        when(especieRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+        when(mascotaRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
-        when(razaRepository.findByNombreRaza("Poodle")).thenReturn(Optional.of(raza));
-        when(especieRepository.findByNombreEspecie("Canino")).thenReturn(Optional.of(especie));
-
-        Mascota mascotaGuardada = new Mascota();
-        mascotaGuardada.setIdMascota(1L);
-        mascotaGuardada.setIdUsuario(1L);
-        mascotaGuardada.setRaza(raza);
-        mascotaGuardada.setEspecie(especie);
-
-        when(mascotaRepository.save(any(Mascota.class))).thenReturn(mascotaGuardada);
-
-        
         Mascota resultado = mascotaService.agregarMascota(mascota);
 
-        // Assert
-        assertNotNull(resultado);
-        assertEquals(1L, resultado.getIdMascota());
-        assertEquals("Poodle", resultado.getRaza().getNombreRaza());
-        assertEquals("Canino", resultado.getEspecie().getNombreEspecie());
-
-        verify(mascotaRepository).save(any(Mascota.class));
+        assertThat(resultado).isNotNull();
+        assertThat(resultado.getRaza().getNombreRaza()).isEqualTo("Labrador");
+        assertThat(resultado.getEspecie().getNombreEspecie()).isEqualTo("Perro");
     }
 
     @Test
-    void agregarMascota_CuandoIdMascotaYaExiste_DeberiaLanzarExcepcion() {
-        Mascota mascota = new Mascota();
-        mascota.setIdMascota(1L); // ya existe
+    void agregarMascota_usuarioNoEsCliente_deberiaLanzarExcepcion() {
+        usuarioDTO.setRol("ADMINISTRADOR");
+        when(usuarioClient.obtenerUsuarioPorId(1L)).thenReturn(usuarioDTO);
 
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> {
-            mascotaService.agregarMascota(mascota);
-        });
-
-        assertEquals("No debe enviar el idMascota al crear una nueva mascota.", ex.getMessage());
+        assertThatThrownBy(() -> mascotaService.agregarMascota(mascota))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Solo los usuarios con rol CLIENTE");
     }
 
     @Test
-    void agregarMascota_CuandoUsuarioNoExiste_DeberiaLanzarExcepcion() {
-        Mascota mascota = new Mascota();
-        mascota.setIdUsuario(99L);
-        mascota.setRaza(new Raza(null, "Poodle", null));
-        mascota.setEspecie(new Especie(null, "Canino", null));
+    void buscarMascotaPorId_existente_deberiaRetornarMascota() {
+        Mascota m = new Mascota();
+        m.setIdMascota(1L);
+        when(mascotaRepository.findById(1L)).thenReturn(Optional.of(m));
 
-        doThrow(new RuntimeException()).when(usuarioClient).getUsuarioById(99L);
+        Mascota resultado = mascotaService.buscarMascotaPorId(1L);
 
-        Exception ex = assertThrows(RuntimeException.class, () -> {
-            mascotaService.agregarMascota(mascota);
-        });
-
-        assertEquals("Usuario con ID 99 no existe.", ex.getMessage());
+        assertThat(resultado).isNotNull();
+        assertThat(resultado.getIdMascota()).isEqualTo(1L);
     }
 
     @Test
-    void listarMascotas_DeberiaRetornarListaDeMascotas() {
-        when(mascotaRepository.findAll()).thenReturn(List.of(new Mascota(), new Mascota()));
+    void buscarMascotaPorId_inexistente_deberiaLanzarExcepcion() {
+        when(mascotaRepository.findById(1L)).thenReturn(Optional.empty());
 
-        List<Mascota> resultado = mascotaService.listarMacotas();
+        assertThatThrownBy(() -> mascotaService.buscarMascotaPorId(1L))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Mascota no encontrada");
+    }
 
-        assertEquals(2, resultado.size());
-        verify(mascotaRepository).findAll();
+    @Test
+    void eliminarMascota_deberiaEliminarPorId() {
+        mascotaService.eliminarMascota(1L);
+        verify(mascotaRepository).deleteById(1L);
+    }
+
+    @Test
+    void obtenerPorIdUsuario_deberiaRetornarListaMascotas() {
+        when(mascotaRepository.findByIdUsuario(1L)).thenReturn(List.of(new Mascota()));
+        List<Mascota> resultado = mascotaService.obtenerPorIdUsuario(1L);
+
+        assertThat(resultado).hasSize(1);
     }
 }

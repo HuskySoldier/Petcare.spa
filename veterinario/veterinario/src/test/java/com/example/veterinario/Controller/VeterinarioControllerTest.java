@@ -1,23 +1,24 @@
 package com.example.veterinario.Controller;
 
-
 import com.example.veterinario.controller.VeterinarioController;
 import com.example.veterinario.model.Veterinario;
 import com.example.veterinario.service.VeterinarioService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
 import static org.mockito.Mockito.*;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -49,6 +50,14 @@ class VeterinarioControllerTest {
     }
 
     @Test
+    void listarVeterinarios_cuandoNoHayDatos_deberiaRetornarNoContent() throws Exception {
+        when(veterinarioService.listarVeterinarios()).thenReturn(List.of());
+
+        mockMvc.perform(get("/api/v1/veterinario/Total"))
+            .andExpect(status().isNoContent());
+    }
+
+    @Test
     void obtenerVeterinarioPorId_cuandoExiste_deberiaRetornarOk() throws Exception {
         Veterinario v = new Veterinario(1L, 12345678, "Juan", "Perez", "Cardiologia", "juan@mail.com", 101L);
 
@@ -61,18 +70,43 @@ class VeterinarioControllerTest {
     }
 
     @Test
+    void obtenerVeterinarioPorId_cuandoNoExiste_deberiaRetornarNotFound() throws Exception {
+        when(veterinarioService.buscarVeterinarioPorId(999L)).thenReturn(null);
+
+        mockMvc.perform(get("/api/v1/veterinario/999"))
+            .andExpect(status().isNotFound())
+            .andExpect(content().string("Veterinario con ID 999 no encontrado."));
+    }
+
+    @Test
     void agregarVeterinario_cuandoDatosValidos_deberiaRetornarCreated() throws Exception {
         Veterinario v = new Veterinario(null, 87654321, "Ana", "Gomez", "Dermatologia", "ana@mail.com", 102L);
         Veterinario vGuardado = new Veterinario(2L, 87654321, "Ana", "Gomez", "Dermatologia", "ana@mail.com", 102L);
 
-        when(veterinarioService.agregarVeterinario(any(Veterinario.class))).thenReturn(vGuardado);
+        when(veterinarioService.agregarVeterinario(any(Veterinario.class), eq(101L))).thenReturn(vGuardado);
 
         mockMvc.perform(post("/api/v1/veterinario")
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("X-USER-ID", "101")
                 .content(objectMapper.writeValueAsString(v)))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.veterinarioId").value(2))
             .andExpect(jsonPath("$.nombre").value("Ana"));
+    }
+
+    @Test
+    void agregarVeterinario_cuandoServicioLanzaError_deberiaRetornarBadRequest() throws Exception {
+        Veterinario v = new Veterinario(null, 87654321, "Ana", "Gomez", "Dermatologia", "ana@mail.com", 102L);
+
+        when(veterinarioService.agregarVeterinario(any(Veterinario.class), eq(101L)))
+            .thenThrow(new IllegalArgumentException("Error: usuario no válido"));
+
+        mockMvc.perform(post("/api/v1/veterinario")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("X-USER-ID", "101")
+                .content(objectMapper.writeValueAsString(v)))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().string("Error: usuario no válido"));
     }
 
     @Test
@@ -84,17 +118,38 @@ class VeterinarioControllerTest {
     }
 
     @Test
+    void deleteVeterinarioPorId_cuandoNoExiste_deberiaRetornarNotFound() throws Exception {
+        doThrow(new RuntimeException("Veterinario no encontrado")).when(veterinarioService).eliminarVeterinario(999L);
+
+        mockMvc.perform(delete("/api/v1/veterinario/999"))
+            .andExpect(status().isNotFound())
+            .andExpect(content().string("Veterinario no encontrado"));
+    }
+
+    @Test
     void modificarVeterinario_cuandoExito_deberiaRetornarOk() throws Exception {
         Veterinario vetOriginal = new Veterinario(1L, 12345678, "Juan", "Perez", "Cardiologia", "juan@mail.com", 101L);
         Veterinario vetModificado = new Veterinario(1L, 12345678, "Juan Carlos", "Perez", "Cardiologia", "juan@mail.com", 101L);
 
         when(veterinarioService.buscarVeterinarioPorId(1L)).thenReturn(vetOriginal);
-        when(veterinarioService.agregarVeterinario(any(Veterinario.class))).thenReturn(vetModificado);
+        when(veterinarioService.agregarVeterinario(any(Veterinario.class), eq(1L))).thenReturn(vetModificado);
 
         mockMvc.perform(put("/api/v1/veterinario/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(vetModificado)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.nombre").value("Juan Carlos"));
+    }
+
+    @Test
+    void modificarVeterinario_cuandoNoExiste_deberiaRetornarNotFound() throws Exception {
+        Veterinario vetModificado = new Veterinario(1L, 12345678, "Juan Carlos", "Perez", "Cardiologia", "juan@mail.com", 101L);
+
+        when(veterinarioService.buscarVeterinarioPorId(1L)).thenReturn(null);
+
+        mockMvc.perform(put("/api/v1/veterinario/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(vetModificado)))
+            .andExpect(status().isNotFound());
     }
 }

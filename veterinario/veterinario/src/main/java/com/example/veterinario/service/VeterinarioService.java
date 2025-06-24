@@ -23,12 +23,18 @@ public class VeterinarioService {
     @Autowired
     private VeterinarioClient veterinarioClient;
 
-    public Veterinario agregarVeterinario(Veterinario veterinario) {
+    public Veterinario agregarVeterinario(Veterinario veterinario, Long idUsuario) {
+        // Validar que el usuario que hace la petición tenga rol ADMINISTRADOR o
+        // JEFE_CLINICA
+        UsuarioDTO usuario = obtenerUsuarioDesdeClient(idUsuario);
+        validarAccesoPorRol(usuario.getRol(), List.of("ADMINISTRADOR", "JEFE_CLINICA"));
+
+        // Validar que el veterinarioId no esté seteado (crear nuevo solo)
         if (veterinario.getVeterinarioId() != null) {
             throw new IllegalArgumentException("No debe enviar el veterinarioId al crear un nuevo veterinario.");
         }
 
-        // Validar que usuarioId exista en el microservicio de usuario
+        // Validar que el usuarioId del veterinario exista en microservicio usuario
         try {
             ResponseEntity<UsuarioDTO> response = veterinarioClient.findById(veterinario.getUsuarioId());
             if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
@@ -41,6 +47,22 @@ public class VeterinarioService {
         return veterinariorepository.save(veterinario);
     }
 
+    // Método auxiliar para obtener usuario desde cliente
+    private UsuarioDTO obtenerUsuarioDesdeClient(Long idUsuario) {
+        ResponseEntity<UsuarioDTO> response = veterinarioClient.findById(idUsuario);
+        if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
+            throw new RuntimeException("Usuario autenticado no encontrado o no válido");
+        }
+        return response.getBody();
+    }
+
+    // Método para validar roles
+    private void validarAccesoPorRol(String rolUsuario, List<String> rolesPermitidos) {
+        if (rolUsuario == null || !rolesPermitidos.contains(rolUsuario.toUpperCase())) {
+            throw new RuntimeException("Acceso denegado: no tienes permisos para realizar esta acción.");
+        }
+    }
+
     public Veterinario buscarVeterinarioPorId(Long id) {
         return veterinariorepository.findById(id).orElse(null);
     }
@@ -50,4 +72,3 @@ public class VeterinarioService {
     }
 
 }
-
