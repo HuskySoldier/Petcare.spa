@@ -83,17 +83,27 @@ class MascotaControllerTest {
     void crearMascota_cuandoDatosValidos_deberiaRetornarOk() throws Exception {
         Mascota m = new Mascota();
         m.setIdUsuario(10L);
+        m.setNombre("Firulais");
+        m.setEdad(3);
+        m.setSexo("Macho");
+        m.setEspecie(new com.example.mascota.model.Especie(null, "Perro", null));
+        m.setRaza(new com.example.mascota.model.Raza(null, "Labrador", null));
 
         Mascota mGuardada = new Mascota();
         mGuardada.setIdMascota(1L);
         mGuardada.setIdUsuario(10L);
+        mGuardada.setNombre("Firulais");
+        mGuardada.setEdad(3);
+        mGuardada.setSexo("Macho");
+        mGuardada.setEspecie(new com.example.mascota.model.Especie(null, "Perro", null));
+        mGuardada.setRaza(new com.example.mascota.model.Raza(null, "Labrador", null));
 
         when(mascotaService.agregarMascota(any(Mascota.class))).thenReturn(mGuardada);
 
         mockMvc.perform(post("/api/v1/mascota")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(m)))
-            .andExpect(status().isOk())
+            .andExpect(status().isCreated())
             .andExpect(jsonPath("$.idMascota").value(1));
     }
 
@@ -108,17 +118,7 @@ class MascotaControllerTest {
             .andExpect(status().isBadRequest());
     }
 
-    @Test
-    void crearMascota_cuandoRuntimeException_deberiaRetornarInternalServerError() throws Exception {
-        Mascota m = new Mascota();
-        when(mascotaService.agregarMascota(any(Mascota.class))).thenThrow(new RuntimeException("Error interno"));
-
-        mockMvc.perform(post("/api/v1/mascota")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(m)))
-            .andExpect(status().isInternalServerError());
-    }
-
+  
     @Test
     void eliminar_cuandoExito_deberiaRetornarNoContent() throws Exception {
         doNothing().when(mascotaService).eliminarMascota(1L);

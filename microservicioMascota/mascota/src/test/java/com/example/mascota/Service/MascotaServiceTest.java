@@ -82,7 +82,7 @@ public class MascotaServiceTest {
 
         assertThatThrownBy(() -> mascotaService.agregarMascota(mascota))
                 .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Solo los usuarios con rol CLIENTE");
+                .hasMessageContaining("Solo los usuarios con rol CLIENTE pueden tener mascotas");
     }
 
     @Test

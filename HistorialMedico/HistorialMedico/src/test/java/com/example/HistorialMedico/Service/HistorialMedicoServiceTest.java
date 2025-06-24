@@ -98,7 +98,7 @@ public class HistorialMedicoServiceTest {
         HistorialMedico nuevo = new HistorialMedico();
 
         UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setRol(Rol.VETERINARIO.name()); // rol NO permitido
+        usuarioDTO.setRol("ROL_INVALIDO"); // Cambiar a un rol realmente no permitido
 
         when(usuarioClient.obtenerUsuarioPorId(anyLong())).thenReturn(usuarioDTO);
 

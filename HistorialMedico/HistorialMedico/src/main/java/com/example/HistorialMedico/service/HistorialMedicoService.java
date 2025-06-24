@@ -38,12 +38,16 @@ public class HistorialMedicoService {
             return historialmedicorepository.save(historialmedico);
         }
         UsuarioDTO usuario = usuarioClient.obtenerUsuarioPorId(idUsuario);
-        Rol rol = Rol.valueOf(usuario.getRol()); 
+        Rol rol;
+        try {
+            rol = Rol.valueOf(usuario.getRol());
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new RuntimeException("Acceso denegado: no tienes permisos suficientes para crear un historial médico.");
+        }
         if (rol != Rol.ADMINISTRADOR && rol != Rol.VETERINARIO) {
             throw new RuntimeException(
                     "Acceso denegado: no tienes permisos suficientes para crear un historial médico.");
         }
-
         return historialmedicorepository.save(historialmedico);
     }
 
