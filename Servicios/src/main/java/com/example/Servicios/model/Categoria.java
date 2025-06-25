@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,16 +24,33 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Schema(
+    name = "Categoria",
+    description = "Entidad que representa una categoría de servicios"
+)
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(
+        description = "Identificador único de la categoría",
+        example = "1",
+        accessMode = Schema.AccessMode.READ_ONLY
+    )
     private Long idCategoria;
     
     @NotBlank(message = "La categoria no puede estar vacío")
     @Column(nullable = false)
+    @Schema(
+        description = "Nombre de la categoría",
+        example = "Estética",
+        required = true
+    )
     private String nombreCategoria;
 
     @OneToMany(mappedBy = "categoria",cascade= CascadeType.ALL)
     @JsonIgnore
+    @Schema(
+        description = "Lista de servicios asociados a la categoría"
+    )
     List<Servicio> Servicio;
 }
