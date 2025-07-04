@@ -3,6 +3,7 @@ package com.example.Inventario.client;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.example.Inventario.dto.ReporteDto;
 
@@ -10,5 +11,9 @@ import com.example.Inventario.dto.ReporteDto;
 public interface ReporteClient {
 
     @PostMapping("/api/v1/reporte")
-    ReporteDto crearReporte(@RequestBody ReporteDto reporte);
+    ReporteDto crearReporte(
+        @RequestBody ReporteDto reporte,
+        @RequestHeader("X-USER-ID") Long idUsuario
+    );
 }
+

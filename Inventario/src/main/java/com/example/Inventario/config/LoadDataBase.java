@@ -15,7 +15,8 @@ import com.example.Inventario.service.InventarioService;
 public class LoadDataBase {
 
     @Bean
-    public CommandLineRunner loadInitialData(InventarioService inventarioService,InventarioRepository inventarioRepository) {
+    public CommandLineRunner loadInitialData(InventarioService inventarioService,
+            InventarioRepository inventarioRepository) {
         return args -> {
             Inventario inv1 = new Inventario();
             inv1.setNombreInv("Vacuna antirrábica");
@@ -29,7 +30,7 @@ public class LoadDataBase {
             inv2.setStockMinimo(5);
             inv2.setFechaUltimaActualizacion(Date.valueOf(LocalDate.now()));
             Inventario guardado = inventarioRepository.save(inv2);
-            inventarioService.verificarYReportarStock(guardado);
+            inventarioService.verificarYReportarStock(guardado, 1L);
 
             Inventario inv3 = new Inventario();
             inv3.setNombreInv("Alimento seco para gatos");
@@ -40,7 +41,7 @@ public class LoadDataBase {
             inventarioRepository.save(inv1);
             inventarioRepository.save(inv2);
             inventarioRepository.save(inv3);
-            
+
         };
     }
 

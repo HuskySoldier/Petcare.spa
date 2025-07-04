@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@EnableFeignClients(basePackages = "com.example.Reporte.client")
+@EnableFeignClients(basePackages = "com.example.Reportes.config")
 public class ReportesinvApplication {
 
 	public static void main(String[] args) {

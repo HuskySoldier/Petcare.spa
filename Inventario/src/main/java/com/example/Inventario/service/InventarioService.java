@@ -1,6 +1,6 @@
 package com.example.Inventario.service;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +62,7 @@ public class InventarioService {
         }
 
         Inventario inventarioGuardado = inventarioRepository.save(inventario);
-        verificarYReportarStock(inventarioGuardado);
+        verificarYReportarStock(inventarioGuardado, idUsuario);
         return inventarioGuardado;
     }
 
@@ -135,15 +135,16 @@ public class InventarioService {
     }
 
     // Verificacion del reporte stock
-    public void verificarYReportarStock(Inventario inventario) {
-        if (inventario.getStockActual() <= inventario.getStockMinimo()) {
-            ReporteDto reporteDto = new ReporteDto(
-                    inventario.getIdInventario(),
-                    "Stock bajo para el producto: " + inventario.getNombreInv(),
-                    new Date(System.currentTimeMillis()));
-
-            reporteClient.crearReporte(reporteDto);
-        }
+    public void verificarYReportarStock(Inventario inventario, Long idUsuario) {
+    if (inventario.getStockActual() <= inventario.getStockMinimo()) {
+        ReporteDto reporteDto = new ReporteDto(
+                inventario.getIdInventario(),
+                "Stock bajo para el producto: " + inventario.getNombreInv(),
+                new Date()
+        );
+        reporteClient.crearReporte(reporteDto, idUsuario);
     }
+}
+
 
 }
