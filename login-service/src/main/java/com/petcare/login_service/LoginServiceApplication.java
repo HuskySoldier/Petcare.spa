@@ -15,6 +15,6 @@ public class LoginServiceApplication {
 //swagger http://localhost:8079/loggin
 //loggin con Postman http://localhost:8079/login
 // asi se hace un loggin {
- // "email": "ana.perez@examples.com",
-  //"password": "secretas123"
+///"email": "admin@petcare.com",
+//"password": "admin123"
 //}

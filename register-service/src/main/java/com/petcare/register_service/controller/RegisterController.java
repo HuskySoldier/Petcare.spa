@@ -32,9 +32,17 @@ public class RegisterController {
         description = "Permite registrar un nuevo usuario en el sistema.",
         responses = {
             @ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Usuario registrado exitosamente",
                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = RegisterResponse.class))
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Datos inválidos"
+            ),
+            @ApiResponse(
+                responseCode = "409",
+                description = "Usuario ya registrado"
             )
         }
     )

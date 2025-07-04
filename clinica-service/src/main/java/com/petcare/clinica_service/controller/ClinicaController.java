@@ -88,9 +88,13 @@ public class ClinicaController {
         description = "Crea una nueva clínica con los datos proporcionados.",
         responses = {
             @ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Clínica creada exitosamente",
                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Clinica.class))
+            ),
+            @ApiResponse(
+                responseCode = "409",
+                description = "Clínica duplicada"
             )
         }
     )
