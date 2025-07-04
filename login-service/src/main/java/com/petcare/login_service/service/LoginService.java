@@ -22,15 +22,12 @@ public class LoginService {
         UsuarioDTO usuario = null;
 
         try {
-            // Llamada a UsuarioService a través de Feign
             usuario = usuarioClient.findByEmail(request.getEmail());
         } catch (Exception e) {
-            // Log the exception (optional for debugging)
             e.printStackTrace();
             return new LoginResponse("Error al conectar con el servicio de usuario: " + e.getMessage(), false);
         }
 
-        // Verificar si el usuario no existe
         if (usuario == null) {
             return new LoginResponse("Usuario no encontrado", false);
         }

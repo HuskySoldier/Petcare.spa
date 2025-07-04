@@ -2,10 +2,18 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TestBCrypt",
+            "request": "launch",
+            "mainClass": "com.petcare.login_service.config.TestBCrypt",
+            "projectName": "login-service"
+        },
+        {
+            "type": "java",
             "name": "ReseniasApplication",
             "request": "launch",
             "mainClass": "com.example.resenas.ReseniasApplication",
-            "projectName": "resenas"
+            "projectName": "resenas",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=56367 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=resenas"
         },
         {
             "type": "java",
@@ -34,7 +42,8 @@
             "name": "VeterinarioApplication",
             "request": "launch",
             "mainClass": "com.example.veterinario.VeterinarioApplication",
-            "projectName": "veterinario"
+            "projectName": "veterinario",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=56370 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=veterinario"
         },
         {
             "type": "java",
@@ -42,7 +51,7 @@
             "request": "launch",
             "mainClass": "com.example.Servicios.ServiciosApplication",
             "projectName": "Servicios",
-            "vmArgs": " -Dcom.sun.management.jmxremote"
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=56369 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Servicios"
         },
         {
             "type": "java",
@@ -50,7 +59,7 @@
             "request": "launch",
             "mainClass": "com.example.Inventario.InventarioApplication",
             "projectName": "Inventario",
-            "vmArgs": " -Dcom.sun.management.jmxremote"
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=56364 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Inventario"
         },
         {
             "type": "java",
@@ -61,7 +70,7 @@
             "projectName": "Reportes",
             "args": "",
             "envFile": "${workspaceFolder}/.env",
-            "vmArgs": " -Dcom.sun.management.jmxremote"
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=56366 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Reportes"
         },
         {
             "type": "java",
@@ -82,7 +91,8 @@
             "mainClass": "com.example.HistorialMedico.HistorialMedicoApplication",
             "projectName": "HistorialMedico",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=56363 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=HistorialMedico"
         },
         {
             "type": "java",
@@ -92,7 +102,8 @@
             "mainClass": "com.petcare.login_service.LoginServiceApplication",
             "projectName": "login-service",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=56348 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=login-service"
         },
         {
             "type": "java",
@@ -102,7 +113,8 @@
             "mainClass": "com.example.mascota.MascotaApplication",
             "projectName": "mascota",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=56365 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=mascota"
         },
         {
             "type": "java",
@@ -112,7 +124,8 @@
             "mainClass": "com.petcare.register_service.RegisterServiceApplication",
             "projectName": "register-service",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=56355 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=register-service"
         },
         {
             "type": "java",
@@ -122,7 +135,8 @@
             "mainClass": "com.example.Reserva.ReservaApplication",
             "projectName": "Reserva",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=56368 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Reserva"
         },
         {
             "type": "java",
@@ -132,7 +146,8 @@
             "mainClass": "com.petcare.usuario.UsuarioServiceApplication",
             "projectName": "usuario-service",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=56323 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=usuario-service"
         }
     ]
 }

@@ -5,7 +5,6 @@ import com.petcare.register_service.dto.*;
 
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -37,16 +36,14 @@ public class RegisterService {
             throw new RuntimeException("Error al verificar si el usuario ya está registrado");
         }
 
-        // Encriptar la contraseña
-        String hashedPassword = BCrypt.hashpw(usuarioDTO.getPassword(), BCrypt.gensalt());
-
         // Crear nuevo usuario
         UsuarioDTO nuevo = new UsuarioDTO();
         nuevo.setNombre(usuarioDTO.getNombre());
         nuevo.setApellido(usuarioDTO.getApellido());
         nuevo.setEmail(usuarioDTO.getEmail());
         nuevo.setTelefono(usuarioDTO.getTelefono());
-        nuevo.setPassword(hashedPassword);
+        // Enviar la contraseña en texto plano
+        nuevo.setPassword(usuarioDTO.getPassword());
         nuevo.setRol("CLIENTE");
 
         try {
