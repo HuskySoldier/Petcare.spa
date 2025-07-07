@@ -1,4 +1,4 @@
-package com.example.HistorialMedico.service;
+package com.example.HistorialMedico.Service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,7 +17,7 @@ import com.example.HistorialMedico.enums.Rol;
 import com.example.HistorialMedico.model.HistorialMedico;
 import com.example.HistorialMedico.model.Tratamiento;
 import com.example.HistorialMedico.repository.TratamientoRepository;
-
+import com.example.HistorialMedico.service.TratamientoService;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

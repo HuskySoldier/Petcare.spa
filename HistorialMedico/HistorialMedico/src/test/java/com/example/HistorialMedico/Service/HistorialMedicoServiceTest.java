@@ -1,7 +1,9 @@
-package com.example.HistorialMedico.service;
+package com.example.HistorialMedico.Service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
@@ -14,7 +16,7 @@ import com.example.HistorialMedico.dto.UsuarioDTO;
 import com.example.HistorialMedico.enums.Rol;
 import com.example.HistorialMedico.model.HistorialMedico;
 import com.example.HistorialMedico.repository.HistorialMedicoRepository;
-
+import com.example.HistorialMedico.service.HistorialMedicoService;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;

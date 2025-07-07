@@ -3,8 +3,6 @@ package com.petcare.usuario.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -49,7 +47,7 @@ public class Usuario {
     @Schema(description = "Teléfono de contacto", example = "+56912345678")
     private String telefono;
 
-    @Enumerated(EnumType.STRING)
     @Schema(description = "Rol del usuario", example = "CLIENTE")
-    private Rol rol;
+    private String rol;
+
 }

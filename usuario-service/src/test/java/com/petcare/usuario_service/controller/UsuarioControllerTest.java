@@ -2,7 +2,6 @@ package com.petcare.usuario_service.controller;
 
 
 import com.petcare.usuario.controller.UsuarioController;
-import com.petcare.usuario.model.Rol;
 import com.petcare.usuario.model.Usuario;
 import com.petcare.usuario.repository.UsuarioRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +31,7 @@ class UsuarioControllerTest {
         usuario.setNombre("Juan");
         usuario.setEmail("juan@correo.com");
         usuario.setPassword("password");
-        usuario.setRol(Rol.CLIENTE);
+        usuario.setRol("CLIENTE");
     }
 
     @Test

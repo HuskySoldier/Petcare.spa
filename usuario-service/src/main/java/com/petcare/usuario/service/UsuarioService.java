@@ -1,7 +1,6 @@
 package com.petcare.usuario.service;
 
 import com.petcare.usuario.DTO.RegisterRequest;
-import com.petcare.usuario.model.Rol;
 import com.petcare.usuario.model.Usuario;
 import com.petcare.usuario.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ public class UsuarioService {
                 .email(request.getEmail())
                 .password(encoder.encode(request.getPassword())) // Cifrar la contraseña
                 .telefono(request.getTelefono())
-                .rol(Rol.CLIENTE) // Por defecto
+                .rol("CLIENTE") // Ahora es String
                 .build();
 
         return usuarioRepository.save(usuario);

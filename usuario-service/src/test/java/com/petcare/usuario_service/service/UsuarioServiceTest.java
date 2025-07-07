@@ -2,7 +2,6 @@ package com.petcare.usuario_service.service;
 
 
 import com.petcare.usuario.DTO.RegisterRequest;
-import com.petcare.usuario.model.Rol;
 import com.petcare.usuario.model.Usuario;
 import com.petcare.usuario.repository.UsuarioRepository;
 import com.petcare.usuario.service.UsuarioService;
@@ -45,7 +44,7 @@ class UsuarioServiceTest {
                 .email(request.getEmail())
                 .password(request.getPassword())
                 .telefono(request.getTelefono())
-                .rol(Rol.CLIENTE)
+                .rol("CLIENTE")
                 .build();
 
         when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuarioMock);
@@ -53,7 +52,7 @@ class UsuarioServiceTest {
         Usuario creado = usuarioService.registrarUsuario(request);
 
         assertEquals("juan@example.com", creado.getEmail());
-        assertEquals(Rol.CLIENTE, creado.getRol());
+        assertEquals("CLIENTE", creado.getRol());
         verify(usuarioRepository, times(1)).save(any(Usuario.class));
     }
 

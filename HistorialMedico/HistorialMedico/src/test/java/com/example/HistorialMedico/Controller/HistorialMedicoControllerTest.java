@@ -1,4 +1,4 @@
-package com.example.HistorialMedico.controller;
+package com.example.HistorialMedico.Controller;
 
 import com.example.HistorialMedico.model.HistorialMedico;
 import com.example.HistorialMedico.service.HistorialMedicoService;
@@ -6,6 +6,7 @@ import com.example.HistorialMedico.service.TratamientoService;
 import com.example.HistorialMedico.repository.HistorialMedicoRepository;
 import com.example.HistorialMedico.repository.TratamientoRepository;
 import com.example.HistorialMedico.client.MascotaClient;
+import com.example.HistorialMedico.controller.HistorialMedicoController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import feign.FeignException;

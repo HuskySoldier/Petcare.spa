@@ -1,7 +1,6 @@
 package com.petcare.usuario.config;
 
 
-import com.petcare.usuario.model.Rol;
 import com.petcare.usuario.model.Usuario;
 import com.petcare.usuario.repository.UsuarioRepository;
 
@@ -22,10 +21,10 @@ public class LoadDatabase {
                 usuarioRepo.save(Usuario.builder()
                         .nombre("Admin")
                         .apellido("Principal")
-                        .email("admin@petcare.com")// email para iniciar sesión
-                        .password(encoder.encode("admin123"))//clave para iniciar sesión
+                        .email("admin@petcare.com")
+                        .password(encoder.encode("admin123"))
                         .telefono("111111111")
-                        .rol(Rol.ADMINISTRADOR)
+                        .rol("ADMINISTRADOR")
                         .build());
             }
 
@@ -36,7 +35,7 @@ public class LoadDatabase {
                         .email("maria@petcare.com")
                         .password(encoder.encode("maria123"))
                         .telefono("222222222")
-                        .rol(Rol.CLIENTE)
+                        .rol("CLIENTE")
                         .build());
             }
 
@@ -47,10 +46,9 @@ public class LoadDatabase {
                         .email("carlos.vet@petcare.com")
                         .password(encoder.encode("vet123"))
                         .telefono("333333333")
-                        .rol(Rol.VETERINARIO)
+                        .rol("VETERINARIO")
                         .build());
             }
-
             System.out.println(" Verificación completa: usuarios precargados si no existían.");
         };
     }
