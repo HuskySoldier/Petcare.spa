@@ -27,13 +27,18 @@ public class RegisterService {
 
         try {
             UsuarioDTO existente = usuarioClient.buscarPorEmail(usuarioDTO.getEmail());
-            if (existente != null) {
+            if (existente != null && existente.getEmail() != null) {
                 throw new RuntimeException("Ya existe un usuario registrado con ese correo electrónico");
             }
         } catch (FeignException.NotFound e) {
             // OK: El usuario no existe, se puede registrar
         } catch (FeignException e) {
-            throw new RuntimeException("Error al verificar si el usuario ya está registrado");
+            // Si el error es 404, significa que no existe, se puede registrar
+            if (e.status() == 404) {
+                // OK
+            } else {
+                throw new RuntimeException("Error al verificar si el usuario ya está registrado");
+            }
         }
 
         // Crear nuevo usuario
@@ -44,11 +49,12 @@ public class RegisterService {
         nuevo.setTelefono(usuarioDTO.getTelefono());
         // Enviar la contraseña en texto plano
         nuevo.setPassword(usuarioDTO.getPassword());
-        nuevo.setRol("CLIENTE");
+        // No se envía el rol, lo asigna usuario-service
 
         try {
             UsuarioDTO creado = usuarioClient.crearUsuario(nuevo);
-            return new RegisterResponse("Registro exitoso", creado.getEmail(), creado.getRol());
+            String rolNombre = (creado.getRol() != null) ? creado.getRol().getNombre() : null;
+            return new RegisterResponse("Registro exitoso", creado.getEmail(), rolNombre);
         } catch (FeignException e) {
             throw new RuntimeException("Usuario ya registrado: " + e.getMessage());
         }

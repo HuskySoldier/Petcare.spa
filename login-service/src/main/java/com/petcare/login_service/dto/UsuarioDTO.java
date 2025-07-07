@@ -24,7 +24,7 @@ public class UsuarioDTO {
     private String password;
 
     @Schema(description = "Rol del usuario", example = "CLIENTE")
-    private String rol;
+    private RolDTO rol;
 
 
 

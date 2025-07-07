@@ -8,10 +8,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name = "usuarios")
@@ -47,7 +51,9 @@ public class Usuario {
     @Schema(description = "Teléfono de contacto", example = "+56912345678")
     private String telefono;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "rol_id", nullable = false)
     @Schema(description = "Rol del usuario", example = "CLIENTE")
-    private String rol;
+    private Rol rol;
 
 }

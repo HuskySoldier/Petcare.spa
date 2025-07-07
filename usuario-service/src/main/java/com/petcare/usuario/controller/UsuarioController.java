@@ -1,7 +1,9 @@
 package com.petcare.usuario.controller;
 
 import com.petcare.usuario.model.Usuario;
+import com.petcare.usuario.model.Rol;
 import com.petcare.usuario.repository.UsuarioRepository;
+import com.petcare.usuario.repository.RolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private RolRepository rolRepository;
 
     private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -108,6 +113,13 @@ public class UsuarioController {
             @Parameter(description = "Datos del usuario a crear", required = true) @RequestBody Usuario usuario) {
         // Encriptar contraseña antes de guardar
         usuario.setPassword(encoder.encode(usuario.getPassword()));
+
+        // Asignar rol CLIENTE si no se especifica
+        if (usuario.getRol() == null) {
+            Rol rolCliente = rolRepository.findByNombre("CLIENTE")
+                    .orElseGet(() -> rolRepository.save(Rol.builder().nombre("CLIENTE").build()));
+            usuario.setRol(rolCliente);
+        }
         return usuarioRepository.save(usuario);
     }
 

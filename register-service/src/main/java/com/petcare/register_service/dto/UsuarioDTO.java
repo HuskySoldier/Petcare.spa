@@ -24,6 +24,6 @@ public class UsuarioDTO {
     @Schema(description = "Contraseña del usuario", example = "123456")
     private String password;
 
-    @Schema(description = "Rol del usuario", example = "CLIENTE")
-    private String rol;
+    // El rol ya no se envía desde register, pero puede recibirse desde usuario-service
+    private RolDTO rol;
 }
