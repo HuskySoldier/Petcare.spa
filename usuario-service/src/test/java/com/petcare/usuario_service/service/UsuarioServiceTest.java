@@ -18,10 +18,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+
 class UsuarioServiceTest {
 
     @Mock
     private UsuarioRepository usuarioRepository;
+
+    @Mock
+    private com.petcare.usuario.repository.RolRepository rolRepository;
 
     @InjectMocks
     private UsuarioService usuarioService;
@@ -49,6 +53,7 @@ class UsuarioServiceTest {
                 .rol(RolTestUtil.rolCliente())
                 .build();
 
+        when(rolRepository.findByNombre("CLIENTE")).thenReturn(Optional.of(RolTestUtil.rolCliente()));
         when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuarioMock);
 
         Usuario creado = usuarioService.registrarUsuario(request);
