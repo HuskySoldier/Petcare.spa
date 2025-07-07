@@ -24,31 +24,40 @@ public class VeterinarioService {
     private VeterinarioClient veterinarioClient;
 
     public Veterinario agregarVeterinario(Veterinario veterinario, Long idUsuario) {
-        // Validar que el usuario que hace la petición tenga rol ADMINISTRADOR o
-        // JEFE_CLINICA
-        UsuarioDTO usuario = obtenerUsuarioDesdeClient(idUsuario);
-        validarAccesoPorRol(usuario.getRol(), List.of("ADMINISTRADOR", "JEFE_CLINICA"));
+        // Validar que quien hace la petición tenga rol válido
+        UsuarioDTO usuarioAutenticado = obtenerUsuarioDesdeClient(idUsuario);
+        validarAccesoPorRol(usuarioAutenticado.getRol(), List.of("ADMINISTRADOR", "JEFE_CLINICA"));
 
-        // Validar que el veterinarioId no esté seteado (crear nuevo solo)
-        if (veterinario.getVeterinarioId() != null) {
-            throw new IllegalArgumentException("No debe enviar el veterinarioId al crear un nuevo veterinario.");
-        }
+        // Si no viene usuarioId, creamos el usuario en el microservicio de usuario
+        if (veterinario.getUsuarioId() == null) {
+            UsuarioDTO nuevoUsuario = new UsuarioDTO();
+            nuevoUsuario.setNombre(veterinario.getNombre());
+            nuevoUsuario.setApellido(veterinario.getApellido());
+            nuevoUsuario.setEmail(veterinario.getCorreo());
+            nuevoUsuario.setRol("VETERINARIO");
+            nuevoUsuario.setTelefono("12345678"); // Puedes recibir este dato si quieres
+            nuevoUsuario.setPassword("123456"); // Puedes generar un password aleatorio o recibirlo
 
-        // Validar que el usuarioId del veterinario exista en microservicio usuario
-        try {
-            ResponseEntity<UsuarioDTO> response = veterinarioClient.findById(veterinario.getUsuarioId());
+            ResponseEntity<UsuarioDTO> response = veterinarioClient.crearUsuario(nuevoUsuario);
+
             if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
-                throw new IllegalArgumentException("El ID del usuario no existe en el microservicio de usuario.");
+                throw new IllegalArgumentException("No se pudo crear el usuario asociado.");
             }
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Error al validar el ID del usuario: " + e.getMessage());
+
+            Long nuevoUsuarioId = response.getBody().getId();
+            if (nuevoUsuarioId == null) {
+                throw new IllegalArgumentException("El usuario creado no devolvió un ID válido.");
+            }
+
+            veterinario.setUsuarioId(nuevoUsuarioId);
         }
 
+        // Si llega aquí, usuarioId ya existe (nuevo o enviado) => guardamos veterinario
         return veterinariorepository.save(veterinario);
     }
 
     // Método auxiliar para obtener usuario desde cliente
-    private UsuarioDTO obtenerUsuarioDesdeClient(Long idUsuario) {
+    public UsuarioDTO obtenerUsuarioDesdeClient(Long idUsuario) {
         ResponseEntity<UsuarioDTO> response = veterinarioClient.findById(idUsuario);
         if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
             throw new RuntimeException("Usuario autenticado no encontrado o no válido");
@@ -57,7 +66,7 @@ public class VeterinarioService {
     }
 
     // Método para validar roles
-    private void validarAccesoPorRol(String rolUsuario, List<String> rolesPermitidos) {
+    public void validarAccesoPorRol(String rolUsuario, List<String> rolesPermitidos) {
         if (rolUsuario == null || !rolesPermitidos.contains(rolUsuario.toUpperCase())) {
             throw new RuntimeException("Acceso denegado: no tienes permisos para realizar esta acción.");
         }
@@ -69,6 +78,10 @@ public class VeterinarioService {
 
     public void eliminarVeterinario(Long id) {
         veterinariorepository.deleteById(id);
+    }
+
+    public Veterinario guardarVeterinario(Veterinario veterinario) {
+        return veterinariorepository.save(veterinario);
     }
 
 }

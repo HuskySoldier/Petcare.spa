@@ -1,6 +1,5 @@
-package com.example.HistorialMedico.Controller;
+package com.example.HistorialMedico.controller;
 
-import com.example.HistorialMedico.controller.HistorialMedicoController;
 import com.example.HistorialMedico.model.HistorialMedico;
 import com.example.HistorialMedico.service.HistorialMedicoService;
 import com.example.HistorialMedico.service.TratamientoService;

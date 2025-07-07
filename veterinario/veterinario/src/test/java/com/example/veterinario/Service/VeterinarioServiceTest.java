@@ -6,11 +6,13 @@ import com.example.veterinario.model.Veterinario;
 import com.example.veterinario.repository.VeterinarioRepository;
 import com.example.veterinario.service.VeterinarioService;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,6 +36,11 @@ class VeterinarioServiceTest {
 
     @Mock
     private VeterinarioClient veterinarioClient;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void listarVeterinarios_deberiaRetornarLista() {
@@ -49,23 +57,33 @@ class VeterinarioServiceTest {
 
     @Test
     void agregarVeterinario_datosValidos_deberiaGuardarYRetornarVeterinario() {
-        Veterinario v = new Veterinario(null, 12345678, "Juan", "Perez", "Cardiologia", "juan@mail.com", 101L);
+        Veterinario v = new Veterinario(null, 12345678, "Juan", "Perez", "Cardiologia", "juan@mail.com", null);
         UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setId(101L);
         usuarioDTO.setRol("ADMINISTRADOR");
 
+        // Mock que retorna usuario autenticado (para validar rol)
         when(veterinarioClient.findById(101L))
-                .thenReturn(new ResponseEntity<>(usuarioDTO, HttpStatus.OK))
-                .thenReturn(new ResponseEntity<>(usuarioDTO, HttpStatus.OK)); // para la segunda llamada
+                .thenReturn(new ResponseEntity<>(usuarioDTO, HttpStatus.OK));
 
-        when(veterinariorepository.save(v)).thenReturn(v);
+        // Cuando se llama a crear usuario, simula respuesta con ID nuevo
+        when(veterinarioClient.crearUsuario(any(UsuarioDTO.class)))
+                .thenReturn(new ResponseEntity<>(usuarioDTO, HttpStatus.CREATED));
+
+        // Mock el guardado en repo, ya con usuarioId seteado
+        Veterinario veterinarioGuardado = new Veterinario(1L, 12345678, "Juan", "Perez", "Cardiologia", "juan@mail.com",
+                101L);
+        when(veterinariorepository.save(any(Veterinario.class))).thenReturn(veterinarioGuardado);
 
         Veterinario resultado = veterinarioService.agregarVeterinario(v, 101L);
 
         assertNotNull(resultado);
         assertEquals("Juan", resultado.getNombre());
+        assertEquals(101L, resultado.getUsuarioId());
 
-        verify(veterinarioClient, times(2)).findById(101L); // espera dos llamadas
-        verify(veterinariorepository, times(1)).save(v);
+        verify(veterinarioClient, times(1)).findById(101L);
+        verify(veterinarioClient, times(1)).crearUsuario(any(UsuarioDTO.class));
+        verify(veterinariorepository, times(1)).save(any(Veterinario.class));
     }
 
     @Test

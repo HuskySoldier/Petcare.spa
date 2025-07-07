@@ -21,6 +21,11 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,10 +54,14 @@ class ReservaServiceTest {
         reserva = new Reserva(1L, Date.valueOf("2025-06-01"), Date.valueOf("2025-06-10"), 5L, 1L, 10000, estado);
 
         vetDTO = new VeterinarioDTO();
+        vetDTO.setVeterinarioId(5L);
         vetDTO.setCorreo("vet@ejemplo.com");
+        vetDTO.setNombre("Carlos");
+        vetDTO.setApellido("Pérez");
 
         usuarioDTO = new UsuarioDTO();
         usuarioDTO.setEmail("vet@ejemplo.com");
+        usuarioDTO.setRol("CLIENTE");
     }
 
     @Test
@@ -77,42 +86,76 @@ class ReservaServiceTest {
 
     @Test
     void crearReserva_valida_deberiaGuardar() {
-        when(veterinarioClient.obtenerVeterinarioPorId(5L)).thenReturn(vetDTO);
-        when(usuarioClient.findByEmail("vet@ejemplo.com")).thenReturn(usuarioDTO);
+        // Mock de respuesta de veterinario y usuario con ResponseEntity.ok()
+        ResponseEntity<VeterinarioDTO> vetResponse = ResponseEntity.ok(vetDTO);
+        ResponseEntity<UsuarioDTO> usuarioResponse = ResponseEntity.ok(usuarioDTO);
+
+        when(veterinarioClient.obtenerVeterinarioPorId(eq(5L), anyLong())).thenReturn(vetResponse);
+        when(usuarioClient.getUsuarioById(eq(1L))).thenReturn(usuarioResponse);
         when(reservaRepository.save(reserva)).thenReturn(reserva);
 
-        Reserva resultado = reservaService.crearReserva(reserva);
+        Reserva resultado = reservaService.crearReserva(reserva, 1L);
 
         assertNotNull(resultado);
         verify(reservaRepository).save(reserva);
     }
 
     @Test
-    void crearReserva_conReservaNula_deberiaLanzarExcepcion() {
-        assertThrows(RuntimeException.class, () -> reservaService.crearReserva(null));
-        verify(reservaRepository, never()).save(any());
-    }
-
-    @Test
     void crearReserva_veterinarioNoExiste_deberiaLanzarExcepcion() {
-        when(veterinarioClient.obtenerVeterinarioPorId(5L)).thenThrow(new RuntimeException());
+        when(veterinarioClient.obtenerVeterinarioPorId(eq(5L), anyLong()))
+                .thenReturn(ResponseEntity.notFound().build());
 
-        assertThrows(IllegalArgumentException.class, () -> reservaService.crearReserva(reserva));
+        // Mock usuario para evitar NullPointerException aunque no se use
+        when(usuarioClient.getUsuarioById(anyLong())).thenReturn(ResponseEntity.ok(usuarioDTO));
+
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
+            reservaService.crearReserva(reserva, 1L);
+        });
+
+        assertEquals("El veterinario no existe.", thrown.getMessage());
         verify(reservaRepository, never()).save(any());
     }
+
+    // En el test crearReserva_usuarioNoExiste_deberiaLanzarExcepcion
 
     @Test
     void crearReserva_usuarioNoExiste_deberiaLanzarExcepcion() {
-        when(veterinarioClient.obtenerVeterinarioPorId(5L)).thenReturn(vetDTO);
-        when(usuarioClient.findByEmail("vet@ejemplo.com")).thenThrow(new RuntimeException());
+        ResponseEntity<VeterinarioDTO> vetResponse = ResponseEntity.ok(vetDTO);
+        // marcar mock lenient para evitar error UnnecessaryStubbingException
+        lenient().when(veterinarioClient.obtenerVeterinarioPorId(eq(5L), anyLong())).thenReturn(vetResponse);
+        when(usuarioClient.getUsuarioById(eq(1L))).thenReturn(ResponseEntity.notFound().build());
 
-        assertThrows(IllegalArgumentException.class, () -> reservaService.crearReserva(reserva));
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
+            reservaService.crearReserva(reserva, 1L);
+        });
+
+        assertEquals("El usuario no existe.", thrown.getMessage());
+        verify(reservaRepository, never()).save(any());
+    }
+
+    @Test
+    void crearReserva_usuarioRolNoCliente_deberiaLanzarExcepcion() {
+        ResponseEntity<VeterinarioDTO> vetResponse = ResponseEntity.ok(vetDTO);
+        lenient().when(veterinarioClient.obtenerVeterinarioPorId(eq(5L), anyLong())).thenReturn(vetResponse);
+
+        UsuarioDTO usuarioNoCliente = new UsuarioDTO();
+        usuarioNoCliente.setRol("ADMIN");
+        ResponseEntity<UsuarioDTO> usuarioResponse = ResponseEntity.ok(usuarioNoCliente);
+
+        when(usuarioClient.getUsuarioById(eq(1L))).thenReturn(usuarioResponse);
+
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
+            reservaService.crearReserva(reserva, 1L);
+        });
+
+        assertEquals("Solo los usuarios con rol CLIENTE pueden crear reservas.", thrown.getMessage());
         verify(reservaRepository, never()).save(any());
     }
 
     @Test
     void actualizarReserva_existente_deberiaActualizarCampos() {
-        Reserva nueva = new Reserva(null, Date.valueOf("2025-07-01"), Date.valueOf("2025-07-10"), 5L, 1L, 20000, reserva.getEstado());
+        Reserva nueva = new Reserva(null, Date.valueOf("2025-07-01"), Date.valueOf("2025-07-10"), 5L, 1L, 20000,
+                reserva.getEstado());
 
         when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
         when(reservaRepository.save(any(Reserva.class))).thenReturn(reserva);
@@ -140,5 +183,32 @@ class ReservaServiceTest {
 
         assertEquals(1, resultado.size());
         assertEquals(1L, resultado.get(0).getUsuarioId());
+    }
+
+    @Test
+    void obtenerTodosLosVeterinarios_deberiaRetornarLista() {
+        VeterinarioDTO v1 = new VeterinarioDTO();
+        v1.setVeterinarioId(1L);
+        v1.setNombre("Carlos");
+        v1.setApellido("Pérez");
+        v1.setEspecialidad("Cirugía");
+        v1.setCorreo("carlos.vet@petcare.com");
+
+        VeterinarioDTO v2 = new VeterinarioDTO();
+        v2.setVeterinarioId(2L);
+        v2.setNombre("Ana");
+        v2.setApellido("Soto");
+        v2.setEspecialidad("Medicina Interna");
+        v2.setCorreo("ana.vet@petcare.com");
+
+        when(veterinarioClient.listarVeterinarios(anyLong())).thenReturn(List.of(v1, v2));
+
+        List<VeterinarioDTO> resultado = reservaService.obtenerTodosLosVeterinarios(1L);
+
+        assertNotNull(resultado);
+        assertEquals(2, resultado.size());
+        assertEquals("Carlos", resultado.get(0).getNombre());
+        assertEquals("Ana", resultado.get(1).getNombre());
+        verify(veterinarioClient, times(1)).listarVeterinarios(anyLong());
     }
 }

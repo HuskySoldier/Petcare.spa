@@ -3,6 +3,7 @@ package com.example.Reserva.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.Reserva.client.UsuarioClient;
@@ -32,28 +33,27 @@ public class ReservaService {
         return reservaRepository.findById(id).orElse(null);
     }
 
-    public Reserva crearReserva(Reserva reserva) {
-        if (reserva == null) {
-            throw new RuntimeException("La reserva no puede ser nula");
+    public Reserva crearReserva(Reserva reserva, Long usuarioIdHeader) {
+        ResponseEntity<UsuarioDTO> usuarioResponse = usuarioClient.getUsuarioById(reserva.getUsuarioId());
+        if (!usuarioResponse.getStatusCode().is2xxSuccessful() || usuarioResponse.getBody() == null) {
+            throw new RuntimeException("El usuario no existe.");
+        }
+        UsuarioDTO usuario = usuarioResponse.getBody();
+        if (!"CLIENTE".equalsIgnoreCase(usuario.getRol())) {
+            throw new RuntimeException("Solo los usuarios con rol CLIENTE pueden crear reservas.");
         }
 
-        // Validar que el veterinario exista
-        VeterinarioDTO vet;
-        try {
-            vet = veterinarioClient.obtenerVeterinarioPorId(reserva.getVeterinarioId());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("El veterinario no existe.");
+        ResponseEntity<VeterinarioDTO> vetResponse = veterinarioClient.obtenerVeterinarioPorId(
+                reserva.getVeterinarioId(), usuarioIdHeader);
+        if (!vetResponse.getStatusCode().is2xxSuccessful() || vetResponse.getBody() == null) {
+            throw new RuntimeException("El veterinario no existe.");
         }
 
-        // Validar que el correo del veterinario corresponda a un usuario válido
-        try {
-            UsuarioDTO usuario = usuarioClient.findByEmail(vet.getCorreo());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("El usuario relacionado con el veterinario no existe.");
-        }
-
-        // Guardar la reserva si todo está bien
         return reservaRepository.save(reserva);
+    }
+
+    public List<VeterinarioDTO> obtenerTodosLosVeterinarios(Long usuarioId) {
+        return veterinarioClient.listarVeterinarios(usuarioId);
     }
 
     public Reserva actualizarReserva(Long id, Reserva nuevaReserva) {

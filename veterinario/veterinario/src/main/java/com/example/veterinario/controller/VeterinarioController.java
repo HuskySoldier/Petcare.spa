@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.veterinario.dto.UsuarioDTO;
 import com.example.veterinario.model.Veterinario;
 import com.example.veterinario.service.VeterinarioService;
 
@@ -87,13 +88,25 @@ public class VeterinarioController {
 
     // delete por id
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteVeterinarioPorId(@PathVariable Long id) {
+    public ResponseEntity<?> deleteVeterinarioPorId(@PathVariable Long id,
+            @RequestHeader("X-USER-ID") Long idUsuario) {
         try {
-            veterinarioService.eliminarVeterinario(id);
-            return ResponseEntity.noContent().build();
+            // Validar usuario y rol
+            UsuarioDTO usuarioAutenticado = veterinarioService.obtenerUsuarioDesdeClient(idUsuario);
+            veterinarioService.validarAccesoPorRol(usuarioAutenticado.getRol(),
+                    List.of("ADMINISTRADOR", "JEFE_CLINICA"));
 
-        } catch (Exception e) {
-            return ResponseEntity.status(404).body(e.getMessage());
+            // Eliminar
+            Veterinario existente = veterinarioService.buscarVeterinarioPorId(id);
+            if (existente == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Veterinario no encontrado");
+            }
+
+            veterinarioService.eliminarVeterinario(id);
+
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
 
@@ -104,24 +117,33 @@ public class VeterinarioController {
 
     // modificar el veterinario
     @PutMapping("/{id}")
-    public ResponseEntity<Veterinario> modificarVeterinario(@PathVariable Long id,
-            @RequestBody Veterinario veterinario2) {
+    public ResponseEntity<?> modificarVeterinario(@PathVariable Long id,
+            @Valid @RequestBody Veterinario veterinarioModificado,
+            @RequestHeader("X-USER-ID") Long idUsuario) {
         try {
-            Veterinario vet = veterinarioService.buscarVeterinarioPorId(id);
+            // Validar usuario y rol
+            UsuarioDTO usuarioAutenticado = veterinarioService.obtenerUsuarioDesdeClient(idUsuario);
+            veterinarioService.validarAccesoPorRol(usuarioAutenticado.getRol(),
+                    List.of("ADMINISTRADOR", "JEFE_CLINICA"));
 
-            vet.setVeterinarioId(id);
-            vet.setNombre(veterinario2.getNombre());
-            vet.setApellido(veterinario2.getApellido());
-            vet.setEspecialidad(veterinario2.getEspecialidad());
-            vet.setCorreo(veterinario2.getCorreo());
+            // Buscar veterinario
+            Veterinario existente = veterinarioService.buscarVeterinarioPorId(id);
+            if (existente == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Veterinario no encontrado");
+            }
 
-            veterinarioService.agregarVeterinario(vet, id);
-            return ResponseEntity.ok(vet);
+            // Actualizar datos
+            existente.setNombre(veterinarioModificado.getNombre());
+            existente.setApellido(veterinarioModificado.getApellido());
+            existente.setEspecialidad(veterinarioModificado.getEspecialidad());
+            existente.setCorreo(veterinarioModificado.getCorreo());
 
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            veterinarioService.guardarVeterinario(existente);
+
+            return ResponseEntity.ok(existente);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
-
     }
 
 }

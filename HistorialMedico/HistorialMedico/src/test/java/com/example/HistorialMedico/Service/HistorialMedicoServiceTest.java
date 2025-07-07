@@ -1,4 +1,4 @@
-package com.example.HistorialMedico.Service;
+package com.example.HistorialMedico.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,7 +14,7 @@ import com.example.HistorialMedico.dto.UsuarioDTO;
 import com.example.HistorialMedico.enums.Rol;
 import com.example.HistorialMedico.model.HistorialMedico;
 import com.example.HistorialMedico.repository.HistorialMedicoRepository;
-import com.example.HistorialMedico.service.HistorialMedicoService;
+
 
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
