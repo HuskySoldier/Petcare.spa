@@ -93,7 +93,7 @@ public class ReseniaController {
         description = "Se crea una resenia.",
         responses = {
             @ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Resenia creada exitosamente",
                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Resenia.class))
             )
@@ -115,7 +115,7 @@ public class ReseniaController {
         description = "Se actualiza la resenia por id.",
         responses = {
             @ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Resenia actualizada exitosamente",
                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Resenia.class))
             ),
@@ -148,7 +148,7 @@ public class ReseniaController {
         description = "Se elimina una resenia resenias por id.",
         responses = {
             @ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Resenia eliminada exitosamente",
                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Resenia.class))
             ),

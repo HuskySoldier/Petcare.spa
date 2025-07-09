@@ -123,7 +123,7 @@ public class InventarioController {
         description = "Actualiza todos los datos de un inventario existente.",
         responses = {
             @ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Inventario actualizado exitosamente",
                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Inventario.class))
             ),
@@ -153,7 +153,7 @@ public class InventarioController {
         description = "Elimina un inventario completamente.",
         responses = {
             @ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Inventario eliminado exitosamente",
                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Inventario.class))
             ),

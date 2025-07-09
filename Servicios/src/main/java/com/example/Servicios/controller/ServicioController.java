@@ -91,7 +91,7 @@ public class ServicioController {
         description = "Se crea un servicio.",
         responses = {
             @ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Servicio creado exitosamente",
                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Servicio.class))
             )
@@ -119,7 +119,7 @@ public class ServicioController {
         description = "Se crea una categoria.",
         responses = {
             @ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Categoria creado exitosamente",
                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Categoria.class))
             )
@@ -153,7 +153,7 @@ public class ServicioController {
         description = "Se actualiza un servicio por id.",
         responses = {
             @ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Servicio actualizado exitosamente",
                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Servicio.class))
             ),
@@ -180,7 +180,7 @@ public class ServicioController {
         description = "Se elimina un servicio por id.",
         responses = {
             @ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Servicio eliminado exitosamente",
                 content = @Content(mediaType = "application/json", schema = @Schema(implementation = Servicio.class))
             ),
